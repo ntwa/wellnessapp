@@ -1,0 +1,16 @@
+/__init__.pyc
+/admin.pyc
+/admin_actions.pyc
+/api.pyc
+/connect.pyc
+/context_processors.pyc
+/decorators.pyc
+/example_views.pyc
+/exceptions.pyc
+/model_managers.pyc
+/models.pyc
+/settings.pyc
+/signals.pyc
+/urls.pyc
+/utils.pyc
+/views.pyc

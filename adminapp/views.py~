@@ -1,0 +1,20 @@
+from django.http import HttpResponse
+import os
+from django.views.decorators.csrf import csrf_exempt
+from django.template import RequestContext, loader
+from django.conf import settings
+from django.contrib import messages
+from django.http import Http404
+from django.shortcuts import render_to_response
+from django.utils.translation import ugettext as _
+from django.views.decorators.http import require_POST
+import logging
+import json,sys
+
+
+# Create your views here.
+def index(request):
+  
+    template = loader.get_template('adminapp/index.htm')
+    context = RequestContext(request)
+    return HttpResponse(template.render(context))   

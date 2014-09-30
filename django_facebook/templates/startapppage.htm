@@ -1,0 +1,3459 @@
+{% load url from future %}
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--
+<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.2/jquery.mobile-1.4.2.min.css">-->
+<link rel="stylesheet" href="{% static "django_facebook/css/jquery.mobile-1.4.2.min.css" %}">
+<link href="{% static "django_facebook/css/layoutstyle.css" %}" rel="stylesheet" type="text/css" media="screen and (max-width: 1000px)"/>
+<link href="{% static "django_facebook/css/layoutstyle2.css" %}" rel="stylesheet" type="text/css" media="screen and (min-width: 1001px)"/>
+
+<link href="{% static "django_facebook/css/idangerous.swiper.css" %}" rel="stylesheet" type="text/css"/>
+<link href="{{ STATIC_URL }}django_facebook/css/facebook.css" type="text/css" rel="stylesheet" media="all" />
+
+<!--<link href="{% static "django_facebook/css/layoutstyle.css" %}" rel="stylesheet" type="text/css"/ media="screen and (min-width: 1001px)">
+-->
+<!--<link href="wellnessapp/static/wellnessapp/css/layoutstyle.css" rel="stylesheet" type="text/css"/ media="screen and (max-width: 1000px)">
+-->
+<!--<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+
+-->
+<link href="{% static "django_facebook/css/jquery-ui.css" %}" rel="stylesheet" type="text/css"/ />
+
+<style type="text/css">
+    .ui-datepicker {
+        font-family:Garamond;
+        font-size: 11px;
+        margin-left:10px
+     }
+     
+ /* for the slider*/
+ 
+ 
+.device {
+ /* width: 640px;
+  height: 300px;*/
+  width: 200px;
+  height: 200px;
+  
+  /*width: 180px;
+  height: 180px;*/
+  /*padding: 30px 40px;*/
+  padding: 25px 25px;
+  border-radius: 20px;
+  /*background:url('{{ STATIC_URL }}wellnessapp/images/slider1-1.jpg') no-repeat center center;*/
+  background:#ff8604;
+   /*background:url('{{ STATIC_URL }}wellnessapp/images/fishtankbg3.jpg') repeat center center;*/
+  border: 3px solid white;
+  margin: 5px auto;
+  position: relative;
+  box-shadow: 0px 0px 5px #000;
+}
+
+.device .arrow-left {
+  background: url('{{ STATIC_URL }}wellnessapp/images/arrows.png') no-repeat left top;
+  position: absolute;
+  left: 5px;
+  top: 50%;
+  margin-top: -15px;
+  width: 17px;
+  height: 30px;
+  }
+
+.device .arrow-right {
+  background: url('{{ STATIC_URL }}wellnessapp/images/arrows.png') no-repeat left bottom;
+  position: absolute;
+  right: 5px;
+  top: 50%;
+  margin-top: -15px;
+  width: 17px;
+  height: 30px;
+}
+.swiper-container {
+  /*height: 300px;
+  width: 640px;*/
+  height: 200px;
+  width: 200px;
+  background:url('{{ STATIC_URL }}wellnessapp/images/fishtankbg3.jpg') no-repeat center center;
+  /*background: url('{{ STATIC_URL }}wellnessapp/images/fishtankbg3.jpg') repeat;*/
+  
+}
+
+.content-slide {
+  padding: 20px;
+  color: #fff;
+}
+.title {
+  font-size: 25px;
+  margin-bottom: 10px;
+}
+.pagination {
+  position: absolute;
+  left: 0;co
+  text-align: center;
+  bottom:5px;
+  width: 100%;
+}
+.swiper-pagination-switch {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 10px;
+  background: #999;
+  box-shadow: 0px 1px 2px #555 inset;
+  margin: 0 3px;
+  cursor: pointer;
+}
+.swiper-active-switch {
+  background: #fff;
+}
+
+ 
+ 
+ 
+/*end of the slider*/    
+
+     
+</style>
+<script language="javascript" type="text/javascript">
+
+var static_url_val={{STATIC_URL}}
+</script>
+
+
+
+
+<script language="javascript" type="text/javascript" src="{% static "django_facebook/scripts/jquery-1.10.1.min.js" %}"></script>
+
+<!--<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>-->
+<!--<script src="http://code.jquery.com/mobile/1.4.2/jquery.mobile-1.4.2.min.js"></script>-->
+
+
+<script language="javascript" type="text/javascript" src="{% static "django_facebook/scripts/jquery.mobile-1.4.2/jquery.mobile-1.4.2.min.js" %}"></script>
+
+
+<script language="javascript" type="text/javascript" src="{% static "django_facebook/scripts/appsupportfuncs1_5.js" %}">
+</script>
+
+<script language="javascript" type="text/javascript" src="{% static "django_facebook/scripts/flot-0.8.1/flot/jquery.flot.min.js" %}"></script>
+<script language="javascript" type="text/javascript" src="{% static "django_facebook/scripts/flot-0.8.1/flot/jquery.flot.categories.min.js" %}"></script>
+<script language="javascript" type="text/javascript" src="{% static "django_facebook/scripts/flot-0.8.1/flot/jquery.flot.pie.min.js" %}"></script>
+
+
+<!--<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>-->
+
+<script language="javascript" type="text/javascript" src="{% static "django_facebook/scripts/jquery-ui.js" %}"></script>
+<script language="javascript" type="text/javascript" src="{% static "django_facebook/scripts/modernizr.custom.87504.js" %}"></script>
+<script language="javascript" type="text/javascript" src="{% static "django_facebook/scripts/todataurl.js" %}"></script>
+<!--
+<script type="text/javascript" language="javascript" src="jquery.flot.axislabels.js"></script>
+<script type="text/javascript" language="javascript" src="jquery.flot.orderBars.js"></script>-->
+
+
+  <script language="javascript" type="text/javascript" src="{% static "django_facebook/js/idangerous.swiper-2.1.min.js" %}"></script>
+ 
+  <script>
+  
+  var click_set_1=false;
+  var click_set_1=false;
+  function swipe(posn){
+  //var posn=2;
+  var container_id="container";
+  var pagination_id="pagination";
+  container_id=container_id+posn;
+  pagination_id=pagination_id+posn;
+  var arrow_left_id="arrow-left";
+  var arrow_right_id="arrow-right";
+  arrow_left_id=arrow_left_id+posn;
+  arrow_right_id=arrow_right_id+posn;
+  
+
+  
+  
+  var swiper_container=".swiper-container[id=\'";
+  swiper_container=swiper_container+container_id;
+  swiper_container=swiper_container+"\']";
+  
+  var pagination_div=".pagination[id=\'";
+  pagination_div=pagination_div+pagination_id;
+  pagination_div=pagination_div+"\']";
+  
+  var arrow_left=".arrow-left[id=\'"
+  arrow_left=arrow_left+arrow_left_id;
+  arrow_left=arrow_left+"\']";
+  
+  
+  var arrow_right=".arrow-right[id=\'"
+  arrow_right=arrow_right+arrow_right_id;
+  arrow_right=arrow_right+"\']";
+  
+  
+
+ //alert(pagination+"--"+swiper_container);
+//return;
+
+  
+  //alert("Got here")
+  //var mySwiper = new Swiper('.swiper-container[id="container2"]',{
+  var mySwiper = new Swiper(swiper_container,{
+    //pagination: '.pagination[id="pagination2"]',
+    pagination: pagination_div,
+    loop:true,
+    grabCursor: true,
+    paginationClickable: true
+   });
+  
+  $(arrow_left).unbind();
+  $(arrow_right).unbind(); 
+   
+  //$('.arrow-left').on('click', function(e){
+  
+  $(arrow_left).on('click', function(e){
+ 
+      
+            
+    e.preventDefault();
+      mySwiper.swipePrev();
+      if(posn==2)
+      {
+      
+      playAquarium("left");
+      }
+      else
+      {
+       appendTeamToGarden("left");
+      }
+  });
+  
+  //$('.arrow-right').on('click', function(e){
+  $(arrow_right).on('click', function(e){
+  
+
+    e.preventDefault()
+    mySwiper.swipeNext();
+       if(posn==2)
+      {
+      playAquarium("right");
+      
+      }
+      else
+      {
+      appendTeamToGarden("right");
+      }
+  });
+  
+  }
+  
+
+  </script>
+
+</head>
+<body id="document_body">
+<script language="JavaScript">
+
+
+
+
+function sendActivityMessage()
+{
+
+sendMessage($("#activitycommentbox").val(),previous_day_displayed_activity,'Activity');
+
+}
+
+function sendMealsMessage()
+{
+
+sendMessage($("#mealscommentbox").val(),previous_day_displayed_meal,'Meal');
+
+}
+
+function sendWeightMessage()
+{
+
+sendMessage($("#weightcommentbox").val(),previous_day_displayed_weight,'Weight');
+
+}
+function retrieveAquariumComments(unique_id)
+{
+var str_id="tank";
+str_id=str_id+unique_id;
+var url="http://ict4d01.cs.uct.ac.za/wellness/facebook/example/#fishtank?q="
+url=url+str_id;
+$("#fbcomment").attr("data-href")=str_id;
+$.mobile.changePage( "#fbcomments", { transition: "slide", changeHash: false });
+}
+
+var initialized=false;
+
+function initializeMenu(){
+if(!initialized)
+  {
+           initialized=true;
+         $('.main_interface_wrapper').delegate(".menuimage", "click", function () {
+             var item=$(this).attr("alt");
+             incrementPoints();
+			 
+		 
+			 switch(item)
+			  {
+
+			       
+	       case "MainPage":$.mobile.changePage( "#pageone", { transition: "slide", changeHash: false });break;
+               case "FoodAndBeverages":$.mobile.changePage( "#foodinterface", { transition: "slide", changeHash: false });break;
+               case "Goals":$.mobile.changePage( "#healthgoals", { transition: "slide", changeHash: false });break;
+               case "ScoreBoard":$.mobile.changePage( "#scoreboardinterface", { transition: "slide", changeHash: false });break;
+               case "ScoreGardens":$.mobile.changePage( "#scoregardensinterface", { transition: "slide", changeHash: false });break;
+               case "ScoreTank":$.mobile.changePage( "#fishtank", { transition: "slide", changeHash: false });break;
+             
+               case "Meals":$.mobile.changePage( "#mealrecording", { transition: "slide", changeHash: false });break;
+        //case "FruitsAndVeges":$.mobile.changePage( "#updatestarchchart", { transition: "pop", changeHash: false });break;
+               case "FoodGraphs":$.mobile.changePage( "#mealchartinterface", { transition: "slide", changeHash: false });break;
+               case "RecordWeight":$.mobile.changePage( "#weightrecording", { transition: "slide", changeHash: false });break;
+               case "TrackWeight":$.mobile.changePage( "#trackweight", { transition: "slide", changeHash: false });break;
+               case "MealsGoal":$.mobile.changePage( "#mealsgoal", { transition: "slide", changeHash: false });break;
+               case "ActivityGoal":$.mobile.changePage( "#activitygoal", { transition: "slide", changeHash: false });break;
+               case "SendMessageActivity":sendMessage($("#activitycommentbox").val(),previous_day_displayed_activity,'Activity');break;
+               case "SendMessageMeals":sendMessage($("#mealscommentbox").val(),previous_day_displayed_meal,'Meal');break;
+               case "SendMessageWeight":sendMessage($("#weightcommentbox").val(),previous_day_displayed_weight,'Weight');break;
+              //case "ScoreBoard":$.mobile.changePage( "#scoreboardinterface", { transition: "slide", changeHash: false });displayScoreBoard();break;
+
+                case "ActivityGraphs":$.mobile.changePage( "#activityinterface", { transition: "slide", changeHash: false });break;
+                case "WeighingScale":$.mobile.changePage( "#weightinterface", { transition: "slide", changeHash: false });break;
+                case "Game":$.mobile.changePage( "#gameinterface", { transition: "slide", changeHash: false });break;						
+			
+			   
+			   default: alert("Functionality Under Construction");
+			   }
+			   
+			   $("img").toggle();
+			   $("img").show();
+			   
+            });
+  
+     $('<audio id="clickAudio"><source src="{%static "django_facebook/sound/checkout.wav" %}" type="audio/wav"><source src="{%static "django_facebook/sound/electronic.wav" %}" type="audio/wav"><source src="{%static "django_facebook/sound/checkout.wav" %}" type="audio/wav"></audio>').appendTo('body');
+     $(".menuimage").on("vclick", function(event){
+     $('#clickAudio')[0].play();
+ 
+
+      });
+  
+  }
+
+
+}
+
+
+$(document).on("pagecreate","#activityinterface",function(){
+  
+	$(".datecaptured_activity_class").prop('checked', false);
+	initializeMenu();
+	   
+  	$('.grouponeactivity').show();
+	$('.grouptwoactivity').hide();
+	$('.groupthreeactivity').hide();
+
+   $('.groupfouractivity').hide();
+   $('.groupfiveactivity').hide();
+   $('.groupsixactivity').hide();
+   retrieveActivityGoal();
+   
+   //alert("registering label click");
+
+ /*
+$(".activitylabel").click(function (event) {
+    event.stopPropagation(); // stop the .tile click being called
+    displayActivityGraph( $(this).text());
+});
+*/
+ $(".activitylabel").on("vclick", function(event){
+      event.stopPropagation(); // stop the .tile click being called
+    displayActivityGraph($(this).text());
+
+});    
+
+
+
+
+});
+
+
+var ctx=null;
+var canvas=null;
+$(document).on("pagecreate","#mealchartinterface",function(){
+    //Console.log("yyy");
+    //alert("Bingo");
+    //$(this).attr("alt");
+  
+    
+	$(".datecaptured_meal_class").prop('checked', false);
+    initializeMenu();
+   drawPlate();
+	$('.grouponemeal').show();
+	$('.grouptwomeal').hide();
+	$('.groupthreemeal').hide();
+
+   $('.groupfourmeal').hide();
+   $('.groupfivemeal').hide();
+   $('.groupsixmeal').hide();
+   //$('#starch').hide();
+   //$('#fruitsveg').hide();
+   //$('#protein').hide();
+   //$('#fat').hide();
+   //$('#dairy').hide();
+    //$('#plate').hide();
+    //alert($('#starch').val());
+   
+  
+$(".mealslabel").on("vclick", function(event){
+    event.stopPropagation(); // stop the .tile click being called
+    displayMealGraph($(this).text());
+});
+        
+
+
+
+
+});
+
+$(document).on("pagecreate","#trackweight",function(){
+  
+	$(".datecaptured_weight_class").prop('checked', false);
+    initializeMenu();        
+	$('.grouponeweight').show();
+	$('.grouptwoweight').hide();
+	$('.groupthreeweight').hide();
+	
+
+$(".weightlabel").on("vclick", function(event){
+    event.stopPropagation(); // stop the .tile click being called
+    displayWeightGraph( $(this).text());
+});
+
+});
+
+$(document).on("pagecreate","#scoreboardinterface",function(){
+
+$(".datecaptured_scoreboard_class").prop('checked', false);
+ initializeMenu();     
+	$('.grouponescoreboard').show();
+	$('.grouptwoscoreboard').hide();
+	$('.groupthreescoreboard').hide();
+
+   $('.groupfourscoreboard').hide();
+   $('.groupfivescoreboard').hide();
+   $('.groupsixscoreboard').hide();
+   
+   
+$(".scoreboardlabel").on("vclick", function(event){
+    event.stopPropagation(); // stop the .tile click being called
+    displayScoreBoard( $(this).text());
+});
+
+   
+
+});
+
+
+
+$(document).on("pagecreate","#scoregardensinterface",function(){
+
+$(".datecaptured_scoregardens_class").prop('checked', false);
+ initializeMenu();     
+	$('.grouponescoregardens').show();
+	$('.grouptwoscoregardens').hide();
+   
+   //swipe(1);
+$(".scoregardenslabel").on("vclick", function(event){
+    event.stopPropagation(); // stop the .tile click being called
+    displayScoreGardens( $(this).text());
+});
+
+   
+
+});
+
+var original_wrapper_content="";
+$(document).on("pagecreate","#fishtank",function(){
+
+$(".datecaptured_scoretank_class").prop('checked', false);
+   initializeMenu();     
+	$('.grouponescoretank').show();
+	$('.grouptwoscoretank').hide();
+ $("#aquiriumfish").hide();  
+
+   
+$(".scoretanklabel").on("vclick", function(event){
+    event.stopPropagation(); // stop the .tile click being called
+    displayScoreTanks( $(this).text());
+});
+original_wrapper_content=$(".swiper-container[id='container2']").html();
+//swipe(2);
+});
+
+/*
+$('#activity').on('pageshow', function() {
+alert("Got here");
+$('#todayactivity').show();
+$('#lastweekactivity').hide();
+
+
+
+});
+*/
+
+$(document).on("pageshow","#activityinterface",function(){
+//console.log("Hello"); 
+   /*
+   $(".datecaptured_activity_class").prop('checked', false);
+  	$('.grouponeactivity').show();
+	$('.grouptwoactivity').hide();
+	$('.groupthreeactivity').hide();
+
+   $('.groupfouractivity').hide();
+   $('.groupfiveactivity').hide();
+   $('.groupsixactivity').hide();*/
+ 
+});
+
+
+var image_hidden=false;
+$(document).on("pageshow","#mealchartinterface",function(){
+/*
+$(".datecaptured_meal_class").prop('checked', false);
+      
+	$('.grouponemeal').show();
+	$('.grouptwomeal').hide();
+	$('.groupthreemeal').hide();
+<div class="content" style="margin-top: 10px;">
+    {% if request.GET.fb_error_or_cancel or request.GET.error %}
+        <div class="error">
+            Please click allow in the facebook interface, to access Fashiolista
+        </div>
+    {% endif %}
+
+    <div class="error" id="django_static_error">
+        Couldn't load the static Javascript files, is django static configured correctly?
+        <a href="http://docs.djangoproject.com/en/1.3/howto/static-files/" target="_blank">See the docs here.</a>
+    </div>
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+   $('.groupfourmeal').hide();
+   $('.groupfivemeal').hide();
+   $('.groupsixmeal').hide();
+
+  */ 
+   if(!image_hidden)
+  {
+   //$('#starch').hide();
+   //$('#fruitsveg').hide();
+   //$('#protein').hide();
+  //$('#fat').hide();
+   //$('#dairy').hide();
+   // $('#plate').hide();
+   $('#mealsimages').hide();
+  
+  image_hidden=true;
+   
+  }
+ 
+
+});
+
+
+$(document).on("pageshow","#scoreboardinterface",function(){
+/*
+$(".datecaptured_scoreboard_class").prop('checked', false);
+      how to use Egit in eclipse
+	$('.grouponescoreboard').show();
+	$('.grouptwoscoreboard').hide();
+	$('.groupthreescoreboard').hide();
+
+   $('.groupfourscoreboard').hide();
+   $('.groupfivescoreboard').hide();
+   $('.groupsixscoreboard').hide();
+
+  */ 
+
+});
+
+
+$(document).on("pageshow","#scoregardensinterface",function(){
+/*
+$(".datecaptured_scoreboard_class").prop('checked', false);
+      how to use Egit in eclipse
+	$('.grouponescoreboard').show();
+	$('.grouptwoscoreboard').hide();
+	$('.groupthreescoreboard').hide();
+
+   $('.groupfourscoreboard').hide();
+   $('.groupfivescoreboard').hide();
+   $('.groupsixscoreboard').hide();
+
+  */ 
+
+});
+
+$(document).on("pageshow","#trackweight",function(){
+  /*
+	$(".datecaptured_weight_class").prop('checked', false);
+      
+	$('.grouponeweight').show();
+	$('.grouptwoweight').hide();
+	$('.groupthreeweight').hide();
+*/
+
+});
+
+
+
+
+$(document).on("pageshow","#mealrecording",function(){
+
+
+   $(".fruits_portion").text("None");
+   $(".starch_portion").text("None");
+   $(".protein_portion").text("None");
+   $(".fat_portion").text("None");
+   $(".dairy_portion").text("None");    
+
+});
+
+
+
+
+   
+
+
+
+$(document).on("pageshow","#mealsgoal",function(){
+
+   //$(".fruits_portion").text("None");
+   //$(".starch_portion").text("None");
+   //$(".protein_portion").text("None");
+   //$(".fat_portion").text("None");
+   //$(".dairy_portion").text("None");
+   
+   retrieveMealsGoal();
+   //showMealsGoal();
+       
+
+});
+
+$(document).on("pageshow","#activitygoal",function(){
+
+  var activityGoalJSONstr=retrieveFromLocalStorage("ActivityGoal");
+  var activityGoalJSON=JSON.parse(activityGoalJSONstr);
+   
+   retrieveActivityGoal();
+   //showActivityGoal(activityGoalJSON);
+       
+
+})
+
+
+
+
+$(document).on("pagecreate","#trackweight",function(){
+
+$(".datecaptured_weight_class").prop('checked', false);
+initializeMenu();
+});
+
+$(document).on("pagecreate","#mealrecording",function(){
+ //alert("pageshow event fired - pagetwo is now shown");
+$("#datepicker" ).datepicker();
+initializeMenu();
+   //if a date is changed then put it in a format that is more user friendly DD Month in word Year
+   $(this).delegate("#datepicker", "change", function () {
+       
+		var picked_date=""+$('#datepicker').val();
+		var first_slash=picked_date.indexOf("/");
+		var second_slash=picked_date.lastIndexOf("/");
+		
+		var mm=picked_date.substring(0,first_slash);
+		var month=mm;
+		switch(mm)
+		{
+		case "01":mm="January";break;
+		case "02":mm="February";break;
+		case "03":mm="March";break;
+		case "04":mm="April";break;
+		case "05":mm="May";break;
+		case "06":mm="June";break;
+		case "07":mm="July";break;
+		case "08":mm="August";break;
+		case "09":mm="September";break;
+		case "10":mm="October";break;
+		case "11":mm="November";break;
+		case "12":mm="December";break;
+		
+		}
+		var dd=picked_date.substring(first_slash+1,second_slash);
+		var yyyy=picked_date.substring(second_slash+1,picked_date.length);
+		$('#datepicker').val(dd+" "+mm+" "+yyyy);
+		$('#date_eaten').val(yyyy+"-"+month+"-"+dd);
+		
+		
+	});
+
+
+
+});
+
+$(document).on("pagecreate","#weightrecording",function(){
+
+$("#datepickerweight" ).datepicker();
+initializeMenu();
+
+//if a date is changed then put it in a format that is more user friendly DD Month in word Year
+   $(this).delegate("#datepickerweight", "change", function () {
+       
+		var picked_date=""+$('#datepickerweight').val();
+		var first_slash=picked_date.indexOf("/");
+		var second_slash=picked_date.lastIndexOf("/");
+		
+		var mm=picked_date.substring(0,first_slash);
+		var month=mm;
+		switch(mm)
+		{
+		case "01":mm="January";break;
+		case "02":mm="February";break;
+		case "03":mm="March";break;
+		case "04":mm="April";break;
+		case "05":mm="May";break;
+		case "06":mm="June";break;
+		case "07":mm="July";break;
+		case "08":mm="August";break;
+		case "09":mm="September";break;
+		case "10":mm="October";break;
+		case "11":mm="November";break;
+		case "12":mm="December";break;
+		
+		}
+		var dd=picked_date.substring(first_slash+1,second_slash);
+		var yyyy=picked_date.substring(second_slash+1,picked_date.length);
+		$('#datepickerweight').val(dd+" "+mm+" "+yyyy);
+		$('#date_captured_weight').val(yyyy+"-"+month+"-"+dd);
+		
+		
+	});
+
+
+});
+
+
+$(document).on("pagecreate","#myPopup",function(){
+//displayActivityGraph();
+$( "#myPopup" ).popup({ history: false }); 
+$( "#myPopup" ).popup("open"); 
+initializeMenu();
+});
+
+$(document).on("pagecreate","#foodinterface",function(){
+     initializeMenu();
+     
+     /*
+     $('#main_interface_wrapper').delegate(".menuimage", "click", function () {
+	         alert("Bingo00000");
+             var item=$(this).attr("alt");
+			 alert(item);
+			 switch(item)
+			  {
+			   case "Meals": $.mobile.changePage( "#mealrecording", { transition: "slide", changeHash: false });break;
+			    default: alert("Functionality Under Construction"); 
+			   }
+	      });*/
+
+});
+
+
+$(document).on("pagecreate","#weightinterface",function(){
+     initializeMenu();
+     
+});
+
+$(document).on("pagecreate","#gameinterface",function(){
+     initializeMenu();
+     
+});
+
+$(document).on("pagecreate","#healthgoals",function(){
+     initializeMenu();
+     
+});
+
+$(document).on("pagecreate","#pageone",function(){
+
+initializeMenu();
+			
+  });
+  
+
+
+  
+$(document).on("pagecreate","#welcome",function(){
+
+var item="All" 
+//var option="Skip"
+var option=$("#bname").text();
+
+
+var result="All"
+//incrementPoints();
+//retrieveGoals();
+updateLocalStorage(item,result,option);  
+
+
+
+initializeMenu();
+
+var  jsonObjects= { Steps:-1};
+   /*
+      $('.main_interface_wrapper').delegate(".menuimage", "click", function () {
+             var item=$(this).attr("alt");
+             incrementPoints();
+			 
+		 
+			 switch(item)
+			  {
+
+			       
+			      case "MainPage":$.mobile.changePage( "#pageone", { transition: "slide", changeHash: false });break;
+               case "FoodAndBeverages":$.mobile.changePage( "#foodinterface", { transition: "slide", changeHash: false });break;
+               case "Goals":$.mobile.changePage( "#healthgoals", { transition: "slide", changeHash: false });break;
+               case "ScoreBoard":$.mobile.changePage( "#scoreboardinterface", { transition: "slide", changeHash: false });break;
+               case "ScoreGardens":$.mobile.changePage( "#scoregardensinterface", { transition: "slide", changeHash: false });break;
+               case "Meals":$.mobile.changePage( "#mealrecording", { transition: "slide", changeHash: false });break;
+        //case "FruitsAndVeges":$.mobile.changePage( "#updatestarchchart", { transition: "pop", changeHash: false });break;
+               case "FoodGraphs":$.mobile.changePage( "#mealchartinterface", { transition: "slide", changeHash: false });break;
+               case "RecordWeight":$.mobile.changePage( "#weightrecording", { transition: "slide", changeHash: false });break;
+               case "TrackWeight":$.mobile.changePage( "#trackweight", { transition: "slide", changeHash: false });break;
+               case "MealsGoal":$.mobile.changePage( "#mealsgoal", { transition: "slide", changeHash: false });break;
+               case "ActivityGoal":$.mobile.changePage( "#activitygoal", { transition: "slide", changeHash: false });break;
+               case "SendMessageActivity":sendMessage($("#activitycommentbox").val(),previous_day_displayed_activity,'Activity');break;
+               case "SendMessageMeals":sendMessage($("#mealscommentbox").val(),previous_day_displayed_meal,'Meal');break;
+               case "SendMessageWeight":sendMessage($("#weightcommentbox").val(),previous_day_displayed_weight,'Weight');break;
+              //case "ScoreBoard":$.mobile.changePage( "#scoreboardinterface", { transition: "slide", changeHash: false });displayScoreBoard();break;
+
+                case "ActivityGraphs":$.mobile.changePage( "#activityinterface", { transition: "slide", changeHash: false });break;
+                case "WeighingScale":$.mobile.changePage( "#weightinterface", { transition: "slide", changeHash: false });break;
+                case "Game":$.mobile.changePage( "#gameinterface", { transition: "slide", changeHash: false });break;						
+			
+			   
+			   default: alert("Functionality Under Construction");
+			   }
+			   
+			   $("img").toggle();
+			   $("img").show();
+			   
+            });
+
+           */
+
+
+
+
+});
+  
+
+  
+
+    //displayActivityGraph();
+
+
+
+  
+ /* 
+ function changeMenu(command)
+ {
+ // $.mobile.changePage( "#mealrecording", { transition: "slide", changeHash: false });
+ 
+ }*/
+ 
+//Show or hide button for activity graphs
+  function enableGroup2ActivityRadio()
+  {
+
+	$('.grouponeactivity').hide();
+	$('.grouptwoactivity').show();
+	$('.groupthreeactivity').hide();
+      
+        $('.groupfouractivity').hide();
+        $('.groupfiveactivity').hide();
+        $('.groupsixactivity').hide();
+
+	
+
+
+  }
+
+
+
+   function enableGroup1ActivityRadio()
+  {
+  	$('.grouponeactivity').show();
+	$('.grouptwoactivity').hide();
+	$('.groupthreeactivity').hide();
+
+	        $('.groupfouractivity').hide();
+        $('.groupfiveactivity').hide();
+        $('.groupsixactivity').hide();
+
+
+
+  }
+
+    function enableGroup3ActivityRadio()
+  {
+ 	$('.grouponeactivity').hide();
+	$('.grouptwoactivity').hide();
+	$('.groupthreeactivity').show();
+       
+        $('.groupfouractivity').hide();
+        $('.groupfiveactivity').hide();
+        $('.groupsixactivity').hide();
+
+	
+
+
+
+
+  }
+
+
+
+   function enableGroup4ActivityRadio()
+  {
+ 	$('.grouponeactivity').hide();
+	$('.grouptwoactivity').hide();
+	$('.groupthreeactivity').hide();
+
+         $('.groupfouractivity').show();
+        $('.groupfiveactivity').hide();
+        $('.groupsixactivity').hide();
+
+	
+
+
+
+
+  }
+
+    function enableGroup5ActivityRadio()
+  {
+ 	$('.grouponeactivity').hide();
+	$('.grouptwoactivity').hide();
+	$('.groupthreeactivity').hide();
+  
+         $('.groupfouractivity').hide();
+        $('.groupfiveactivity').show();
+        $('.groupsixactivity').hide();
+
+	
+
+
+
+
+  }
+
+    function enableGroup6ActivityRadio()
+  {
+ 	$('.grouponeactivity').hide();
+	$('.grouptwoactivity').hide();
+	$('.groupthreeactivity').hide();
+
+        $('.groupfouractivity').hide();
+        $('.groupfiveactivity').hide();
+        $('.groupsixactivity').show();
+
+	
+
+
+
+
+  }
+  
+  
+ //Show or hide button for meal charts
+  function enableGroup2MealRadio()
+  {
+
+	$('.grouponemeal').hide();
+	$('.grouptwomeal').show();
+	$('.groupthreemeal').hide();
+      
+        $('.groupfourmeal').hide();
+        $('.groupfivemeal').hide();
+        $('.groupsixmeal').hide();
+
+	
+
+
+  }
+
+
+
+   function enableGroup1MealRadio()
+  {
+  	$('.grouponemeal').show();
+	$('.grouptwomeal').hide();
+	$('.groupthreemeal').hide();
+	
+	        $('.groupfourmeal').hide();
+        $('.groupfivemeal').hide();
+        $('.groupsixmeal').hide();
+
+	
+
+
+
+  }
+
+    function enableGroup3MealRadio()
+  {
+ 	$('.grouponemeal').hide();
+	$('.grouptwomeal').hide();
+	$('.groupthreemeal').show();
+       
+        $('.groupfourmeal').hide();
+        $('.groupfivemeal').hide();
+        $('.groupsixmeal').hide();
+
+	
+
+
+
+
+  }
+
+
+
+   function enableGroup4MealRadio()
+  {
+ 	$('.grouponemeal').hide();
+	$('.grouptwomeal').hide();
+	$('.groupthreemeal').hide();
+
+        $('.groupfourmeal').show();
+        $('.groupfivemeal').hide();
+        $('.groupsixmeal').hide();
+
+
+
+  }
+
+    function enableGroup5MealRadio()
+  {
+ 	$('.grouponemeal').hide();
+	$('.grouptwomeal').hide();
+	$('.groupthreemeal').hide();
+  
+         $('.groupfourmeal').hide();
+        $('.groupfivemeal').show();
+        $('.groupsixmeal').hide();
+
+	
+
+
+
+
+  }
+
+    function enableGroup6MealRadio()
+  {
+ 	$('.grouponemeal').hide();
+	$('.grouptwomeal').hide();
+	$('.groupthreemeal').hide();
+
+        $('.groupfourmeal').hide();
+        $('.groupfivemeal').hide();
+        $('.groupsixmeal').show();
+
+	
+
+
+
+
+  }
+  
+  
+  //Show or hide button for weight charts
+  function enableGroup2WeightRadio()
+  {
+
+	$('.grouponeweight').hide();
+	$('.grouptwoweight').show();
+	$('.groupthreeweight').hide();
+      
+
+
+  }
+
+
+
+   function enableGroup1WeightRadio()
+  {
+  	$('.grouponeweight').show();
+	$('.grouptwoweight').hide();
+	$('.groupthreeweight').hide();
+	
+
+  }
+
+   function enableGroup3WeightRadio()
+  {
+ 	$('.grouponeweight').hide();
+	$('.grouptwoweight').hide();
+	$('.groupthreeweight').show();
+       
+
+  }
+  
+  
+   //Show or hide button for scoreboard charts
+  function enableGroup2ScoreBoardRadio()
+  {
+
+	$('.grouponescoreboard').hide();
+	$('.grouptwoscoreboard').show();
+	$('.groupthreescoreboard').hide();
+      
+        $('.groupfourscoreboard').hide();
+        $('.groupfivescoreboard').hide();
+        $('.groupsixscoreboard').hide();
+
+	
+
+
+  }
+
+
+
+   function enableGroup1ScoreBoardRadio()
+  {
+  	$('.grouponescoreboard').show();
+	$('.grouptwoscoreboard').hide();
+	$('.groupthreescoreboard').hide();
+	
+	        $('.groupfourscoreboard').hide();
+        $('.groupfivescoreboard').hide();
+        $('.groupsixscoreboard').hide();
+
+	
+
+
+
+  }
+
+    function enableGroup3ScoreBoardRadio()
+  {
+ 	$('.grouponescoreboard').hide();
+	$('.grouptwoscoreboard').hide();
+	$('.groupthreescoreboard').show();
+       
+        $('.groupfourscoreboard').hide();
+        $('.groupfivescoreboard').hide();
+        $('.groupsixscoreboard').hide();
+
+	
+
+
+
+
+  }
+
+
+
+   function enableGroup4ScoreBoardRadio()
+  {
+ 	$('.grouponescoreboard').hide();
+	$('.grouptwoscoreboard').hide();
+	$('.groupthreescoreboard').hide();
+
+         $('.groupfourscoreboard').show();
+        $('.groupfivescoreboard').hide();
+        $('.groupsixscoreboard').hide();
+
+
+
+  }
+
+    function enableGroup5ScoreBoardRadio()
+  {
+ 	$('.grouponescoreboard').hide();
+	$('.grouptwoscoreboard').hide();
+	$('.groupthreescoreboard').hide();
+  
+        $('.groupfourscoreboard').hide();
+        $('.groupfivescoreboard').show();
+        $('.groupsixscoreboard').hide();
+
+	
+
+
+
+
+  }
+
+    function enableGroup6ScoreBoardRadio()
+  {
+ 	$('.grouponescoreboard').hide();
+	$('.grouptwoscoreboard').hide();
+	$('.groupthreescoreboard').hide();
+
+        $('.groupfourscoreboard').hide();
+        $('.groupfivescoreboard').hide();
+        $('.groupsixscoreboard').show();
+
+	
+
+
+
+
+  }
+  
+    function enableGroup2ScoreGardensRadio()
+  {
+
+	$('.grouponescoregardens').hide();
+	$('.grouptwoscoregardens').show();
+	
+
+
+
+  }
+
+
+
+   function enableGroup1ScoreGardensRadio()
+  {
+  	$('.grouponescoregardens').show();
+	$('.grouptwoscoregardens').hide();
+
+
+	
+
+
+
+  }
+  
+  
+  function enableGroup2ScoreTankRadio()
+  {
+
+	$('.grouponescoretank').hide();
+	$('.grouptwoscoretank').show();
+	
+
+
+
+  }
+
+
+
+   function enableGroup1ScoreTankRadio()
+  {
+  	$('.grouponescoretank').show();
+	$('.grouptwoscoretank').hide();	
+
+
+
+  }
+
+
+
+
+  
+ 
+  function changeMenu(command)
+ {
+   incrementPoints();
+	//$.mobile.changePage( "#mealrecording", { transition: "slide", changeHash: false });return;		 
+	switch(command)
+	{
+
+        case "DisplayActivityGroup2":enableGroup2ActivityRadio();break;
+        case "DisplayActivityGroup1":enableGroup1ActivityRadio();break;
+        case "DisplayActivityGroup3":enableGroup3ActivityRadio();break;
+
+	     case "DisplayActivityGroup4":enableGroup4ActivityRadio();break;
+	     case "DisplayActivityGroup5":enableGroup5ActivityRadio();break;
+	     case "DisplayActivityGroup6":enableGroup6ActivityRadio();break;
+	     
+	     
+	     case "DisplayMealGroup2":enableGroup2MealRadio();break;
+        case "DisplayMealGroup1":enableGroup1MealRadio();break;
+        case "DisplayMealGroup3":enableGroup3MealRadio();break;
+
+	     case "DisplayMealGroup4":enableGroup4MealRadio();break;
+	     case "DisplayMealGroup5":enableGroup5MealRadio();break;
+	     case "DisplayMealGroup6":enableGroup6MealRadio();break;
+	     
+	     
+	     
+	     case "DisplayWeightGroup2":enableGroup2WeightRadio();break;
+        case "DisplayWeightGroup1":enableGroup1WeightRadio();break;
+        case "DisplayWeightGroup3":enableGroup3WeightRadio();break;
+        
+        case "DisplayScoreBoardGroup2":enableGroup2ScoreBoardRadio();break;
+        case "DisplayScoreBoardGroup1":enableGroup1ScoreBoardRadio();break;
+        case "DisplayScoreBoardGroup3":enableGroup3ScoreBoardRadio();break;
+
+	     case "DisplayScoreBoardGroup4":enableGroup4ScoreBoardRadio();break;
+	     case "DisplayScoreBoardGroup5":enableGroup5ScoreBoardRadio();break;
+	     case "DisplayScoreBoardGroup6":enableGroup6ScoreBoardRadio();break;
+	     
+	     case "DisplayScoreGardensGroup2":enableGroup2ScoreGardensRadio();break;
+        case "DisplayScoreGardensGroup1":enableGroup1ScoreGardensRadio();break;
+        
+        case "DisplayScoreTankGroup2":enableGroup2ScoreTankRadio();break;
+        case "DisplayScoreTankGroup1":enableGroup1ScoreTankRadio();break;
+        
+
+        }
+ 
+ }
+ 
+ function Logout(){
+ 
+    var jsonObjects={Empty:''};
+    
+   jQuery.ajax({
+       url: "http://137.158.58.222/wellnessapp/dataupdate/LG/",//save meal to the database
+      type: "POST",
+      contentType: "application/json",
+      data: JSON.stringify(jsonObjects),
+	  
+      success: function(result) {
+     //Write your code here
+             if (Modernizr.localstorage) {  //check if the browser supports local storage          
+             localStorage.clear();
+             
+             }
+           window.location.reload(true);    
+	    
+	    
+	    
+      }
+});
+ 
+ 
+ }
+ 
+ function Login(){
+ 
+ var jsonObjects={Username:$("#username").val(),Password:$("#password").val()};
+  
+   jQuery.ajax({
+       url: "http://137.158.58.222/wellnessapp/dataupdate/LGN/",//save meal to the database
+      type: "POST",
+      contentType: "application/json",
+      data: JSON.stringify(jsonObjects),
+	  
+      success: function(result) {
+     //Write your code here
+	         //alert(result.authentication);
+            /*$(document).load('http://137.158.58.222/wellnessapp/',function(){//refresh after login
+              
+ 
+           });*/
+         
+          //alert("Login");   
+	  window.location.reload(true);   
+	    
+	    
+      }
+});
+ 
+ 
+ }
+
+</script>
+
+    {% if request.GET.fb_error_or_cancel or request.GET.error %}
+        <div class="error">
+            Please click allow in the facebook interface, to access Fashiolista
+        </div>
+    {% endif %}
+
+    <div class="error" id="django_static_error">
+        Couldn't load the static Javascript files, is django static configured correctly?
+        <a href="http://docs.djangoproject.com/en/1.3/howto/static-files/" target="_blank">See the docs here.</a>
+    </div>
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+
+        {% if not user.is_authenticated %}
+
+      
+        
+        
+          <div data-role="page"  id="pageone">
+  <div data-role="header" style="background:#3b5998" >
+    <h1>Family-Well-App</h1>
+  </div>
+
+  <div data-role="main" class="ui-content">
+  
+            <div class="inner_content">
+
+            <!--form to call registration via facebook -->
+            <form action="{% url 'facebook_connect' %}" method="post">
+                <h2>Register, login or connect with Facebook</h2>
+                <br />
+                {% csrf_token %}
+                <input type="hidden" value="{{ request.path }}" name="next" />
+
+                <!--
+                use error next for a seperate error page
+                <input type="hidden" value="/error/" name="error_next" />
+                -->
+                <div id="facebook_login_js">
+                <input onclick="F.connect(this.parentNode.parentNode); return false;" type="image" src="http://e.fashiocdn.com/images/b_signin_facebook_small.png" /><br />
+                (javascript popup)
+                </div>
+                <br /><br />
+                <div id="facebook_login_redirect">
+                    <input type="image" src="http://e.fashiocdn.com/images/b_signin_facebook_small.png" /><br />
+                    (redirect version)
+                </div>
+            </form>
+
+            You are not logged in, Please login by clicking one of the buttons above
+
+        </div>
+
+
+  </div>
+  <div data-role="footer" style="background:#3b5998" >
+    <h1>Track Close One's Wellness</h1>
+  </div>
+</div> 
+
+        {% endif%}
+        
+        
+        
+        
+
+ {% if user.is_authenticated %}
+<div data-role="page" id="welcome">
+  <div data-role="header" style="background:#3b5998" >
+    <h1>Track Wellness App</h1>
+  <h1>Welcome {{ user }}</h1><a href="{% url 'auth_logout' %}?next={{ request.path|urlencode }}">logout</a><br />
+  </div>
+
+  <div data-role="main" class="ui-content">
+     <table class="main_interface_wrapper" align="center"> 
+      <tr><td><img src="{% static "django_facebook/images/outerlogo.jpg" %}" width="100%" alt="MainPage" class="menuimage" style="cursor:pointer">
+                      
+                    
+      </td></tr>
+     </table>
+  </div>
+
+  <div data-role="footer" style="background:#3b5998" >
+    <h1>Track Close One's Wellness</h1>
+  </div>
+</div> 
+
+ 
+<div data-role="page"  id="pageone">
+  <div data-role="header" style="background:#3b5998">
+    <h1>Family-Well-App</h1>
+    <h1>Welcome {{ user }}</h1><a href="{% url 'auth_logout' %}?next={{ request.path|urlencode }}">logout</a><br />
+  </div>
+
+  <div data-role="main" class="ui-content" >
+	
+                         
+      <table class="main_interface_wrapper" align="center">
+ 
+      <tr><td colspan="2">Track <b><i>steps walked</i></b> and <b><i>food eaten</i></b> by <b id="bname">{{fname}} {{lname}}</b></td></tr>
+	<!--<table id="interfacetable">-->
+       <tr>
+           <td width="40%">
+		    <!--<img src="images/foodinterface.jpg" width="100%" alt="FoodAndBeverages" class="menuimage" style="cursor:pointer">-->
+			<img src="{% static "django_facebook/images/foodinterface.jpg" %}" width="100%" alt="FoodAndBeverages" class="menuimage" style="cursor:pointer">
+					   
+		   <!--<a class="tooltip">-->  
+   <!-- <span> <img class="callout" src="http://ictd4.cs.uct.ac.za/wellness/images/callout_black.gif" /><strong>Food and Beverages</strong><br/></span>-->
+ <!--</a>-->
+		   
+		   </td>
+		      <td width="40%">
+		        <img src="{% static "django_facebook/images/physicalinterface.jpg" %}" width="100%"  alt="ActivityGraphs" class="menuimage" style="cursor:pointer" >
+		   </td>
+       </tr>
+	   <tr>
+	         </td>
+		      <td width="40%">
+		        <img src="{% static "django_facebook/images/weight.jpg" %}" width="100%"  alt="WeighingScale" class="menuimage" style="cursor:pointer" >
+		   </td>
+		   
+		   <td width="40%">
+		    <img src="{% static "django_facebook/images/healthgoalsinterface.jpg" %}" width="100%" alt="Goals" class="menuimage" style="cursor:pointer" >
+		   </td>
+       </tr>
+	  
+	   
+	     <tr>
+           <td width="40%">
+		    <img src="{% static "django_facebook/images/healthtipsinterface.jpg" %}" width="100%" alt="HealthTips" class="menuimage" style="cursor:pointer" >
+		   </td>
+		      <td width="40%">
+		        <img src="{% static "django_facebook/images/game.jpg" %}"width="100%" alt="Game" class="menuimage" style="cursor:pointer">
+		       </td>
+       </tr>
+    </table>
+    
+  </div>
+<button class="ui-btn ui-icon-lock ui-btn-icon-left" onclick="Logout()">Log out</button>
+  <div data-role="footer" style="background:#3b5998">
+    <h1>Track Close One's Wellness</h1>
+  </div>
+</div> 
+
+
+
+
+
+
+
+
+
+
+<!--Activitiy Page-->
+<div data-role="page"  id="activityinterface">
+  <div data-role="header" style="background:#3b5998" >
+    <h1>Steps Walked Info</h1>
+  </div>
+
+  <div data-role="main" class="ui-content" >
+      <table class="main_interface_wrapper" align="center" border="0" width="100%"> 
+          
+	  <!--<table id="interfacetable">-->
+	   <!--<tr>
+	       <td colspan="2">Steps Walked</td></tr>
+	   <tr>-->
+	    <tr><td class="activity_goal">&nbsp;</td></tr> 
+	   <tr>
+		       <td class="selectgraph" colspan=2>
+                       <fieldset data-role="controlgroup" id="activityradiobuttons">
+			                <table border="0" width="100%">
+						    <tr>
+						        <td  class="grouponeactivity"><label class="activitylabel" data-tiletype="todayactivity" for="todayactivity">Today</label><input type="radio" name="datecapturedactivity" value="Today" class="datecaptured_activity_class" id="todayactivity"></td>
+                                                        <td class="grouponeactivity"><a href="javascript:changeMenu('DisplayActivityGroup2')" class="ui-btn ui-icon-arrow-r ui-btn-icon-notext">Next</a></td>
+
+<!--end of group 1-->
+
+ 							<td class="grouptwoactivity"><a href="javascript:changeMenu('DisplayActivityGroup1');" class="ui-btn ui-icon-arrow-l ui-btn-icon-notext">Prev</a></td>
+
+
+							 <td class="grouptwoactivity"><label class="activitylabel" for="thisweekactivity">This week</label><input type="radio" name="datecapturedactivity" value="This week" class="datecaptured_activity_class" id="thisweekactivity" ></td>
+
+
+                                                        <td class="grouptwoactivity"><a href="javascript:changeMenu('DisplayActivityGroup3')" class="ui-btn ui-icon-arrow-r ui-btn-icon-notext">Next</a></td>
+
+<!--end of group 2-->
+							
+						
+
+
+                                                        <td class="groupthreeactivity"><a href="javascript:changeMenu('DisplayActivityGroup2');" class="ui-btn ui-icon-arrow-l ui-btn-icon-notext">Prev</a></td>                                        
+
+
+							<td class="groupthreeactivity"><label class="activitylabel" for="lastweekactivity">Last week</label><input type="radio" name="datecapturedactivity" value="Last week" class="datecaptured_activity_class" id="lastweekactivity" ></td>
+
+							
+                                                       
+
+
+                                                        <td class="groupthreeactivity"><a href="javascript:changeMenu('DisplayActivityGroup4');" class="ui-btn ui-icon-arrow-r ui-btn-icon-notext">Next</a></td>
+
+
+<!--end of group 3-->
+
+
+
+
+
+                                                     <td class="groupfouractivity"><a href="javascript:changeMenu('DisplayActivityGroup3');" class="ui-btn ui-icon-arrow-l ui-btn-icon-notext">Prev</a></td> 
+
+
+
+                                                      <td class="groupfouractivity"><label class="activitylabel" for="thismonthactivity">This month</label><input type="radio" name="datecapturedactivity" value="This month" class="datecaptured_activity_class" id="thismonthactivity" ></td>
+
+
+                                                     <td class="groupfouractivity"><a href="javascript:changeMenu('DisplayActivityGroup5');" class="ui-btn ui-icon-arrow-r ui-btn-icon-notext">Next</a></td>
+
+
+<!--end of group 4-->
+
+
+
+
+                                                     <td class="groupfiveactivity"><a href="javascript:changeMenu('DisplayActivityGroup4');" class="ui-btn ui-icon-arrow-l ui-btn-icon-notext">Prev</a></td> 
+
+
+                                                         <td class="groupfiveactivity"><label class="activitylabel" for="lastmonthactivity">Last month</label><input type="radio" name="datecapturedactivity" value="Last month" class="datecaptured_activity_class" id="lastmonthactivity" ></td>
+
+
+                                                     <td class="groupfiveactivity"><a href="javascript:changeMenu('DisplayActivityGroup6');" class="ui-btn ui-icon-arrow-r ui-btn-icon-notext">Next</a></td>
+
+<!--end of group 5-->
+
+
+
+
+                                                     <td class="groupsixactivity"><a href="javascript:changeMenu('DisplayActivityGroup5');" class="ui-btn ui-icon-arrow-l ui-btn-icon-notext">Prev</a></td> 
+
+
+                                                      <td class="groupsixactivity"><label class="activitylabel" for="threemonthactivity">Last three months</label><input type="radio" name="datecapturedactivity" value="Last three months" class="datecaptured_activity_class" id="threemonthactivity" ></td>
+
+
+<!--end of group 6-->
+
+
+                                                       
+							
+						
+							     
+							   
+
+			  
+			                   </tr>
+				 </table>
+
+                             </fieldset>
+			 
+		   </td>
+	   
+	   </tr>
+   	   <tr>
+	      <td>
+		  
+		     <table class="graph">
+			    <tr>
+				  <td align="center" valign="middle" class="graph">
+					   <img src="{% static "django_facebook/images/stepswalkedlabel.jpg" %}">
+				  </td>
+			   
+				   <td width="100%" class="graph">
+					   
+						   
+					   <!--<img src="images/mealinterface.jpg" width="100%" height="100%" alt="Meals" class="foodgraph" style="cursor:pointer">-->
+					   <div id="activityplaceholder" style="width:100%;height:100%">
+					   
+					   </div>
+				
+				  </td>
+				</tr>
+				<tr>
+				  <td class="graph">&nbsp;
+				    
+				  </td>
+				
+				  <td class="graph">
+				      <img src="{% static "django_facebook/images/daytimelabel.jpg" %}">
+				  </td>
+				</tr>
+			 </table>
+		   </td>
+		  
+       </tr>
+	   <tr>
+	       <td id="activitysummary">
+		   
+	       </td>
+	   
+	   </tr>
+	   <!--
+	    <tr>
+	       <td class="activitycomments">
+		     <b><i>Send an encouraging message to</i></b>: {{fname}} {{lname}}<br>
+		     </br>
+		     <textarea name="activitycommentbox" id="activitycommentbox" rows="20" cols="22"></textarea>
+		     <img src="{% static "django_facebook/images/sendmessage.jpg" %}" alt="SendMessageActivity" style="cursor:pointer" onClick="changeMenu('SendMessageActivity');">
+		   </td>
+	   </tr>-->
+	   <tr>
+	   <td>
+	   
+	   <div align="right">
+			<table class="ActivityMessagePopUp">
+				<tr>
+					  <td>
+						  <a href="#myActivityPopUp" data-rel="popup"><img src="{% static "django_facebook/images/smsicon.jpg" %}"></a>
+					  
+					  </td>
+				
+				</tr>
+
+		
+			 </table>
+	   </div>
+
+    <div data-role="popup" data-history="false" id="myActivityPopUp" class="ui-content">
+      <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
+		
+	     <table>
+		
+			      <tr>
+				    <td> 
+		          <b><i>Send an encouraging message to</i></b>: {{fname}} {{lname}}<br>
+		         </br>
+		         <textarea name="activitycommentbox" id="activitycommentbox" rows="20" cols="22"></textarea>
+		         <img src="{% static "django_facebook/images/sendmessage.jpg" %}"  style="cursor:pointer" onclick="sendActivityMessage();">
+		         </td>
+						
+				  </tr>
+				 
+					
+	    </table>
+    
+	</div>  
+	</td>
+	</tr>
+  
+	   	  
+  </table>
+  
+       
+  
+  
+    <!--<a href="#pageone" data-transition="slide" data-direction="reverse">Go to Main Page</a>-->
+	 <a href="#pageone" class="ui-btn ui-icon-back ui-btn-icon-left" data-transition="slide" data-direction="reverse">Main Page</a>
+  </div>
+
+  <div data-role="footer" style="background:#3b5998" >
+    <h1>Track Close One's Wellness</h1>
+  </div>
+</div> 
+
+<!-- End of activity page-->
+
+
+
+
+<!--Start of food interface-->
+<div data-role="page"  id="foodinterface">
+  <div data-role="header" style="background:#3b5998" >
+    <h1>Food Info</h1>
+  </div>
+
+  <div data-role="main" class="ui-content">
+    <table class="main_interface_wrapper" align="center"> 
+	  <!--<table id="interfacetable">-->
+       <tr>
+           <td width="40%">
+		  		   
+		   <!--<a class="tooltip">-->  <!--<img src="{% static "django_facebook/images/mealinterface.jpg" %}" width="100%" height="100%" alt="Meals" class="menuimage" style="cursor:pointer">-->
+		   <img src="{% static "django_facebook/images/mealinterface.jpg" %}" width="100%" height="100%" alt="Meals" class="menuimage" style="cursor:pointer">
+
+	   
+		   
+		  
+		   </td>
+		      <td width="40%">
+		        <img src="{% static "django_facebook/images/beverageinterface.jpg" %}" width="100%" alt="Beverages" class="menuimage" style="cursor:pointer" ></a>
+		   </td>
+       </tr>
+	   
+	       <tr>
+           <td width="40%">
+		    <img src="{% static "django_facebook/images/snackinterface.jpg" %}" width="100%">
+		   </td>
+		      <td width="40%">
+		    <img src="{% static "django_facebook/images/foodgraphinterface.jpg" %}" width="100%" alt="FoodGraphs" class="menuimage" style="cursor:pointer">
+		   </td>
+       </tr>
+	   </tr>
+	   
+	     <!--
+	       <tr>
+           <td width="40%">
+		    <img src="{% static "django_facebook/images/foodrewardinterface.jpg" %}" width="100%">
+		   </td>
+		      <td width="40%">
+		    <img src="{% static "django_facebook/images/backhomeinterface.jpg" %}" width="100%" alt="MainMenu" class="menuimage" style="cursor:pointer">
+		   </td>
+       </tr>-->
+    </table>
+  <!--<a href="#pageone" data-transition="slide" data-direction="reverse">Go to Main Page</a>-->
+   <a href="#pageone" class="ui-btn ui-icon-back ui-btn-icon-left" data-transition="slide" data-direction="reverse">Main Page</a>
+  </div>
+
+  <div data-role="footer" style="background:#3b5998" >
+    <h1>Track Close One's Wellness</h1>
+  </div>
+</div> 
+
+<!--End of food interface-->
+
+
+
+<!-- Start of Meal Recording interface-->
+<div data-role="page"  id="mealrecording">
+  <div data-role="header" style="background:#3b5998" >
+    <h1>Record Meals</h1>
+  </div>
+
+  <div data-role="main" class="ui-content"> 
+       <div align="right">
+			<table class="Helplink">
+				<tr>
+					  <td>
+						 <!--<a href="#myPopup" data-rel="popup" class="ui-btn ui-btn-inline ui-corner-all">Help</a>-->
+						  <a href="#myPopup" data-rel="popup"><img src="{% static "django_facebook/images/helpicon3.png" %}"></a>
+					  
+					  </td>
+				
+				</tr>
+
+		
+			 </table>
+	   </div>
+
+    <div data-role="popup" data-history="false" id="myPopup" class="ui-content">
+      <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
+      <!--<p>I have a close button at the top right corner.</p>
+      <p><b>Tip:</b> You can also click outside to close me.</p>
+    </div>-->
+		
+	<table>
+		
+			      <tr>
+				     
+				     <td background="{% static "django_facebook/images/meals/blank.gif" %}" class="mealportion">
+				
+						There are 5 groups of food which include fruits, starch, protein, fat, and dairy. To set a portion size eaten on each of them, "<b><i> Click</i></b>" the <b><i>picture</i></b> at the start of each food group. The sizes will change from None to <b>Small or Medium or Large</b> depending on how many times you have clicked the picture. "<b><i>Small</i></b>" represents up to 1/3 of a plate. "<b><i>Medium</i></b>" represents between 1/3 of a plate to  2/3 of a plate. "<b><i>Large</i></b>" represents between 2/3 of a plate and a full plate.  
+				     </td>
+						
+				  </tr>
+				
+			  
+				
+				 
+					
+			</table>
+  
+	</div>
+  
+  
+  
+  
+  
+	 <table border=1 class="main_interface_wrapper" align="center">
+	 <!--class="main_interface_wrapper" align="center" align="center"--> 
+	<!--<table id="interfacetable" border="5">-->
+			<thead>
+			   <tr>
+			        <th colspan="2" background="{% static "django_facebook/images/meals/blank.gif" %}">Food Group</th>
+					<th background="{% static "django_facebook/images/meals/blank.gif" %}">Portion Size
+					
+					
+					</th>
+						   
+			   </tr>
+			
+			</thead>
+			
+			<tbody>
+			   <tr>
+			      <td background="{% static "django_facebook/images/meals/blank.gif" %}" class="mealportionpic">
+				      <img src="{% static "django_facebook/images/meals/fruits.gif" %}" style="cursor:pointer" onClick="updateChart('fruits');">
+			      </td>
+	     		  <td background="{% static "django_facebook/images/meals/blank.gif" %}" class="mealportiontext">
+		 
+					  Fruits and Vegetables
+					
+		          </td>
+				  
+				  <td class="fruits_portion" background="{% static "django_facebook/images/meals/blank.gif" %}" colspan="2">None
+				  </td>
+				 			
+								  
+								  
+			 </tr>
+			 
+			 
+			 
+			 	<tr>
+			      <td background="{% static "django_facebook/images/meals/blank.gif" %}" class="mealportionpic">
+				      <img src="{% static "django_facebook/images/meals/starch.gif" %}" style="cursor:pointer" onClick="updateChart('starch');">
+			      </td>
+	     		  <td background="{% static "django_facebook/images/meals/blank.gif" %}" class="mealportiontext">
+		 
+					   Starch: Rice, bread, pap, pasta, potatoes, etc.
+					
+		          </td>
+				  
+				  <td class ="starch_portion"  background="{% static "django_facebook/images/meals/blank.gif" %}" colspan="2">None
+				  </td>				  
+								  
+			 </tr>
+			 
+			 
+			 <tr>
+			      <td background="{% static "django_facebook/images/meals/blank.gif" %}" class="mealportionpic">
+				      <img src="{% static "django_facebook/images/meals/meatseggsfish.gif" %}" style="cursor:pointer" onClick="updateChart('protein');">
+			      </td>
+	     		  <td background="{% static "django_facebook/images/meals/blank.gif" %}" class="mealportiontext">
+		 
+					   Protein Food i.e. meat, fish, beans, etc
+					
+		          </td>
+				  
+				  <td class="protein_portion"  background="{% static "django_facebook/images/meals/blank.gif" %}" colspan="2">None
+				  </td>				  
+								  
+			 </tr>
+			 
+			  <tr>
+			      <td background="{% static "django_facebook/images/meals/blank.gif" %}" class="mealportionpic">
+				      <img src="{% static "django_facebook/images/meals/foodfatfoodcontsugar.gif" %}" style="cursor:pointer" onClick="updateChart('fat');">
+			      </td>
+	     		  <td background="{% static "django_facebook/images/meals/blank.gif" %}" class="mealportiontext">
+		 
+					   Food in high sugar or fat
+
+					
+		          </td>
+				  
+				  <td class="fat_portion" background="{% static "django_facebook/images/meals/blank.gif" %}" colspan="2">None
+				  </td>				  
+								 		     
+							   
+
+	      </tr>
+			 
+			 <tr>
+			      <td background="{% static "django_facebook/images/meals/blank.gif" %}" class="mealportionpic">
+				      <img src="{% static "django_facebook/images/meals/milkanddiary.gif" %}" style="cursor:pointer" onClick="updateChart('dairy');">
+			      </td>
+	     		  <td background="{% static "django_facebook/images/meals/blank.gif" %}" class="mealportiontext">
+		 
+					   Dairy food
+
+					
+		          </td>
+				  
+				  <td class="dairy_portion" background="{% static "django_facebook/images/meals/blank.gif" %}" colspan="2">None
+				  </td>				  
+								  
+			 </tr>
+			 
+			 
+			 
+			  <tr>
+					   <td background="{% static "django_facebook/images/meals/blank.gif" %}">
+						 Date eaten:
+						 
+					
+						</td>
+						
+
+						<td colspan="2" background="{% static "django_facebook/images/meals/blank.gif" %}">
+							 <input type="text" id="datepicker" readonly="true"/>
+							 <input type="hidden" id="date_eaten" value="None">
+						</td>
+			
+			 </tr>
+			 
+			 <tr>
+						 <td background="{% static "django_facebook/images/meals/blank.gif" %}">
+						    Meal type:
+						 </td>
+						 
+						 <td colspan="2" background="{% static "django_facebook/images/meals/blank.gif" %}">
+									  <select id="meal_type" >
+									       <option>
+										       Meal Type
+										   </option>
+										   <option>
+										       Breakfast
+										      
+										   </option>
+										   <option>Lunch</option>
+										   
+										   <option value="Dinner">Dinner/Supper</option>
+										   <option>Random/Snack</option>
+									  
+									  </select>
+									
+						 </td>
+				   
+				</tr>
+				<tr>
+					<td colspan="3" align="center" background="{% static "django_facebook/images/meals/blank.gif" %}"><input type=button onclick="saveMealFinal()" value="Save"></td>
+				</tr>
+				   
+		
+			  
+			
+		</tbody>
+	
+		
+		
+		
+		
+	</table>
+			
+ 
+  <a href="#foodinterface" class="ui-btn ui-icon-back ui-btn-icon-left" data-transition="slide" data-direction="reverse">Previous Page</a> <a href="#pageone" class="ui-btn ui-icon-back ui-btn-icon-left" data-transition="slide" data-direction="reverse">Main Page</a>  
+  </div>
+  
+  <div data-role="footer" style="background:#3b5998" >
+    <h1>Track Close One's Wellness</h1>
+  </div>
+</div> <br>
+
+
+
+<!--End of Meal Recording interface-->
+
+
+<!--Start of meal chart interface-->
+
+<div data-role="page"  id="mealchartinterface">
+  <div data-role="header" style="background:#3b5998" >
+    <h1>Meal Info</h1>
+  </div>
+
+  <div data-role="main" class="ui-content" >
+
+
+
+  
+  
+      <table class="main_interface_wrapper" align="center" border="0" width="100%"> 
+	  
+		       <td class="selectgraph" colspan=2>
+			               <table border="0" width="100%">
+			               
+			               <tr>
+						        <td  class="grouponemeal"><label class="mealslabel" for="todaymeal">Today</label><input type="radio" name="datecapturedmeal" value="Today" class="datecaptured_meal_class" id="todaymeal" ></td>
+
+                                                        <td class="grouponemeal"><a href="javascript:changeMenu('DisplayMealGroup2')" class="ui-btn ui-icon-arrow-r ui-btn-icon-notext">Next</a></td>
+
+<!--end of group 1-->
+
+ 							<td class="grouptwomeal"><a href="javascript:changeMenu('DisplayMealGroup1');" class="ui-btn ui-icon-arrow-l ui-btn-icon-notext">Prev</a></td>
+
+
+							 <td class="grouptwomeal"><label class="mealslabel" for="thisweekmeal">This week</label><input type="radio" name="datecapturedmeal" value="This week" class="datecaptured_meal_class" id="thisweekmeal" ></td>
+
+
+                                                        <td class="grouptwomeal"><a href="javascript:changeMenu('DisplayMealGroup3')" class="ui-btn ui-icon-arrow-r ui-btn-icon-notext">Next</a></td>
+
+<!--end of group 2-->
+							
+						
+
+
+                                                        <td class="groupthreemeal"><a href="javascript:changeMenu('DisplayMealGroup2');" class="ui-btn ui-icon-arrow-l ui-btn-icon-notext">Prev</a></td>                                        
+
+
+							<td class="groupthreemeal"><label class="mealslabel" for="lastweekmeal">Last week</label><input type="radio" name="datecapturedmeal" value="Last week" class="datecaptured_meal_class" id="lastweekmeal" ></td>
+
+							
+                                                       
+
+
+                                                        <td class="groupthreemeal"><a href="javascript:changeMenu('DisplayMealGroup4');" class="ui-btn ui-icon-arrow-r ui-btn-icon-notext">Next</a></td>
+
+
+<!--end of group 3-->
+
+
+
+
+
+
+
+                                                     
+                                                     <td class="groupfourmeal"><a href="javascript:changeMenu('DisplayMealGroup3');" class="ui-btn ui-icon-arrow-l ui-btn-icon-notext">Prev</a></td> 
+                                                      <td class="groupfourmeal"><label class="mealslabel" for="thismonthmeal">This month</label><input type="radio" name="datecapturedmeal" value="This month" class="datecaptured_meal_class" id="thismonthmeal" ></td>
+
+
+                                                     <td class="groupfourmeal"><a href="javascript:changeMenu('DisplayMealGroup5');" class="ui-btn ui-icon-arrow-r ui-btn-icon-notext">Next</a></td>
+
+
+<!--end of group 4-->
+
+
+
+
+                                                     <td class="groupfivemeal"><a href="javascript:changeMenu('DisplayMealGroup4');" class="ui-btn ui-icon-arrow-l ui-btn-icon-notext">Prev</a></td> 
+
+
+                                                         <td class="groupfivemeal"><label class="mealslabel" for="lastmonthmeal">Last month</label><input type="radio" name="datecapturedmeal" value="Last month" class="datecaptured_meal_class" id="lastmonthmeal" ></td>
+
+
+                                                     <td class="groupfivemeal"><a href="javascript:changeMenu('DisplayMealGroup6');" class="ui-btn ui-icon-arrow-r ui-btn-icon-notext">Next</a></td>
+
+<!--end of group 5-->
+
+
+
+
+                                                     <td class="groupsixmeal"><a href="javascript:changeMenu('DisplayMealGroup5');" class="ui-btn ui-icon-arrow-l ui-btn-icon-notext">Prev</a></td> 
+
+
+                                                      <td class="groupsixmeal"><label class="mealslabel" for="threemonthmeal">Last three months</label><input type="radio" name="datecapturedmeal" value="Last three months" class="datecaptured_meal_class" id="threemonthmeal" ></td>
+
+<!--end of group 6-->
+
+
+                                                       
+							
+						
+							     
+							   
+
+			  
+			                   </tr>
+			               
+			               
+			               
+			               
+
+						   </table>
+			 
+			  </td>
+	   
+	   </tr>
+   	   <tr>
+	      <td>
+		  
+		     <table class="graph">
+			    <tr>
+				   <td align="center" valign="middle" class="graph">
+					    <img src="{% static "django_facebook/images/foodchartlabel.jpg" %}">
+				   </td>
+			   		   
+				   <td width="100%" class="graph">
+					   
+						   
+					   <!--<img src="images/mealinterface.jpg" width="100%" height="100%" alt="Meals" class="foodgraph" style="cursor:pointer">-->
+					   <div id="mealplaceholder" style="width:100%;height:100%">
+					       <div id="mealsimages" hidden> 
+					       <img id="fruitsveg" src="{% static 'wellnessapp/images/foodchart/fruits.jpg' %}" alt="Fruits and Veg" hidden>
+ 
+
+                      <img id="starch" src= "{% static 'wellnessapp/images/foodchart/starchportion.jpg' %}" alt="Starch" hidden>
+
+                      <img id="protein" src="{% static 'wellnessapp/images/foodchart/protein.jpg' %}" alt="Protein">
+
+                      <img id="fat" src="{% static 'wellnessapp/images/foodchart/fatsugarmod4.jpg' %}" alt="Fat">
+
+
+                      <img id="dairy" src="{% static 'wellnessapp/images/foodchart/dairyportion.jpg' %}" alt="Dairy">
+
+
+                      <img id="plate" src="{% static 'wellnessapp/images/foodchart/plate.jpg' %}" alt="Plate}">
+                      </div>
+                      <div id="canvasshelter">
+					          <canvas id="myCanvas" width="240" height="240" style="border:1px solid #d3d3d3;">
+Your browser does not support the HTML5 canvas tag.</canvas>  
+                      </div>
+					   </div>
+				
+				  </td>
+				</tr>
+				
+				</tr>
+			 </table>
+		   </td>
+		  
+       </tr>
+            <tr>
+
+                <td><a href="#" class="ui-btn ui-icon-info ui-btn-icon-left">Check Diet Info</a></td>
+
+           </tr>
+	   <tr>
+	       <td id="mealsummary">
+		   
+	       </td>
+	   
+	   </tr>
+	  <tr>
+	   <td>
+	   
+	   <div align="right">
+			<table class="MealMessagePopUp">
+				<tr>
+					  <td>
+						  <a href="#myMealPopUp" data-rel="popup"><img src="{% static "django_facebook/images/smsicon.jpg" %}"></a>
+					  
+					  </td>
+				
+				</tr>
+
+		
+			 </table>
+	   </div>
+
+    <div data-role="popup" data-history="false" id="myMealPopUp" class="ui-content">
+      <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
+		
+	        <table>
+		
+			      <tr>
+			       <td>
+				     
+		          <b><i>Send an encouraging message to</i></b>: {{fname}} {{lname}}<br>
+		         </br>
+		         <textarea name="mealscommentbox" id="mealscommentbox" rows="20" cols="22"></textarea>
+		         <img src="{% static "django_facebook/images/sendmessage.jpg" %}" style="cursor:pointer" onclick="sendMealsMessage();">
+		         </td>
+						
+				  </tr>
+				 
+					
+			  </table>
+  
+	</div>  
+	</td>
+	</tr>
+	   	  
+  </table>
+    <!--<a href="#pageone" data-transition="slide" data-direction="reverse">Go to Main Page</a>-->
+	 <a href="#foodinterface" class="ui-btn ui-icon-back ui-btn-icon-left" data-transition="slide" data-direction="reverse">Previous Page</a> <a href="#pageone" class="ui-btn ui-icon-back ui-btn-icon-left" data-transition="slide" data-direction="reverse">Main Page</a>
+  </div>
+
+  <div data-role="footer" style="background:#3b5998" >
+    <h1>Track Close One's Wellness</h1>
+  </div>
+</div> 
+
+
+<!--End of meal chart interface-->
+
+
+ 
+
+
+<div data-role="page"  id="drinksrecording">
+  <div data-role="header" style="background:#3b5998" >
+    <h1>Insert Page Title Here</h1>
+  </div>
+
+  <div data-role="main" class="ui-content">
+    <p>Insert Content Here</p>
+    
+  <a href="#foodinterface" class="ui-btn ui-icon-back ui-btn-icon-left" data-transition="slide" data-direction="reverse">Previous Page</a> <a href="#pageone" class="ui-btn ui-icon-back ui-btn-icon-left" data-transition="slide" data-direction="reverse">Main Page</a>
+  </div>
+
+  <div data-role="footer" style="background:#3b5998" >
+    <h1>Track Close One's Wellness</h1>
+  </div>
+</div> 
+
+
+
+
+
+<div data-role="page"  id="weightinterface">
+  <div data-role="header" style="background:#3b5998" >
+    <h1>Weight Info</h1>
+  </div>
+
+  <div data-role="main" class="ui-content">
+        <table class="main_interface_wrapper" align="center"> 
+	       <tr>
+		   <td width="80%">
+			    <img src="{% static "django_facebook/images/record_weight.jpg" %}" width="50%" alt="RecordWeight" class="menuimage" style="cursor:pointer">
+		   </td>
+	       </tr>
+			  
+			 
+			      <td width="80%">
+				<img src="{% static "django_facebook/images/track_weight.jpg" %}" width="50%"  alt="TrackWeight" class="menuimage" style="cursor:pointer">
+			      </td>
+		 </tr>
+	
+     </table>
+      <a href="#pageone" class="ui-btn ui-icon-back ui-btn-icon-left" data-transition="slide" data-direction="reverse">Main Page</a>
+  </div>
+
+  <div data-role="footer" style="background:#3b5998" >
+    <h1>Track Close One's Wellness</h1>
+  </div>
+</div> 
+
+
+
+
+
+<div data-role="page"  id="weightrecording">
+  <div data-role="header" style="background:#3b5998" >
+    <h1>Record Weight</h1>
+  </div>
+
+  <div data-role="main" class="ui-content">
+       <table class="main_interface_wrapper" align="center">
+	   <tr>
+	     <td colspan=2>
+		 Record/ Update Weight
+		 </td>
+	   
+	   </tr>
+	
+       
+		 <tr>
+		 
+		    <td>
+			   Date recorded
+			
+			</td>
+		     <td>
+			   <input type="text" id="datepickerweight" readonly="true">
+			   <input type="hidden" id="date_captured_weight" value="None">
+			 
+			 </td>
+		 </tr>
+		 
+		 <tr>
+           <td width="50%">
+		   Current Weight in Kg		   
+
+          </td>
+		  
+		  <td>
+		  
+		     <input type="text" id="weight">
+		  
+		  </td>
+		 </tr>
+		 
+		 <tr>
+		     <td colspan=2>
+			   <input name="saveweight" type="button" value="Update Weight" onClick="saveWeight()">
+			 
+			 
+			 </td>
+		 
+		 
+		 </tr>
+	
+	
+    </table>
+ <a href="#weightinterface" class="ui-btn ui-icon-back ui-btn-icon-left" data-transition="slide" data-direction="reverse">Previous Page</a>
+ <a href="#pageone" class="ui-btn ui-icon-back ui-btn-icon-left" data-transition="slide" data-direction="reverse">Main Page</a>
+
+  </div>
+
+  <div data-role="footer" style="background:#3b5998" >
+    <h1>Track Close One's Wellness</h1>
+  </div>
+</div> 
+
+
+<div data-role="page"  id="trackweight">
+  <div data-role="header" style="background:#3b5998" >
+    <h1>Track Weight</h1>
+  </div>
+
+  <div data-role="main" class="ui-content">
+            <table class="main_interface_wrapper" align="center" border="0" width="100%"> 
+	  
+		       <td class="selectgraph" colspan=2>
+			               <table border="0" width="100%">
+			               
+			             <tr>
+ <td class="grouponeweight"><label class="weightlabel" for="thismonthweight">This month</label><input type="radio" name="datecapturedweight" value="This month" class="datecaptured_weight_class" id="thismonthweight" ></td>
+
+
+                                                     <td class="grouponeweight"><a href="javascript:changeMenu('DisplayWeightGroup2');" class="ui-btn ui-icon-arrow-r ui-btn-icon-notext">Next</a></td>
+
+
+<!--end of group 1-->
+
+
+
+
+                                                     <td class="grouptwoweight"><a href="javascript:changeMenu('DisplayWeightGroup1');" class="ui-btn ui-icon-arrow-l ui-btn-icon-notext">Prev</a></td> 
+
+
+                                                         <td class="grouptwoweight"><label class="weightlabel" for="lastmonthweight">Last month</label><input type="radio" name="datecapturedweight" value="Last month" class="datecaptured_weight_class" id="lastmonthweight" ></td>
+
+
+                                                     <td class="grouptwoweight"><a href="javascript:changeMenu('DisplayWeightGroup3');" class="ui-btn ui-icon-arrow-r ui-btn-icon-notext">Next</a></td>
+
+<!--end of group 2-->
+
+
+
+
+                                                     <td class="groupthreeweight"><a href="javascript:changeMenu('DisplayWeightGroup2');" class="ui-btn ui-icon-arrow-l ui-btn-icon-notext">Prev</a></td> 
+
+
+                                                      <td class="groupthreeweight"><label class="weightlabel" for="threemonthweight">Last three months</label><input type="radio" name="datecapturedweight" value="Last three months" class="datecaptured_weight_class" id="threemonthweight" ></td>
+
+
+<!--end of group 3-->
+			             
+			             
+			             
+			             
+			             
+			             </tr>
+						   </table>
+			 
+			  </td>
+	   
+	   </tr>
+   	   <tr>
+	      <td>
+		  
+		     <table class="graph">
+			    <tr>
+				   <td align="center" valign="middle" class="graph">
+					    <img src="{% static "django_facebook/images/foodchartlabel.jpg" %}">
+				   </td>
+			   		   
+				   <td width="100%" class="graph">
+					   
+						   
+					   <!--<img src="images/mealinterface.jpg" width="100%" height="100%" alt="Meals" class="foodgraph" style="cursor:pointer">-->
+					   <div id="weightplaceholder" style="width:100%;height:100%">
+					   
+					   </div>
+				
+				  </td>
+				</tr>
+				
+				</tr>
+			 </table>
+		   </td>
+		  
+       </tr>
+           <!-- <tr>
+
+                <td><a href="#" class="ui-btn ui-icon-info ui-btn-icon-left">Check Diet Info</a></td>
+
+           </tr>
+	   <tr>-->
+	       <td id="weightsummary">
+		   
+	       </td>
+	   
+	   </tr>
+	   <tr>
+	       <td class="weightcomments">
+		     <input type="text" id="mealscommentsbox" width="100%"/>
+		   </td>
+	  </tr>
+	  
+	  	<tr>
+	   <td>
+	   
+	   <div align="right">
+			<table class="WeightMessagePopUp">
+				<tr>
+					  <td>
+						  <a href="#myWeightPopUp" data-rel="popup"><img src="{% static "django_facebook/images/smsicon.jpg" %}"></a>
+					  
+					  </td>
+				
+				</tr>
+
+		
+			 </table>
+	   </div>
+
+    <div data-role="popup" data-history="false" id="myWeightPopUp" class="ui-content">
+      <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
+		
+	     <table>
+		
+			      <tr>
+				    <td> 
+		          <b><i>Send an encouraging message to</i></b>: {{fname}} {{lname}}<br>
+		         </br>
+		         <textarea name="weightcommentbox" id="weightcommentbox" rows="20" cols="22"></textarea>
+		         <img src="{% static "django_facebook/images/sendmessage.jpg" %}" a style="cursor:pointer" onClick="sendWeightMessage();">
+		         </td>
+						
+				  </tr>
+				 
+					
+	    </table>
+    
+	</div>  
+	</td>
+	</tr>
+	   	  
+  </table>
+ <a href="#weightinterface" class="ui-btn ui-icon-back ui-btn-icon-left" data-transition="slide" data-direction="reverse">Previous Page</a>
+ <a href="#pageone" class="ui-btn ui-icon-back ui-btn-icon-left" data-transition="slide" data-direction="reverse">Main Page</a>
+  </div>
+
+  <div data-role="footer" style="background:#3b5998" >
+    <h1>Track Close One's Wellness</h1>
+  </div>
+</div> 
+
+
+<div data-role="page"  id="healthgoals">
+  <div data-role="header" style="background:#3b5998" >
+    <h1>Health Goals</h1>
+  </div>
+
+  <div data-role="main" class="ui-content">
+    
+     <table class="main_interface_wrapper" align="center"> 
+
+       <tr>
+           <td width="80%">
+		    <img src="{% static "django_facebook/images/mealsgoal.jpg" %}" width="50%" alt="MealsGoal" class="menuimage" style="cursor:pointer">		   
+         </td>
+		 </tr>
+		 <tr>  
+		 
+		      <td width="80%">
+		        <img src="{% static "django_facebook/images/activitygoal.jpg" %}" width="50%"  alt="ActivityGoal" class="menuimage" style="cursor:pointer"></a>
+		   </td>
+       </tr>
+	
+    </table>    
+  <a href="#pageone" class="ui-btn ui-icon-back ui-btn-icon-left" data-transition="slide" data-direction="reverse">Main Page</a>  
+  </div>
+
+  <div data-role="footer" style="background:#3b5998" >
+    <h1>Track Close One's Wellness</h1>
+  </div>
+</div> 
+
+
+<div data-role="page"  id="mealsgoal">
+  <div data-role="header" style="background:#3b5998" >
+    <h1>Meals Goal</h1>
+  </div>
+
+  <div data-role="main" class="ui-content">
+  
+  <div align="right">
+			<table class="Helplink">
+				<tr>
+					  <td>
+						 <!--<a href="#mealsgoalspopup" data-rel="popup" class="ui-btn ui-btn-inline ui-corner-all">Help</a>-->
+						  <a href="#mealsgoalspopup" data-rel="popup"><img src="{% static "django_facebook/images/helpicon3.png" %}"></a>
+					  
+					  </td>
+				
+				</tr>
+
+		
+			 </table>
+	   </div>
+
+    <div data-role="popup" data-history="false" id="mealsgoalspopup" class="ui-content">
+      <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
+      <!--<p>I have a close button at the top right corner.</p>
+      <p><b>Tip:</b> You can also click outside to close me.</p>
+    </div>-->
+		
+	<table>
+		
+			      <tr>
+				     
+				     <td background="{% static "django_facebook/images/meals/blank.gif" %}" class="mealportion">
+				
+						There are 5 groups of food which include fruits, starch, protein, fat, and dairy. To set a a goal for portion size , "<b><i> Click</i></b>" the <b><i>picture</i></b> at the start of each food group. The sizes will change from None to <b>Small or Medium or Large</b> depending on how many times you have clicked the picture. "<b><i>Small</i></b>" represents up to 1/3 of a plate. "<b><i>Medium</i></b>" represents between 1/3 of a plate to  2/3 of a plate. "<b><i>Large</i></b>" represents between 2/3 of a plate and a full plate.  
+				     </td>
+						
+				  </tr>
+				
+			  
+				
+				 
+					
+			</table>
+  
+	</div>
+  
+  
+  
+  
+  
+	 <table border=1 class="main_interface_wrapper" align="center" >
+	 <!--class="main_interface_wrapper" align="center" align="center"--> 
+	<!--<table id="interfacetable" border="5">-->
+			<thead>
+			   <tr>
+                <td id="mealgoalstatus" colspan="3">
+                   		 
+								 
+								      No goal set
+								  
+                
+                
+                </td>			   
+			   
+			   </tr>
+			   <tr>
+			        <th colspan="2" background="{% static "django_facebook/images/meals/blank.gif" %}">Food Group</th>
+					<th background="{% static "django_facebook/images/meals/blank.gif" %}">Portion Size
+					
+					
+					</th>
+						   
+			   </tr>
+			
+			</thead>
+			
+			<tbody>
+			   <tr>
+			      <td background="{% static "django_facebook/images/meals/blank.gif" %}" class="mealportionpic">
+				      <img src="{% static "django_facebook/images/meals/fruits.gif" %}" class="menuimage" style="cursor:pointer" onClick="updateChart('fruits');">
+			      </td>
+	     		  <td background="{% static "django_facebook/images/meals/blank.gif" %}" class="mealportiontext">
+		 
+					  Fruits and Vegetables
+					
+		          </td>
+				  
+				  <td class="fruits_portion"  background="{% static "django_facebook/images/meals/blank.gif" %}" colspan="2">None
+				  </td>
+				 			
+								  
+								  
+			 </tr>
+			 
+			 
+			 
+			 	<tr>
+			      <td background="{% static "django_facebook/images/meals/blank.gif" %}" class="mealportionpic">
+				      <img src="{% static "django_facebook/images/meals/starch.gif" %}" alt="Starch" style="cursor:pointer" onClick="updateChart('starch');">
+			      </td>
+	     		  <td background="{% static "django_facebook/images/meals/blank.gif" %}" class="mealportiontext">
+		 
+					   Starch: Rice, bread, pap, pasta, potatoes, etc.
+					
+		          </td>
+				  
+				  <td class="starch_portion"  background="{% static "django_facebook/images/meals/blank.gif" %}" colspan="2">None
+				  </td>				  
+								  
+			 </tr>
+			 
+			 
+			 <tr>
+			      <td background="{% static "django_facebook/images/meals/blank.gif" %}" class="mealportionpic">
+				      <img src="{% static "django_facebook/images/meals/meatseggsfish.gif" %}"  class="menuimage" style="cursor:pointer" onClick="updateChart('protein');">
+			      </td>
+	     		  <td background="{% static "django_facebook/images/meals/blank.gif" %}" class="mealportiontext">
+		 
+					   Protein Food i.e. meat, fish, beans, etc
+					
+		          </td>
+				  
+				  <td class="protein_portion"  background="{% static "django_facebook/images/meals/blank.gif" %}" colspan="2">None
+				  </td>				  
+								  
+			 </tr>
+			 
+			  <tr>
+			      <td background="{% static "django_facebook/images/meals/blank.gif" %}" class="mealportionpic">
+				      <img src="{% static "django_facebook/images/meals/foodfatfoodcontsugar.gif" %}" class="menuimage" style="cursor:pointer" onClick="updateChart('fat');">
+			      </td>
+	     		  <td background="{% static "django_facebook/images/meals/blank.gif" %}" class="mealportiontext">
+		 
+					   Food in high sugar or fat
+
+					
+		          </td>
+				  
+				  <td class="fat_portion"  background="{% static "django_facebook/images/meals/blank.gif" %}" colspan="2">None
+				  </td>				  
+								  
+			 </tr>
+			 
+			 <tr>
+			      <td background="{% static "django_facebook/images/meals/blank.gif" %}" class="mealportionpic">
+				      <img src="{% static "django_facebook/images/meals/milkanddiary.gif" %}" class="menuimage" style="cursor:pointer" onClick="updateChart('dairy');">
+			      </td>
+	     		  <td background="{% static "django_facebook/images/meals/blank.gif" %}" class="mealportiontext">
+		 
+					   Dairy food
+
+					
+		          </td>
+				  
+				  <td class="dairy_portion" background="{% static "django_facebook/images/meals/blank.gif" %}" colspan="2">None
+				  </td>				  
+								  
+			 </tr>
+			 
+         	<tr> <!--
+								       <td>
+										   Duration
+										
+										</td>
+										
+										 <td colspan="2">
+											<select id="mealsgoalduration">
+											   <option value="Weekly">Weekly</option>
+											   <option value="Two weeks">Two weeks</option>
+											   <option value="Three weeks">Three weeks</option>
+											   <option value="Monthly">Monthly</option>
+											   <option value="Two months">Two months</option>
+											   <option value="Three months">Three months</option>
+											</select>
+										 
+										 </td>-->
+								  
+				 </tr>
+				<tr>
+								      <td colspan="3"><input type="button" value="Set a new goal" onClick="setMealsGoal();"></td>
+				</tr>
+			
+		</tbody>
+	
+		
+		
+	</table>
+  <a href="#healthgoals" class="ui-btn ui-icon-back ui-btn-icon-left" data-transition="slide" data-direction="reverse">Previous Page</a>
+  <a href="#pageone" class="ui-btn ui-icon-back ui-btn-icon-left" data-transition="slide" data-direction="reverse">Main Page</a>  
+  </div>
+
+  <div data-role="footer" style="background:#3b5998" >
+    <h1>Track Close One's Wellness</h1>
+  </div>
+</div>
+
+
+<div data-role="page"  id="activitygoal">
+  <div data-role="header" style="background:#3b5998" >
+    <h1>Activity Goal</h1>
+  </div>
+
+  <div data-role="main" class="ui-content">
+  
+  
+  <table class="main_interface_wrapper" align="center"> 
+	<!--<table id="interfacetable">-->
+	   <tr>
+	     <td colspan=2>
+		 Physical activity goal
+		 </td>
+	   
+	   </tr>
+	   <tr>
+	     <td>
+		  Current goal
+		 </td>
+	     <td class="activity_goal">
+		   
+		 </td>
+	   </tr>
+       <tr>
+           <td width="50%">
+		   New Goal(Steps to be walked) 		   
+
+          </td>
+		  
+		  <td>
+		  
+		     <input type="text" id="steps">
+		  
+		  </td>
+		 </tr>
+		 <tr>
+		  		<!--
+		    <td>
+			   Duration
+			
+			</td>
+	
+		    <td>
+			    <select id="activitygoalduration">
+				   <option value="Week">Week average</option>
+				   <option>Two weeks</option>
+				   <option>Three weeks</option>
+				   <option>Monthly</option>
+				   <option>Two months</option>
+				   <option>Three months</option>
+				</select>
+			 
+			 </td>-->
+		 </tr>
+		 
+		 <tr>
+		     <td colspan=2>
+			   <input name="savesteps" type="button" value="Set Goal" onClick="setActivityGoal()">
+			 
+			 
+			 </td>
+		 
+		 
+		 </tr>
+	
+	
+    </table>
+  <a href="#healthgoals" class="ui-btn ui-icon-back ui-btn-icon-left" data-transition="slide" data-direction="reverse">Previous Page</a>
+  <a href="#pageone" class="ui-btn ui-icon-back ui-btn-icon-left" data-transition="slide" data-direction="reverse">Main Page</a>  
+  </div>
+
+  <div data-role="footer" style="background:#3b5998" >
+    <h1>Track Close One's Wellness</h1>
+  </div>
+</div>
+
+
+
+<div data-role="page"  id="gameinterface">
+  <div data-role="header" style="background:#3b5998" >
+    <h1>Help & Earn Points</h1>
+  </div>
+
+  <div data-role="main" class="ui-content" >
+    
+                   
+      <table class="main_interface_wrapper" align="center"> 
+	<!--<table id="interfacetable">-->
+       <tr>
+           <td width="40%">
+		   
+			<img src="{% static "django_facebook/images/scoreboard.jpg" %}" width="100%" alt="ScoreBoard" class="menuimage" style="cursor:pointer">
+			
+					   
+		   
+		   </td>
+		   
+		   		   <td width="40%">
+		    <img src="{% static "django_facebook/images/garden.jpg" %}" width="100%" alt="ScoreGardens" class="menuimage" style="cursor:pointer">
+		   </td>
+	
+       </tr>
+	   <tr>
+	     	      <td width="40%">
+		        <img src="{% static "django_facebook/images/champion.jpg" %}" width="100%"  alt="Champion" class="menuimage" style="cursor:pointer">
+		   </td>
+	        
+		      <td width="40%">
+		        <img src="{% static "django_facebook/images/fishtank.jpg" %}" width="100%"  alt="ScoreTank" class="menuimage" style="cursor:pointer" >
+		 		   </td>
+		   
+
+       </tr>
+	  
+    </table>
+ 
+  </div>
+ <a href="#pageone" class="ui-btn ui-icon-back ui-btn-icon-left" data-transition="slide" data-direction="reverse">Main Page</a>  
+  <div data-role="footer" style="background:#3b5998" >
+    <h1>Track Close One's Wellness</h1>
+  </div>
+</div> 
+
+
+<div data-role="page"  id="scoreboardinterface">
+  <div data-role="header" style="background:#3b5998" >
+    <h1>Help & Earn Points</h1>
+  </div>
+
+  <div data-role="main" class="ui-content" >
+         <h2> Score board</h2> 
+  <table class="main_interface_wrapper" align="center">
+                <tr>
+                
+                <td colspan=2 class="selectgraph">
+                 <fieldset data-role="controlgroup">
+                    <table width="100%">
+                    
+       					 <tr>
+						        <td class="grouponescoreboard"><label class="scoreboardlabel" for="todayscoreboard">Today</label><input type="radio" name="datecapturedscoreboard" value="Today" class="datecaptured_scoreboard_class" id="todayscoreboard" ></td>
+
+                                                        <td class="grouponescoreboard"><a href="javascript:changeMenu('DisplayScoreBoardGroup2')" class="ui-btn ui-icon-arrow-r ui-btn-icon-notext">Next</a></td>
+
+<!--end of group 1-->
+
+ 							<td class="grouptwoscoreboard"><a href="javascript:changeMenu('DisplayScoreBoardGroup1');" class="ui-btn ui-icon-arrow-l ui-btn-icon-notext">Prev</a></td>
+
+
+							 <td class="grouptwoscoreboard"><label class="scoreboardlabel" for="thisweekscoreboard">This week</label><input type="radio" name="datecapturedscoreboard" value="This week" class="datecaptured_scoreboard_class" id="thisweekscoreboard" ></td>
+
+
+                                                        <td class="grouptwoscoreboard"><a href="javascript:changeMenu('DisplayScoreBoardGroup3')" class="ui-btn ui-icon-arrow-r ui-btn-icon-notext">Next</a></td>
+
+<!--end of group 2-->
+							
+						
+
+
+                                                        <td class="groupthreescoreboard"><a href="javascript:changeMenu('DisplayScoreBoardGroup2');" class="ui-btn ui-icon-arrow-l ui-btn-icon-notext">Prev</a></td>                                        
+
+
+							<td class="groupthreescoreboard"><label class="scoreboardlabel" for="lastweekscoreboard">Last week</label><input type="radio" name="datecapturedscoreboard" value="Last week" class="datecaptured_scoreboard_class" id="lastweekscoreboard" ></td>
+
+							
+                                                       
+
+
+                                                        <td class="groupthreescoreboard"><a href="javascript:changeMenu('DisplayScoreBoardGroup4');" class="ui-btn ui-icon-arrow-r ui-btn-icon-notext">Next</a></td>
+
+
+<!--end of group 3-->
+
+
+
+
+
+                                                     <td class="groupfourscoreboard"><a href="javascript:changeMenu('DisplayScoreBoardGroup3');" class="ui-btn ui-icon-arrow-l ui-btn-icon-notext">Prev</a></td> 
+
+
+
+                                                      <td class="groupfourscoreboard"><label class="scoreboardlabel" for="thismonthscoreboard">This month</label><input type="radio" name="datecapturedscoreboard" value="This month" class="datecaptured_scoreboard_class" id="thismonthscoreboard" ></td>
+
+
+                                                     <td class="groupfourscoreboard"><a href="javascript:changeMenu('DisplayScoreBoardGroup5');" class="ui-btn ui-icon-arrow-r ui-btn-icon-notext">Next</a></td>
+
+
+<!--end of group 4-->
+
+
+
+
+                                                     <td class="groupfivescoreboard"><a href="javascript:changeMenu('DisplayScoreBoardGroup4');" class="ui-btn ui-icon-arrow-l ui-btn-icon-notext">Prev</a></td> 
+
+
+                                                         <td class="groupfivescoreboard"><label class="scoreboardlabel" for="lastmonthscoreboard">Last month</label><input type="radio" name="datecapturedscoreboard" value="Last month" class="datecaptured_scoreboard_class" id="lastmonthscoreboard" ></td>
+
+
+                                                     <td class="groupfivescoreboard"><a href="javascript:changeMenu('DisplayScoreBoardGroup6');" class="ui-btn ui-icon-arrow-r ui-btn-icon-notext">Next</a></td>
+
+<!--end of group 5-->
+
+
+
+
+                                                     <td class="groupsixscoreboard"><a href="javascript:changeMenu('DisplayScoreBoardGroup5');" class="ui-btn ui-icon-arrow-l ui-btn-icon-notext">Prev</a></td> 
+
+
+                                                      <td class="groupsixscoreboard"><label class="scoreboardlabel" for="threemonthscoreboard">Last three months</label><input type="radio" name="datecapturedscoreboard" value="Last three months" class="datecaptured_scoreboard_class" id="threemonthscoreboard" ></td>
+
+
+<!--end of group 6-->
+                                                       
+							
+						
+							     
+							   
+
+			  
+			                   </tr>
+			                </table>
+			                </fieldset>
+			              </td>
+			            </tr>
+  
+     <tr>
+     <td>                    
+      <table id="scoreboard" class="main_interface_wrapper" align="center"> 
+      
+        <thead>
+        
+        </thead>
+        <tbody>
+        
+        
+        </tbody>
+         
+
+	  
+      </table>
+    </td>
+    </tr>
+  </table>
+ 
+  </div>
+  <a href="#gameinterface" class="ui-btn ui-icon-back ui-btn-icon-left" data-transition="slide" data-direction="reverse">Previous Page</a>   
+ <a href="#pageone" class="ui-btn ui-icon-back ui-btn-icon-left" data-transition="slide" data-direction="reverse">Main Page</a>  
+  <div data-role="footer" style="background:#3b5998" >
+    <h1>Track Close One's Wellness</h1>
+  </div>
+</div> 
+
+
+<div data-role="page"  id="scoregardensinterface">
+  <div data-role="header" style="background:#3b5998" >
+    <h1>Help & Earn Points</h1>
+  </div>
+
+  <div data-role="main" class="ui-content" >
+         <h2> Score gardens</h2> 
+  <table class="main_interface_wrapper" align="center">
+                <tr>
+                
+                <td colspan=2 class="selectgraph">
+                 <fieldset data-role="controlgroup">
+                    <table width="100%">
+                    
+       					 <tr>
+						        <td class="grouponescoregardens"><label class="scoregardenslabel" for="todayscoregardens">Today</label><input type="radio" name="datecapturedscoregardens" value="Today" class="datecaptured_scoregardens_class" id="todayscoregardens" ></td>
+
+                                                        <td class="grouponescoregardens"><a href="javascript:changeMenu('DisplayScoreGardensGroup2')" class="ui-btn ui-icon-arrow-r ui-btn-icon-notext">Next</a></td>
+
+<!--end of group 1-->
+
+ 							<td class="grouptwoscoregardens"><a href="javascript:changeMenu('DisplayScoreGardensGroup1');" class="ui-btn ui-icon-arrow-l ui-btn-icon-notext">Prev</a></td>
+
+
+							 <td class="grouptwoscoregardens"><label class="scoregardenslabel" for="yesterdayscoregardens">Yesterday</label><input type="radio" name="datecapturedscoregardens" value="Yesterday" class="datecaptured_scoregardens_class" id="yesterdayscoregardens" ></td>
+
+
+                                                       
+<!--end of group 2-->
+							
+                                                      
+							
+						
+							     
+							   
+
+			  
+			                   </tr>
+			                </table>
+			                </fieldset>
+			              </td>
+			            </tr>
+  
+     <tr>
+     <td>                    
+      <table id="scoregardens" class="main_interface_wrapper" align="center"> 
+      
+        <thead>
+        
+        </thead>
+        <tbody>
+              <tr>
+              
+                  <td>
+                  <div id="teamscoregarden"></div>
+               
+   <div class="device">
+    <a class="arrow-left" href="#" id="arrow-left1"></a>
+    <a class="arrow-right" href="#" id="arrow-right1"></a>
+    <div class="swiper-container" id="container1">
+      <div class="swiper-wrapper">
+        
+
+      </div>
+    </div>
+    <div class="pagination" id="pagination1"></div>
+  </div>
+<!--
+  <script language="javascript" type="text/javascript" src="{% static "django_facebook/js/idangerous.swiper-2.1.min.js" %}"></script>
+ 
+  <script>
+  
+  function swipe(){
+  var mySwiper = new Swiper('.swiper-container',{
+    pagination: '.pagination',
+    loop:true,
+    grabCursor: true,
+    paginationClickable: true
+  })
+  $('.arrow-left').on('click', function(e){
+    e.preventDefault()
+    mySwiper.swipePrev()
+  })
+  $('.arrow-right').on('click', function(e){
+    e.preventDefault()
+    mySwiper.swipeNext()
+  })
+  }
+  </script>
+   -->                
+                   
+                   </td>
+              
+              </tr>
+        
+        </tbody>
+         
+
+	  
+      </table>
+    </td>
+    </tr>
+  </table>
+ 
+  </div>
+  <a href="#gameinterface" class="ui-btn ui-icon-back ui-btn-icon-left" data-transition="slide" data-direction="reverse">Previous Page</a>   
+ <a href="#pageone" class="ui-btn ui-icon-back ui-btn-icon-left" data-transition="slide" data-direction="reverse">Main Page</a>  
+  <div data-role="footer" style="background:#3b5998" >
+    <h1>Track Close One's Wellness</h1>
+  </div>
+</div> 
+
+<div data-role="page"  id="fishtank">
+  <div data-role="header" style="background:#3b5998" >
+    <h1>Help & Earn Points</h1>
+  </div>
+
+  <div data-role="main" class="ui-content" >
+         <h2> Aquarium Scores</h2> 
+
+         
+         <div id="aquiriumfish">
+         <!--<canvas id="box" width="200" height="200"></canvas>-->
+        
+         <img src="{% static 'wellnessapp/images/fish/shark1.png' %}" alt="Swimming fish" id="shark1"  />
+         <img src="{% static 'wellnessapp/images/fish/shark2.png' %}" alt="Swimming fish" id="shark2"  />
+         <img src="{% static 'wellnessapp/images/fish/shark3.png' %}" alt="Swimming fish" id="shark3"  />
+         <img src="{% static 'wellnessapp/images/fish/shark4.png' %}" alt="Swimming fish" id="shark4"  />
+         <img src="{% static 'wellnessapp/images/fish/shark5.png' %}" alt="Swimming fish" id="shark5"  />
+         <img src="{% static 'wellnessapp/images/fish/shark6.png' %}" alt="Swimming fish" id="shark6"  />
+         <img src="{% static 'wellnessapp/images/fish/shark7.png' %}" alt="Swimming fish" id="shark7"  />
+         <img src="{% static 'wellnessapp/images/fish/shark8.png' %}" alt="Swimming fish" id="shark8"  />
+         <img src="{% static 'wellnessapp/images/fish/shark9.png' %}" alt="Swimming fish" id="shark9"  />
+         <img src="{% static 'wellnessapp/images/fish/shark10.png' %}" alt="Swimming fish" id="shark10"  />
+         <img src="{% static 'wellnessapp/images/fish/shark11.png' %}" alt="Swimming fish" id="shark11"  />
+         <img src="{% static 'wellnessapp/images/fish/shark12.png' %}" alt="Swimming fish" id="shark12"  />
+         <img src="{% static 'wellnessapp/images/fish/shark13.png' %}" alt="Swimming fish" id="shark13"  />
+         <img src="{% static 'wellnessapp/images/fish/shark14.png' %}" alt="Swimming fish" id="shark14"  />
+         <img src="{% static 'wellnessapp/images/fish/shark15.png' %}" alt="Swimming fish" id="shark15"  />
+         <img src="{% static 'wellnessapp/images/fish/shark15.png' %}" alt="Swimming fish" id="shark15"  />
+         <img src="{% static 'wellnessapp/images/fish/shark16.png' %}" alt="Swimming fish" id="shark16"  />
+         <img src="{% static 'wellnessapp/images/fish/shark17.png' %}" alt="Swimming fish" id="shark17"  />
+         <img src="{% static 'wellnessapp/images/fish/shark18.png' %}" alt="Swimming fish" id="shark18"  />
+         <img src="{% static 'wellnessapp/images/fish/shark19.png' %}" alt="Swimming fish" id="shark19"  />
+         <img src="{% static 'wellnessapp/images/fish/shark20.png' %}" alt="Swimming fish" id="shark20"  />
+         
+         <img src="{% static 'wellnessapp/images/fish/kujira1.png' %}" width="94" height="30" alt="Swimming fish" id="kujira1"  />
+         <img src="{% static 'wellnessapp/images/fish/kujira2.png' %}" width="94" height="30" alt="Swimming fish" id="kujira2"  />
+         <img src="{% static 'wellnessapp/images/fish/kujira3.png' %}" width="94" height="30" alt="Swimming fish" id="kujira3"  />
+         <img src="{% static 'wellnessapp/images/fish/kujira4.png' %}" width="94" height="30" alt="Swimming fish" id="kujira4"  />
+         <img src="{% static 'wellnessapp/images/fish/kujira5.png' %}" width="94" height="30" alt="Swimming fish" id="kujira5"  />
+         <img src="{% static 'wellnessapp/images/fish/kujira6.png' %}" width="94" height="30" alt="Swimming fish" id="kujira6"  />
+         <img src="{% static 'wellnessapp/images/fish/kujira7.png' %}" width="94" height="30" alt="Swimming fish" id="kujira7"  />
+         <img src="{% static 'wellnessapp/images/fish/kujira8.png' %}" width="94" height="30" alt="Swimming fish" id="kujira8"  />
+         <img src="{% static 'wellnessapp/images/fish/kujira9.png' %}" width="94" height="30" alt="Swimming fish" id="kujira9"  />
+         <img src="{% static 'wellnessapp/images/fish/kujira10.png' %}" width="94" height="30" alt="Swimming fish" id="kujira10"  />
+         <img src="{% static 'wellnessapp/images/fish/kujira11.png' %}" width="94" height="30" alt="Swimming fish" id="kujira11"  />
+         <img src="{% static 'wellnessapp/images/fish/kujira12.png' %}" width="94" height="30" alt="Swimming fish" id="kujira12"  />
+         
+         
+         
+         <img src="{% static 'wellnessapp/images/fish/6_1.min.png' %}"  alt="Swimming fish" id="6_1"  />
+         <img src="{% static 'wellnessapp/images/fish/6_2.min.png' %}"  alt="Swimming fish" id="6_2"  />
+         <img src="{% static 'wellnessapp/images/fish/6_3.min.png' %}"  alt="Swimming fish" id="6_3"  />
+         <img src="{% static 'wellnessapp/images/fish/6_4.min.png' %}"  alt="Swimming fish" id="6_4"  />
+         <img src="{% static 'wellnessapp/images/fish/6_5.min.png' %}"  alt="Swimming fish" id="6_5"  />
+         <img src="{% static 'wellnessapp/images/fish/6_6.min.png' %}"  alt="Swimming fish" id="6_6"  />
+         <img src="{% static 'wellnessapp/images/fish/6_7.min.png' %}"  alt="Swimming fish" id="6_7"  />
+         <img src="{% static 'wellnessapp/images/fish/6_8.min.png' %}"  alt="Swimming fish" id="6_8"  />
+         <img src="{% static 'wellnessapp/images/fish/6_9.min.png' %}"  alt="Swimming fish" id="6_9"  />
+         <img src="{% static 'wellnessapp/images/fish/6_10.min.png' %}"  alt="Swimming fish" id="6_10"  />
+   
+   '
+         <img src="{% static 'wellnessapp/images/fish/5_1.min.png' %}" width="94" height="30" alt="Swimming fish" id="5_1"  />
+         <img src="{% static 'wellnessapp/images/fish/5_2.min.png' %}" width="94" height="30" alt="Swimming fish" id="5_2"  />
+         <img src="{% static 'wellnessapp/images/fish/5_3.min.png' %}" width="94" height="30" alt="Swimming fish" id="5_3"  />
+         <img src="{% static 'wellnessapp/images/fish/5_4.min.png' %}" width="94" height="30" alt="Swimming fish" id="5_4"  />
+         <img src="{% static 'wellnessapp/images/fish/5_5.min.png' %}" width="94" height="30" alt="Swimming fish" id="5_5"  />
+         <img src="{% static 'wellnessapp/images/fish/5_6.min.png' %}" width="94" height="30" alt="Swimming fish" id="5_6"  />
+         <img src="{% static 'wellnessapp/images/fish/5_7.min.png' %}" width="94" height="30" alt="Swimming fish" id="5_7"  />
+         <img src="{% static 'wellnessapp/images/fish/5_8.min.png' %}" width="94" height="30" alt="Swimming fish" id="5_8"  />
+         
+    
+    
+    
+         <img src="{% static 'wellnessapp/images/fish/3_1.min.png' %}" width="94" height="30" alt="Swimming fish" id="3_1"  />
+         <img src="{% static 'wellnessapp/images/fish/3_2.min.png' %}" width="94" height="30" alt="Swimming fish" id="3_2"  />
+         <img src="{% static 'wellnessapp/images/fish/3_3.min.png' %}" width="94" height="30" alt="Swimming fish" id="3_3"  />
+         <img src="{% static 'wellnessapp/images/fish/3_4.min.png' %}" width="94" height="30" alt="Swimming fish" id="3_4"  />
+         <img src="{% static 'wellnessapp/images/fish/3_5.min.png' %}" width="94" height="30" alt="Swimming fish" id="3_5"  />
+         <img src="{% static 'wellnessapp/images/fish/3_6.min.png' %}" width="94" height="30" alt="Swimming fish" id="3_6"  />
+         <img src="{% static 'wellnessapp/images/fish/3_7.min.png' %}" width="94" height="30" alt="Swimming fish" id="3_7"  />
+         <img src="{% static 'wellnessapp/images/fish/3_8.min.png' %}" width="94" height="30" alt="Swimming fish" id="3_8"  />
+         <img src="{% static 'wellnessapp/images/fish/3_9.min.png' %}" width="94" height="30" alt="Swimming fish" id="3_9"  />
+         <img src="{% static 'wellnessapp/images/fish/3_10.min.png' %}" width="94" height="30" alt="Swimming fish" id="3_10"  />
+         
+       
+         <img src="{% static 'wellnessapp/images/fish/9_1.min.png' %}" width="94" height="30" alt="Swimming fish" id="9_1"  />
+         <img src="{% static 'wellnessapp/images/fish/9_2.min.png' %}" width="94" height="30" alt="Swimming fish" id="9_2"  />
+         <img src="{% static 'wellnessapp/images/fish/9_3.min.png' %}" width="94" height="30" alt="Swimming fish" id="9_3"  />
+         <img src="{% static 'wellnessapp/images/fish/9_4.min.png' %}" width="94" height="30" alt="Swimming fish" id="9_4"  />
+         <img src="{% static 'wellnessapp/images/fish/9_5.min.png' %}" width="94" height="30" alt="Swimming fish" id="9_5"  />
+         <img src="{% static 'wellnessapp/images/fish/9_6.min.png' %}" width="94" height="30" alt="Swimming fish" id="9_6"  />
+         <img src="{% static 'wellnessapp/images/fish/9_7.min.png' %}" width="94" height="30" alt="Swimming fish" id="9_7"  />
+         <img src="{% static 'wellnessapp/images/fish/9_8.min.png' %}" width="94" height="30" alt="Swimming fish" id="9_8"  />
+       
+       
+       
+         <img src="{% static 'wellnessapp/images/fish/7_1.min.png' %}" width="94" height="30" alt="Swimming fish" id="7_1"  />
+         <img src="{% static 'wellnessapp/images/fish/7_2.min.png' %}" width="94" height="30" alt="Swimming fish" id="7_2"  />
+         <img src="{% static 'wellnessapp/images/fish/7_3.min.png' %}" width="94" height="30" alt="Swimming fish" id="7_3"  />
+         <img src="{% static 'wellnessapp/images/fish/7_4.min.png' %}" width="94" height="30" alt="Swimming fish" id="7_4"  />
+         <img src="{% static 'wellnessapp/images/fish/7_5.min.png' %}" width="94" height="30" alt="Swimming fish" id="7_5"  />
+         <img src="{% static 'wellnessapp/images/fish/7_6.min.png' %}" width="94" height="30" alt="Swimming fish" id="7_6"  />
+         <img src="{% static 'wellnessapp/images/fish/7_7.min.png' %}" width="94" height="30" alt="Swimming fish" id="7_7"  />
+         <img src="{% static 'wellnessapp/images/fish/7_8.min.png' %}" width="94" height="30" alt="Swimming fish" id="7_8"  />
+         
+          <img src="{% static 'wellnessapp/images/fish/8_1.min.png' %}" width="94" height="30" alt="Swimming fish" id="8_1"  />
+         <img src="{% static 'wellnessapp/images/fish/8_2.min.png' %}" width="94" height="30" alt="Swimming fish" id="8_2"  />
+         <img src="{% static 'wellnessapp/images/fish/8_3.min.png' %}" width="94" height="30" alt="Swimming fish" id="8_3"  />
+         <img src="{% static 'wellnessapp/images/fish/8_4.min.png' %}" width="94" height="30" alt="Swimming fish" id="8_4"  />
+         <img src="{% static 'wellnessapp/images/fish/8_5.min.png' %}" width="94" height="30" alt="Swimming fish" id="8_5"  />
+         <img src="{% static 'wellnessapp/images/fish/8_6.min.png' %}" width="94" height="30" alt="Swimming fish" id="8_6"  />
+         
+         
+         <img src="{% static 'wellnessapp/images/fish/15_1.min.png' %}" width="30" height="30" alt="Swimming fish" id="15_1"  />
+         <img src="{% static 'wellnessapp/images/fish/15_2.min.png' %}" width="30" height="30" alt="Swimming fish" id="15_2"  />
+         <img src="{% static 'wellnessapp/images/fish/15_3.min.png' %}" width="30" height="30" alt="Swimming fish" id="15_3"  />
+         <img src="{% static 'wellnessapp/images/fish/15_4.min.png' %}" width="30" height="30" alt="Swimming fish" id="15_4"  />
+         <img src="{% static 'wellnessapp/images/fish/15_5.min.png' %}" width="30" height="30" alt="Swimming fish" id="15_5"  />
+         <img src="{% static 'wellnessapp/images/fish/15_6.min.png' %}" width="30" height="30" alt="Swimming fish" id="15_6"  />
+         <img src="{% static 'wellnessapp/images/fish/15_7.min.png' %}" width="30" height="30" alt="Swimming fish" id="15_7"  />
+         <img src="{% static 'wellnessapp/images/fish/15_8.min.png' %}" width="30" height="30" alt="Swimming fish" id="15_8"  />
+
+
+         <img src="{% static 'wellnessapp/images/fish/16_1.min.png' %}" width="30" height="15" alt="Swimming fish" id="16_1"  />
+         <img src="{% static 'wellnessapp/images/fish/16_2.min.png' %}" width="30" height="15" alt="Swimming fish" id="16_2"  />
+         <img src="{% static 'wellnessapp/images/fish/16_3.min.png' %}" width="30" height="15" alt="Swimming fish" id="16_3"  />
+         <img src="{% static 'wellnessapp/images/fish/16_4.min.png' %}" width="30" height="15" alt="Swimming fish" id="16_4"  />
+         <img src="{% static 'wellnessapp/images/fish/16_5.min.png' %}" width="30" height="15" alt="Swimming fish" id="16_5"  />
+         <img src="{% static 'wellnessapp/images/fish/16_6.min.png' %}" width="30" height="15" alt="Swimming fish" id="16_6"  />
+         <img src="{% static 'wellnessapp/images/fish/16_7.min.png' %}" width="30" height="15" alt="Swimming fish" id="16_7"  />
+         <img src="{% static 'wellnessapp/images/fish/16_8.min.png' %}" width="30" height="15" alt="Swimming fish" id="16_8"  />
+         
+         
+         <img src="{% static 'wellnessapp/images/fish/17_1.min.png' %}" width="30" height="15" alt="Swimming fish" id="17_1"  />
+         <img src="{% static 'wellnessapp/images/fish/17_2.min.png' %}" width="30" height="15" alt="Swimming fish" id="17_2"  />
+         <img src="{% static 'wellnessapp/images/fish/17_3.min.png' %}" width="30" height="15" alt="Swimming fish" id="17_3"  />
+         <img src="{% static 'wellnessapp/images/fish/17_4.min.png' %}" width="30" height="15" alt="Swimming fish" id="17_4"  />
+         <img src="{% static 'wellnessapp/images/fish/17_5.min.png' %}" width="30" height="15" alt="Swimming fish" id="17_5"  />
+         <img src="{% static 'wellnessapp/images/fish/17_6.min.png' %}" width="30" height="15" alt="Swimming fish" id="17_6"  />
+         <img src="{% static 'wellnessapp/images/fish/17_7.min.png' %}" width="30" height="15" alt="Swimming fish" id="17_7"  />
+         <img src="{% static 'wellnessapp/images/fish/17_8.min.png' %}" width="30" height="15" alt="Swimming fish" id="17_8"  />
+         <img src="{% static 'wellnessapp/images/fish/17_9.min.png' %}" width="30" height="15" alt="Swimming fish" id="17_9"  />
+         <img src="{% static 'wellnessapp/images/fish/17_10.min.png' %}" width="30" height="15" alt="Swimming fish" id="17_10"  />
+         
+         
+         <img src="{% static 'wellnessapp/images/fish/17_11.min.png' %}" width="30" height="15" alt="Swimming fish" id="17_11"  />
+         <img src="{% static 'wellnessapp/images/fish/17_12.min.png' %}" width="30" height="15" alt="Swimming fish" id="17_12"  />
+         <img src="{% static 'wellnessapp/images/fish/17_13.min.png' %}" width="30" height="15" alt="Swimming fish" id="17_13"  />
+         <img src="{% static 'wellnessapp/images/fish/17_14.min.png' %}" width="30" height="15" alt="Swimming fish" id="17_14"  />
+         <img src="{% static 'wellnessapp/images/fish/17_15.min.png' %}" width="30" height="15" alt="Swimming fish" id="17_15"  />
+         <img src="{% static 'wellnessapp/images/fish/17_16.min.png' %}" width="30" height="15" alt="Swimming fish" id="17_16"  />
+         <img src="{% static 'wellnessapp/images/fish/17_17.min.png' %}" width="30" height="15" alt="Swimming fish" id="17_17"  />
+         <img src="{% static 'wellnessapp/images/fish/17_18.min.png' %}" width="30" height="15" alt="Swimming fish" id="17_18"  />
+         <img src="{% static 'wellnessapp/images/fish/17_19.min.png' %}" width="30" height="15" alt="Swimming fish" id="17_19"  />
+         <img src="{% static 'wellnessapp/images/fish/17_20.min.png' %}" width="30" height="15" alt="Swimming fish" id="17_20"  />
+         
+         
+         <img src="{% static 'wellnessapp/images/fish/17_21.min.png' %}" width="30" height="15" alt="Swimming fish" id="17_21"  />
+         <img src="{% static 'wellnessapp/images/fish/17_22.min.png' %}" width="30" height="15" alt="Swimming fish" id="17_22"  />
+         <img src="{% static 'wellnessapp/images/fish/17_23.min.png' %}" width="30" height="15" alt="Swimming fish" id="17_23"  />
+         <img src="{% static 'wellnessapp/images/fish/17_24.min.png' %}" width="30" height="15" alt="Swimming fish" id="17_24"  />
+         <img src="{% static 'wellnessapp/images/fish/17_25.min.png' %}" width="30" height="15" alt="Swimming fish" id="17_25"  />
+         <img src="{% static 'wellnessapp/images/fish/17_26.min.png' %}" width="30" height="15" alt="Swimming fish" id="17_26"  />
+         <img src="{% static 'wellnessapp/images/fish/17_27.min.png' %}" width="30" height="15" alt="Swimming fish" id="17_27"  />
+         <img src="{% static 'wellnessapp/images/fish/17_28.min.png' %}" width="30" height="15" alt="Swimming fish" id="17_28"  />
+         
+         
+         <img src="{% static 'wellnessapp/images/fish/18_1.min.png' %}" width="94" height="30" alt="Swimming fish" id="18_1"  />
+         <img src="{% static 'wellnessapp/images/fish/18_2.min.png' %}" width="94" height="30" alt="Swimming fish" id="18_2"  />
+         <img src="{% static 'wellnessapp/images/fish/18_3.min.png' %}" width="94" height="30" alt="Swimming fish" id="18_3"  />
+         <img src="{% static 'wellnessapp/images/fish/18_4.min.png' %}" width="94" height="30" alt="Swimming fish" id="18_4"  />
+         <img src="{% static 'wellnessapp/images/fish/18_5.min.png' %}" width="94" height="30" alt="Swimming fish" id="18_5"  />
+         <img src="{% static 'wellnessapp/images/fish/18_6.min.png' %}" width="94" height="30" alt="Swimming fish" id="18_6"  />
+         <img src="{% static 'wellnessapp/images/fish/18_7.min.png' %}" width="94" height="30" alt="Swimming fish" id="18_7"  />
+         <img src="{% static 'wellnessapp/images/fish/18_8.min.png' %}" width="94" height="30" alt="Swimming fish" id="18_8"  />
+         
+         <img src="{% static 'wellnessapp/images/fish/21_1.min.png' %}" width="24" height="34" alt="Swimming fish" id="21_1"  />
+         <img src="{% static 'wellnessapp/images/fish/21_2.min.png' %}" width="24" height="34" alt="Swimming fish" id="21_2"  />
+         <img src="{% static 'wellnessapp/images/fish/21_3.min.png' %}" width="24" height="34" alt="Swimming fish" id="21_3"  />
+         <img src="{% static 'wellnessapp/images/fish/21_4.min.png' %}" width="24" height="34" alt="Swimming fish" id="21_4"  />
+         <img src="{% static 'wellnessapp/images/fish/21_5.min.png' %}" width="24" height="34" alt="Swimming fish" id="21_5"  />
+         <img src="{% static 'wellnessapp/imag <div class="pagination"></div>es/fish/21_6.min.png' %}" width="24" height="34" alt="Swimming fish" id="21_6"  />
+         <img src="{% static 'wellnessapp/images/fish/21_7.min.png' %}" width="24" height="34" alt="Swimming fish" id="21_7"  />
+
+
+         <img src="{% static 'wellnessapp/images/fish/26_1.min.png' %}" width="40" height="10" alt="Swimming fish" id="26_1"  />
+         <img src="{% static 'wellnessapp/images/fish/26_2.min.png' %}" width="40" height="10" alt="Swimming fish" id="26_2"  />
+         <img src="{% static 'wellnessapp/images/fish/26_3.min.png' %}" width="40" height="10" alt="Swimming fish" id="26_3"  />
+         
+         
+        <img src="{% static 'wellnessapp/images/fish/30_1.min.png' %}" width="15" height="10" alt="Swimming fish" id="30_1"  />
+        <img src="{% static 'wellnessapp/images/fish/30_2.min.png' %}" width="15" height="10" alt="Swimming fish" id="30_2"  />
+        <img src="{% static 'wellnessapp/images/fish/30_3.min.png' %}" width="15" height="10" alt="Swimming fish" id="30_3"  />
+        <img src="{% static 'wellnessapp/images/fish/30_4.min.png' %}" width="15" height="10" alt="Swimming fish" id="30_4"  />
+        <img src="{% static 'wellnessapp/images/fish/30_5.min.png' %}" width="15" height="10" alt="Swimming fish" id="30_5"  />
+              </div> 
+          <table class="main_interface_wrapper" align="center">
+                <tr>
+                
+                <td colspan=2 class="selectgraph">
+                 <fieldset data-role="controlgroup">
+                    <table width="100%">
+                    
+       					 <tr>
+						        <td class="grouponescoretank"><label class="scoretanklabel" for="todayscoretank">Today</label><input type="radio" name="datecapturedscoretank" value="Today" class="datecaptured_scoretank_class" id="todayscoretank" ></td>
+
+                          <td class="grouponescoretank"><a href="javascript:changeMenu('DisplayScoreTankGroup2')" class="ui-btn ui-icon-arrow-r ui-btn-icon-notext">Next</a></td>
+
+<!--end of group 1-->
+
+ 							<td class="grouptwoscoretank"><a href="javascript:changeMenu('DisplayScoreTankGroup1');" class="ui-btn ui-icon-arrow-l ui-btn-icon-notext">Prev</a></td>
+
+
+							<td class="grouptwoscoretank"><label class="scoretanklabel" for="yesterdayscoretank">Yesterday</label><input type="radio" name="datecapturedscoretank" value="Yesterday" class="datecaptured_scoretank_class" id="yesterdayscoretank" ></td>
+
+
+                                                       
+<!--end of group 2-->
+							
+                                                      
+							
+						
+							     
+							   
+
+			  
+			                   </tr>
+			                </table>
+			                </fieldset>
+			              </td>
+			            </tr>
+  
+     <tr>
+     <td>                    
+      <table id="scoretank" class="main_interface_wrapper" align="center"> 
+      
+        <thead>
+        
+        </thead>
+        <tbody>
+              <tr>
+              
+                  <!--<td width="100%" style="background: url('{{ STATIC_URL }}wellnessapp/images/fishtankbg3.jpg') repeat;">-->
+                  <td width="100%">
+                    
+                        <div id="teamscoreaquirium"></div>
+                        <div class="device">
+                             <a class="arrow-left" href="#" id="arrow-left2"></a>
+                             <a class="arrow-right" href="#" id="arrow-right2"></a>
+                               <div class="swiper-container" id="container2">
+                               <div class="swiper-wrapper">
+                              
+                             
+                                                 
+                        {% for key, beneficiary in beneficiary_ids.items %}
+                             <div class="swiper-slide"> 
+                                <a href="javascript:retrieveAquariumComments({{beneficiary.D3}});">Comments and Likes</a> 
+                                <canvas width="200" height="200" class="aquarium_canvas"></canvas>
+                             </div>
+                             
+                        {% endfor %}  
+                                           
+                             
+                      
+                    <!--
+                        <div class="swiper-slide"><img src="{% static "django_facebook/images/8_2014_06_23.jpeg" %}"> </div>
+                         <div class="swiper-slide"> <img src="{% static "django_facebook/images/6_2014_06_23.jpeg" %}"> </div> -->
+                    
+                      
+<!--<div class="swiper-slide"  style="background: url('{{ STATIC_URL }}wellnessapp/images/fishtankbg3.jpg') repeat;">-->
+<!--
+<div class="swiper-slide">
+<canvas id="box" width="80" height="80" style="width:200px;height:200px;border:2px solid black;background: url('{{ STATIC_URL }}wellnessapp/images/fishtankbg3.jpg') repeat;"></canvas>
+</div>-->
+<!--
+<marquee behavior="scroll" direction="left" scrollamount="2"><img src="{% static 'wellnessapp/images/shark.gif' %}" width="94" height="30" alt="Swimming fish" /></marquee>
+<marquee behavior="scroll" direction="right" scrollamount="1"><img src="{% static 'wellnessapp/images/tortoise.gif' %}" width="94" height="30" alt="Swimming fish" /></marquee>
+<marquee behavior="scroll" direction="left" scrollamount="3"><img src="{% static 'wellnessapp/images/fish2.gif' %}" width="94" height="40" alt="Swimming fish" /></marquee>
+<marquee behavior="scroll" direction="right" scrollamount="4"><img src="{% static 'wellnessapp/images/kujira.gif' %}" width="94" height="35" alt="Swimming fish" /></marquee>
+<marquee behaviiiiiiiiiior="scroll" direction="left" scrollamount="5"><img src="{% static 'wellnessapp/images/manta.gif' %}" width="94" height="20" alt="Swimming fish" /></marquee>
+  </div>-->                          <!--
+        <div class="swiper-slide"><img src="{% static "django_facebook/images/8_2014_06_23.jpeg" %}"> </div>
+        <div class="swiper-slide"> <img src="{% static "django_facebook/images/6_2014_06_23.jpeg" %}"> </div>-->
+        <!--<div class="swiper-slide">
+          <div class="content-slide">
+            <p class="title">Slide with HTML</p>
+            <p>You can put any HTML inside of slide with any layout, not only images, even another Swiper!</p>
+          </div>
+        </div>-->
+      </div>
+    </div>
+    <div class="pagination" id="pagination2"></div>
+  </div> 
+                  
+                   
+                   </td>
+              
+              </tr>
+        
+        </tbody>
+         
+
+	  
+      </table>
+    </td>
+    </tr>
+  </table>
+ 
+  </div>
+  <a href="#gameinterface" class="ui-btn ui-icon-back ui-btn-icon-left" data-transition="slide" data-direction="reverse">Previous Page</a>   
+ <a href="#pageone" class="ui-btn ui-icon-back ui-btn-icon-left" data-transition="slide" data-direction="reverse">Main Page</a>  
+  <div data-role="footer" style="background:#3b5998" >
+    <h1>Track Close One's Wellness</h1>
+  </div>
+</div>
+
+<div data-role="page" id="fbcomments">
+
+  <div data-role="header" style="background:#3b5998" >
+
+    <h1>Aquarium Commments</h1>
+
+  </div>
+
+
+
+  <div data-role="main" class="ui-content">
+
+  <div class="fb-comments" data-href="http://ict4d01.cs.uct.ac.za/wellness/facebook/example/" data-numposts="5" data-colorscheme="light"></div>
+
+
+
+
+
+  </div>
+
+<a href="#fishtank" class="ui-btn ui-icon-back ui-btn-icon-left" data-transition="slide" data-direction="reverse">Previous Page</a> <a href="#pageone" class="ui-btn ui-icon-back ui-btn-icon-left" data-transition="slide" data-direction="reverse">Main Page</a>
+
+  <div data-role="footer" style="background:#3b5998" >
+
+    <h1>Track Close One's Wellness</h1>
+
+  </div>
+
+</div>
+
+{% endif%}
+
+
+</body>
+</html>

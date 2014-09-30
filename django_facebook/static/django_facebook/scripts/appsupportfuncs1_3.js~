@@ -1,0 +1,1089 @@
+// JavaScript Document
+var graph_dataset_counter=0;// for 
+var portion_sizes=new Array();
+var food_group=new Array();
+
+var time_of_activity_creation=new Array();// it can also store date of activity creation incase activities fall on different dates 
+var date_of_weight_recording=new Array();
+var steps_walked=new Array();
+daily_average_steps_week=0;
+time_average_steps=0;
+var weight_recorded=new Array();
+var day_of_week=null
+var plot_graph=0;
+var food_or_activity=0;
+var current_weight="0";
+var recording_weight_allowed=false;
+first_time_loading=true;
+var placeholder_defined=false;
+
+function filterPortionSizesData(data,keys_length_array)
+{
+   food_or_activity=0;
+       for(var i=0;i< keys_length_array[0];i++)
+       {
+		 	                                      
+	food_group[graph_dataset_counter]=data[i][0];
+        portion_sizes[graph_dataset_counter]=data[i][1];
+        //alert(food_group[graph_dataset_counter]);
+	graph_dataset_counter++;
+	plot_graph++;
+       }
+  			 
+}
+
+
+
+function filterActivitySizesData(data,keys_length_array)
+{
+ 
+var date_repetition=false;
+food_or_activity=1;
+var accumulated_steps=0;
+for(var i=0;i< keys_length_array[0];i++)
+		 {
+		    
+					time_of_activity_creation[graph_dataset_counter]=data[i][0];
+					steps_walked[graph_dataset_counter]=data[i][3];
+					accumulated_steps=accumulated_steps+steps_walked[i];
+					
+				    graph_dataset_counter++;
+					
+					plot_graph++;
+		   
+		 
+        }
+if(plot_graph>=1){
+  if(graph_dataset_counter==7)
+     daily_average_steps_week=accumulated_steps/7;
+   else
+     if(graph_dataset_counter==4)
+	     time_average_steps=accumulated_steps/4;
+
+
+}
+
+
+
+		
+  
+  
+  
+   
+			 
+}
+
+function filterWeightSizesData(data,keys_length_array)
+{
+food_or_activity=2;
+for(var i=0;i< keys_length_array[0];i++)
+		 {
+		  		
+					weight_recorded[graph_dataset_counter]=data[i][1];
+					date_of_weight_recording[graph_dataset_counter]=data[i][0];
+					
+				    graph_dataset_counter++;
+					plot_graph++;
+		   
+		 
+        }
+  
+  
+  
+   
+			 
+}
+    
+  function drawChart(record,keys_length_array,graphtype) {
+	  
+	  if(graphtype=='M'){
+	  filterPortionSizesData(record,keys_length_array);
+	     plot('FG1');
+	   }
+	   else
+	   if(graphtype=='A'){
+	  
+	   filterActivitySizesData(record,keys_length_array);
+	   plot('AG1');
+	   }
+	   else
+	   if(graphtype=="W"){
+	   filterWeightSizesData(record,keys_length_array);
+	   plot('WG1');
+	   }
+
+    }
+
+ 
+function labelFormatter(label, series) {
+		return "<div style='font-size:8pt; text-align:center; padding:2px; color:white;'>" + label + "<br/>" + Math.round(series.percent) + "%</div>";
+	}
+		
+var dont_replot=false;
+function plot(command){
+
+var placeholder;
+
+if(food_or_activity==0){
+   placeholder = $("#mealplaceholder");
+}
+else{
+     if(food_or_activity==1)
+         placeholder = $("#activityplaceholder");
+     else
+         return;
+
+}
+	 
+	   
+       //var width=$("#placeholder").css("width");
+            var width=placeholder.css("width");
+            width=width.substring(0, width.length - 2);
+	    var height=width*0.7;
+	    height=height+"px";
+
+	    //$("#placeholder").css("height",height);
+            placeholder.css("height",height);
+	
+	    //assign days to portion sizes
+	    created_chart_data=new Array();
+	    alert(graph_dataset_counter);
+
+	    for(var i=0;i<graph_dataset_counter;i++){ 
+  
+			  created_chart_data[i]=new Array();
+			  if(food_or_activity==0)
+			    {
+			     //created_chart_data[i][0]=food_group[i];
+			     //created_chart_data[i][1]=""+portion_sizes[i]+"";
+                               created_chart_data[i] = {
+				label: food_group[i],
+				data: portion_sizes[i]
+			        };
+
+                                 
+                         
+                                //alert(created_chart_data[i]["label"]+"--"+created_chart_data[i]["data"]);
+
+				 }
+			   else
+			     {
+				 
+				  if(food_or_activity==1){
+				    created_chart_data[i][0]=time_of_activity_creation[i];
+			            created_chart_data[i][1]=steps_walked[i];
+					
+					 
+				   }
+				  else
+			          {
+				     created_chart_data[i][0]=date_of_weight_recording[i];
+			             created_chart_data[i][1]=weight_recorded[i];
+						 
+				}
+			    }	 
+			   
+	   }
+		
+		
+		//initialize the two array to be used for the next plotting
+		
+
+//food_or_activity=1;
+  
+  if((plot_graph>0) || (plot_graph==-1)){
+		
+		    if(food_or_activity==0)
+
+                    {
+                           /*
+
+                           $.plot('#placeholder', created_chart_data, {
+				    series: {
+					pie: {
+					    show: true,
+					    radius: 1,
+					    label: {
+						show: true,
+						radius: 3/4,
+						formatter: labelFormatter,
+						background: {
+						    opacity: 0.5
+						}
+					    }
+					}
+				    },
+				    legend: {
+					show: false
+				    }
+				});*/
+
+				//$.plot('#placeholder', created_chart_data, {
+                                  $.plot(placeholder, created_chart_data, {
+				    series: {
+					pie: {
+                                            innerRadius: 0.2,
+					    show: true
+					}
+				    },
+				   legend: {
+						show: false
+			            }
+				});
+
+				 if(plot_graph==-1){
+				     //alert("No data for activity from \" "+previous_day_displayed+"\"");
+					 $('#mealsummary').text("");
+					 $('#mealsummary').append("<font style=\"color:red\"><b>Error:</b></font> No data for meals recorded \" "+previous_day_displayed+"\" ");
+					  
+				}
+				else
+				{
+				    
+			          $('#mealsummary').text("The average number of steps walked per 6 hours interval during this day is:";
+				 }
+
+
+
+
+
+
+                     }//end of if statement that checks if food_or_activity==0
+                    else
+                    { 
+
+                                   if(food_or_activity==1){
+						      //var graph=$.plot("#placeholder", [created_chart_data], {
+							var graph=$.plot(placeholder, [created_chart_data], {
+							series: {
+								bars: {
+									show: true,
+									barWidth: 0.4,
+									align: "center",
+									//steps: true 
+								},
+								points: { show: true },
+								color:"green"
+							},
+							xaxis: {
+								mode: "categories",
+								tickLength: 0
+							},
+			
+							grid:{
+								backgroundColor: { colors: [ "#fff", "#eee" ] },
+								borderWidth: {
+									top: 1,
+									right: 1,
+									bottom: 2,
+									left: 2
+								  }
+							  }
+			
+						     });
+
+
+						if(plot_graph==-1){
+						     //alert("No data for activity from \" "+previous_day_displayed+"\"");
+							 $('#activitysummary').text("");
+							 $('#activitysummary').append("<font style=\"color:red\"><b>Error:</b></font> No data for steps walked \" "+previous_day_displayed+"\" ");
+							  
+							  }
+						else
+						   {
+						    
+							  if(graph_dataset_counter==7){
+							 //time_average_steps=accumulated_steps/6;
+								$('#activitysummary').text("The average number of steps walked per day in 7 days period is:" +Math.floor(daily_average_steps_week)+"");
+							   }
+							   else
+							       $('#activitysummary').text("The average number of steps walked per 6 hours interval during this day is:" +Math.floor(time_average_steps)+"");
+						   }
+
+
+
+
+
+
+                                 }//end of if statement that checks if food_or_activity==1
+
+                     }
+
+	
+
+		 }
+		
+ 
+     plot_graph=0;
+     time_of_activity_creation=new Array();
+     steps_walked=new Array();
+
+
+     food_group=new Array();
+     portion_sizes=new Array();
+     graph_dataset_counter=0;
+ 
+  //});
+
+}
+
+var starch=0;
+var fruits=0;
+var dairy=0;
+var fat=0;
+var protein=0;
+
+ function enable_disable(selected_food)
+ {
+
+     //if($("#starchfood").is(":disabled"))
+       //$("#starchfood").prop('disabled', false);
+   switch(selected_food)
+   {
+    case "starch": $("#starch").prop('disabled', false);$("#fruits").prop('disabled',true);$("#protein").prop('disabled',true);$("#fat").prop('disabled',true);$("#dairy").prop('disabled',true);break;
+	case "fruits": $("#starch").prop('disabled', true);$("#fruits").prop('disabled',false);$("#protein").prop('disabled',true);$("#fat").prop('disabled',true);$("#dairy").prop('disabled',true);break;
+	case "protein": $("#protein").prop('disabled', true);$("#fruits").prop('disabled',true);$("#protein").prop('disabled',false);$("#fat").prop('disabled',true);$("#dairy").prop('disabled',true);break;  
+    case "dairy": $("#starch").prop('disabled', true);$("#fruits").prop('disabled',true);$("#protein").prop('disabled',true);$("#fat").prop('disabled',true);$("#dairy").prop('disabled',false);break;
+    case "fat": $("#starch").prop('disabled', true);$("#fruits").prop('disabled',true);$("#protein").prop('disabled',true);$("#fat").prop('disabled',false);$("#dairy").prop('disabled',true);break;
+   }
+
+ 
+ }
+
+ var fruit_portion_size=0;
+ var starch_portion_size=0;
+ var protein_portion_size=0;
+ var fat_portion_size=0;
+ var dairy_portion_size=0;
+ 
+ function getPortionSize(size_identifier)
+ {
+   
+	   switch(size_identifier)
+	   {
+	    case 1: return "Small";
+		case 2: return "Medium";
+		case 3: return "Large";
+		default: return "None";
+	   
+	   
+	   }
+ 
+ 
+ }
+ 
+ 
+ function updateChart(selected_food_group)
+ { 
+  
+  
+  switch(selected_food_group)
+  {
+   //case "fruits":document.getElementById("fruits_portion").innerHTML=$("#fruits").val();fruits=$("#fruits").val();break;
+   case "fruits":fruit_portion_size++;$("#fruits_portion").text(""+getPortionSize(fruit_portion_size)+"");if(fruit_portion_size>3)fruit_portion_size=0;fruits=fruit_portion_size;break;
+   case "starch":starch_portion_size++;$("#starch_portion").text(""+getPortionSize(starch_portion_size)+"");if(starch_portion_size>3)starch_portion_size=0;starch=starch_portion_size;break;
+   case "protein":protein_portion_size++;$("#protein_portion").text(""+getPortionSize(protein_portion_size)+"");if(protein_portion_size>3)protein_portion_size=0;protein=protein_portion_sizebreak;
+   case "fat":fat_portion_size++;$("#fat_portion").text(""+getPortionSize(fat_portion_size)+"");if(fat_portion_size>3)fat_portion_size=0;fat=fat_portion_size;break;
+   case "dairy":dairy_portion_size++;$("#dairy_portion").text(""+getPortionSize(dairy_portion_size)+"");if(dairy_portion_size>3)dairy_portion_size=0;dairy=dairy_portion_size;break;
+     
+  }
+
+ 
+ 
+  
+     
+ }
+  function loadDatePicker()
+  {
+    //date picker on the record meal page
+	$('#main_interface_wrapper').delegate("#datepicker", "click", function () {
+      if (!$(this).hasClass("hasDatepicker"))
+        {
+            $(this).datepicker();
+            $(this).datepicker("show");
+			
+        }
+		
+	});
+	
+	
+	
+	$('#main_interface_wrapper').delegate("#datepicker", "change", function () {
+       
+	  
+		var picked_date=""+$('#datepicker').val();
+		var first_slash=picked_date.indexOf("/");
+		var second_slash=picked_date.lastIndexOf("/");
+		
+		var mm=picked_date.substring(0,first_slash);
+		var month=mm;
+		switch(mm)
+		{
+		case "01":mm="January";break;
+		case "02":mm="February";break;
+		case "03":mm="March";break;
+		case "04":mm="April";break;
+		case "05":mm="May";break;
+		case "06":mm="June";break;
+		case "07":mm="July";break;
+		case "08":mm="August";break;
+		case "09":mm="September";break;
+		case "10":mm="October";break;
+		case "11":mm="November";break;
+		case "12":mm="December";break;
+		
+		}
+		var dd=picked_date.substring(first_slash+1,second_slash);
+		var yyyy=picked_date.substring(second_slash+1,picked_date.length);
+		$('#datepicker').val(dd+" "+mm+" "+yyyy);
+		$('#date_eaten').val(yyyy+"-"+month+"-"+dd);
+		
+		
+	});
+  
+  }
+  
+  
+  
+  //this date picker is for plot meal graphs and plot activity graphs
+   function loadDatePicker_1()
+  {
+ 
+    //date picker on the record meal page
+	$('#main_interface_wrapper').delegate("#datepicker1", "click", function () {
+      if (!$(this).hasClass("hasDatepicker"))
+        {
+            $(this).datepicker();
+            $(this).datepicker("show");
+			
+        }
+		
+	});
+	
+  if(first_time_loading)
+	$('#main_interface_wrapper').delegate("#datepicker1", "change", function () {
+       
+	    first_time_loading=false;
+		var picked_date=""+$('#datepicker1').val();
+		//alert(picked_date);
+		  var first_slash=picked_date.indexOf("/");
+		var second_slash=picked_date.lastIndexOf("/");
+		
+		var mm=picked_date.substring(0,first_slash);
+		var month=mm;
+		switch(mm)
+		{
+		case "01":mm="January";break;
+		case "02":mm="February";break;
+		case "03":mm="March";break;
+		case "04":mm="April";break;
+		case "05":mm="May";break;
+		case "06":mm="June";break;
+		case "07":mm="July";break;
+		case "08":mm="August";break;
+		case "09":mm="September";break;
+		case "10":mm="October";break;
+		case "11":mm="November";break;
+		case "12":mm="December";break;
+		
+		}
+		var dd=picked_date.substring(first_slash+1,second_slash);
+		var yyyy=picked_date.substring(second_slash+1,picked_date.length);
+		$('#datepicker1').val(dd+" "+mm+" "+yyyy);
+		$('#date_eaten_1').val(yyyy+"-"+month+"-"+dd);
+		$('#date_captured_1').val(yyyy+"-"+month+"-"+dd);
+		 if(recording_weight_allowed)
+		   {
+		     
+		     retrieveWeight();
+			
+			}
+	});
+  
+  }
+  
+  
+  //this date picker is for plot meal graphs and plot activity graphs
+    function loadDatePicker_2()
+  {
+    //date picker on the record meal page
+	$('#main_interface_wrapper').delegate("#datepicker2", "click", function () {
+      if (!$(this).hasClass("hasDatepicker"))
+        {
+            $(this).datepicker();
+            $(this).datepicker("show");
+        }
+		 
+	});
+	
+	
+ if(first_time_loading)
+	$('#main_interface_wrapper').delegate("#datepicker2", "change", function () {
+	    first_time_loading=false; 
+		var picked_date=""+$('#datepicker2').val();
+		  var first_slash=picked_date.indexOf("/");
+		var second_slash=picked_date.lastIndexOf("/");
+		
+		var mm=picked_date.substring(0,first_slash);
+		var month=mm;
+		switch(mm)
+		{
+		case "01":mm="January";break;
+		case "02":mm="February";break;
+		case "03":mm="March";break;
+		case "04":mm="April";break;
+		case "05":mm="May";break;
+		case "06":mm="June";break;
+		case "07":mm="July";break;
+		case "08":mm="August";break;
+		case "09":mm="September";break;
+		case "10":mm="October";break;
+		case "11":mm="November";break;
+		case "12":mm="December";break;
+		
+		}
+		var dd=picked_date.substring(first_slash+1,second_slash);
+		var yyyy=picked_date.substring(second_slash+1,picked_date.length);
+		$('#datepicker2').val(dd+" "+mm+" "+yyyy);
+		$('#date_eaten_2').val(yyyy+"-"+month+"-"+dd);
+		$('#date_captured_2').val(yyyy+"-"+month+"-"+dd);
+		
+	});
+  
+  } 
+  
+function saveMealStep1()
+{
+$('#main_interface_wrapper').load('http://137.158.58.222:80/wellnessapp/cmd/F3',function(){  
+		$('#fruits_portion').text(fruits);
+		$('#starch_portion').text(starch);
+		$('#fat_portion').text(fat);
+		$('#dairy_portion').text(dairy);
+		$('#protein_portion').text(protein);
+		loadDatePicker();
+  });
+
+}
+
+function saveMealFinal()
+{
+
+var  jsonObjects= { Fruits: fruits, Starch: starch, Fat: fat, Dairy: dairy, Protein: protein, MealType: $('#meal_type').val(),DateEaten:$('#date_eaten').val() };
+if((fruits == "None") &&(starch=="None") && (fat=="None") && (dairy=="None")&&(protein="None")){
+   alert("Please Specify the portion size of at least one food group before saving!");
+   return;
+   }
+  
+ if((jsonObjects["DateEaten"]==null)|| (jsonObjects["DateEaten"]==null) || (jsonObjects["DateEaten"]=="None")){
+     alert("Please Specify the date in which the food was eaten!");
+     return;  
+   }
+   
+  if(jsonObjects["MealType"]=="Meal Type"){
+     alert("Please Specify the type of meal!");
+     return;
+   
+   }
+ 
+//alert(jsonObjects["DateEaten"]);
+ //return;
+//var  jsonObjects={Fruits: $('#fruits_portion').text();,Starch:$('#starch_portion').text()};//, Fat: $('#fat_portion').text();, Dairy: $('#dairy_portion').text();, Protein: $('#protein_portion').text(), MealType: $('#meal_type').val(),DateEaten:$('#date_eaten').val() };
+
+jQuery.ajax({
+       url: "http://137.158.58.222:80/wellnessapp/dataupdate/SM/",//save meal to the database
+      type: "POST",
+      contentType: "application/json",
+      data: JSON.stringify(jsonObjects),
+	  
+      success: function(result) {
+     //Write your code here
+	    alert(result["message"]);
+      }
+});
+
+}
+
+
+function saveWeight()
+{
+var  jsonObjects= { Weight: $('#weight').val(), DateCaptured:$('#date_captured_1').val()  };
+jQuery.ajax({
+       url: "http://137.158.58.222:80/wellnessapp/dataupdate/SW/",
+      type: "POST",
+      contentType: "application/json",
+      data: JSON.stringify(jsonObjects),
+      success: function(result) {
+     //Write your code here
+		                        if(result.message!==undefined)
+								  { var str=result.message;
+								    alert(str);
+								      
+								  }
+								  else
+								  	alert("Undefined");
+      }
+});
+
+}
+
+
+var first_display=0;
+var default_day_displayed="Today";
+var previous_day_displayed=null;
+var sync=0;
+function displayActivityGraph()
+{
+/*if(sync==0)
+   sync=1;
+else
+   if(sync==1)
+      return; // a method is already being executed */
+	  /*
+switch(selected)
+{
+case 1:default_day_displayed="Today";first_display=0;break;
+case 2:default_day_displayed="This week";first_display=0;break;
+case 3:default_day_displayed="Last week";first_display=0;break;
+
+}
+*/
+/*if (dont_replot)//dont plot a graph. Change on radio button is not coming from User's click
+  {
+   dont_replot=false;
+   return;
+  
+  }*/
+var  jsonObjects;
+/*
+if(first_display==0){ //if the graph page is loaded for the first time then the default day to display is today
+    jsonObjects= { Day:default_day_displayed};
+	first_display++;
+	}
+else{*/
+jsonObjects= { Day:$('input:radio[name=datecaptured]:checked').val()};
+
+previous_day_displayed=$('input:radio[name=datecaptured]:checked').val()
+   //default_day_displayed=$('input:radio[name=datecaptured]:checked').val();
+   //first_display++;
+   //remove the placeholder 
+   
+   
+   //}
+   
+  
+//alert(""+jsonObjects.Day+","+jsonObjects.Date1+","+jsonObjects.Date2);
+//alert(jsonObjects.Day+","+jsonObjects.MealType+","+jsonObjects.FoodContent+","+jsonObjects.Date1+", and "+jsonObjects.Date2);
+//$('#main_interface_wrapper').load('http://137.158.58.222:80/wellnessapp/cmd/DWP/',function(){  
+jQuery.ajax({
+      //url: "http://localhost/cgi-bin/plot_activity_graph.py",
+	  url: "http://137.158.58.222:80/wellnessapp/jsondata/PAG/",
+      type: "POST",
+	  cache: false,
+      contentType: "application/json",
+      data: JSON.stringify(jsonObjects),
+      success: function(result) {
+     //Write your code here
+	 /*
+	 if(first_display>1)
+	   {
+	    $("#placeholder").remove();
+		 alert("place holder was moved")
+		} */
+	 //return;
+	 if((result.error!==undefined))
+	 {
+	   switch(result.error)
+	   {
+		 case -4:plot_graph=-1; break; 
+		 default:alert("There was an error in processing your request");return;
+	     
+	   }
+	   
+	   //$('#main_interface_wrapper').load('http://137.158.58.222:80/wellnessapp/cmd/FG');
+	 }
+	
+	   var data=new Array();
+	 
+	  
+	   var activity_keys_length=0;
+	  
+	   var activity_fields_keys_length=0;
+	   
+	
+	   //var portions_fields_keys_length=0;
+	   
+	   var activity_keys=new Array();
+	   var activity_fields_keys=new Array();
+	   //var portions_fields_keys=new Array();
+	   
+	   
+	   //var key1="R";
+	  // var key2="F";
+	   
+	   //for(var i=0;i<meals_keys_length;i++)
+	  if(plot_graph!=-1) 
+	   for(var x in result)
+	    {  
+		   data[activity_keys_length]=new Array();
+		
+		 activity_fields_keys_length=0;
+		   for(var y in result[x])
+		   {
+		         data[activity_keys_length][activity_fields_keys_length]=new Array();
+	             data[activity_keys_length][activity_fields_keys_length]=result[""+x+""][""+y+""];
+	             //alert(data[activity_keys_length][activity_fields_keys_length]);
+			     activity_fields_keys_length++;
+		   }
+		     
+		    activity_keys_length++;
+		 
+		}
+	  else
+		   activity_keys_length=0;
+		
+		
+	var keys_length_array=new Array();
+	keys_length_array[0]=activity_keys_length;
+	keys_length_array[1]=activity_fields_keys_length;
+	//plotGraph(data,keys_length_array);	
+	 drawChart(data,keys_length_array,'A'); 
+	 
+   }
+});
+
+//});
+sync=0;
+//plotGraph(data,keys_length_array,'A');	 
+}
+
+
+function displayWeightGraph()
+{
+var  jsonObjects= { Day:$('input:radio[name=datecaptured]:checked').val(),Date1:$('#date_captured_1').val(),Date2:$('#date_captured_2').val()};
+//alert(jsonObjects.Day+","+jsonObjects.MealType+","+jsonObjects.FoodContent+","+jsonObjects.Date1+", and "+jsonObjects.Date2);
+$('#main_interface_wrapper').load('http://137.158.58.222:80/wellnessapp/cmd/DWP/',function(){
+jQuery.ajax({
+      //url: "http://localhost/cgi-bin/plot_activity_graph.py",
+	  url: "http://137.158.58.222:80/wellnessapp/jsondata/PWG/",
+      type: "POST",
+      contentType: "application/json",
+      data: JSON.stringify(jsonObjects),
+      success: function(result) {
+     //Write your code here
+	 
+	 //return;
+	 if(result.error!==undefined)
+	 {
+	   switch(result.error)
+	   {
+	     case -1:alert("Error:You haven't selected date field");break;
+		 case -2:alert("Error: Dates were selected incorrectly");break;
+		 default:alert("There was an error in processing your request");
+	     
+	   }
+	   //$('#main_interface_wrapper').load('http://137.158.58.222:80/wellnessapp/cmd/FG');
+	   return;
+	 }
+	
+	   var data=new Array();
+	 
+	  
+	   var weight_keys_length=0;
+	  
+	   var weight_fields_keys_length=0;
+	   
+	
+	   //var portions_fields_keys_length=0;
+	   
+	   var weight_keys=new Array();
+	   var weight_fields_keys=new Array();
+	   //var portions_fields_keys=new Array();
+	   
+	   
+	   //var key1="R";
+	  // var key2="F";
+	   
+	   //for(var i=0;imeals_keys_length;i++)
+	  
+	   for(var x in result)
+	    {  
+		   data[weight_keys_length]=new Array();
+		
+		 weight_fields_keys_length=0;
+		   for(var y in result[x])
+		   {
+		         data[weight_keys_length][weight_fields_keys_length]=new Array();
+	             data[weight_keys_length][weight_fields_keys_length]=result[""+x+""][""+y+""];
+	                
+			     weight_fields_keys_length++;
+		   }
+		     
+		    weight_keys_length++;
+		 
+		}
+		
+		
+	var keys_length_array=new Array();
+	keys_length_array[0]=weight_keys_length;
+	keys_length_array[1]=weight_fields_keys_length;
+	//plotGraph(data,keys_length_array);	
+     
+	 drawChart(data,keys_length_array,'W'); 
+   }
+});
+
+});
+//plotGraph(data,keys_length_array,'A');	 
+}
+
+
+
+
+function displayMealGraph()
+{
+
+var  jsonObjects= { Day:$('input:radio[name=datecaptured]:checked').val()};
+
+ 
+jQuery.ajax({
+      url: "http://137.158.58.222:80/wellnessapp/jsondata/PMG/",
+      type: "POST",
+      contentType: "application/json",
+      data: JSON.stringify(jsonObjects),
+      success: function(result) {
+     //Write your code here
+	 
+	 //return;
+	 if(result.error!==undefined)
+	 {
+	   switch(result.error)
+	   {
+	    case -4:plot_graph=-1; break; 
+	
+	    default:alert("There was an error in processing your request");return;
+	     
+	   }
+	
+	   
+	 }
+	
+	   var data=new Array();
+	 
+	  
+	  
+	   var portions_keys_length=0;
+	   
+	
+	   var portions_fields_keys_length=0;
+	   
+	   var meals_keys=new Array();
+	   var portions_keys=new Array();
+	   var portions_fields_keys=new Array();
+	   
+	   
+	   var key1="P";
+	   var key2="D";
+
+	   
+	   //for(var i=0;i<meals_keys_length;i++)
+	  
+	   for(var x in result)
+	    {  
+		 data[portions_keys_length]=new Array();
+		 
+		 portions_fields_keys_length=0; // size for each portion array
+		 for(var y in result[x])
+		 {
+		         data[portions_keys_length][portions_fields_keys_length]=result[""+x+""][""+y+""];
+	           
+	                 portions_fields_keys_length++;
+	   
+	           
+		 }
+		     
+		 portions_keys_length++;
+		 
+	   }
+		
+		
+	var keys_length_array=new Array(); // for keeping track of sizes(depth) of two arrays  data[] and data[][]
+	keys_length_array[0]=portions_keys_length;
+	keys_length_array[1]=portions_fields_keys_length; 
+	
+	
+	
+	drawChart(data,keys_length_array,'M'); 
+   }
+});
+
+//plotGraph(data,keys_length_array);	 
+}
+
+
+
+function foodGraphInterface_Set_components()
+{  /*
+   $('#bydate_component').hide();//
+			   $('#main_interface_wrapper').delegate(".dateconsumed_class", "click", function () {
+			   
+				if( $('input:radio[name=dateconsumed]:checked').val()=="By date")
+				  {
+				    
+					  //$('#datepickers').show();
+					   $('#bydate_no_component').hide();
+					   $('#bydate_component').show();
+					   $("#radio_bydate").prop("checked", true)
+					
+					  
+				   }
+				   else
+				    {
+					  //$('#datepickers').hide();
+					  $('#bydate_no_component').show();
+					   $('#bydate_component').hide();
+					
+					}
+			   });
+			   
+			   
+			   loadDatePicker_1();
+			   loadDatePicker_2();*/
+
+}
+
+
+function activityGraphInterface_Set_components()
+{ /*
+   $('#bydate_component').hide();//
+			   $('#main_interface_wrapper').delegate(".datecaptured_class", "click", function () {
+			   
+				if( $('input:radio[name=datecaptured]:checked').val()=="By date")
+				  { 
+					  //$('#datepickers').show();
+					   $('#bydate_no_component').hide();
+					   $('#bydate_component').show();
+					   $("#radio_bydate").prop("checked", true)
+					  
+				   }
+				   else
+				    {
+					  //$('#datepickers').hide();
+					  $('#bydate_no_component').show();
+					   $('#bydate_component').hide();
+					
+					}
+			   });
+			   
+			   
+			   loadDatePicker_1();
+			   loadDatePicker_2();
+			*/   
+			   
+
+}
+
+
+function weightGraphInterface_Set_components()
+{
+ /*
+   $('#bydate_component').hide();//
+			   $('#main_interface_wrapper').delegate(".datecaptured_class", "click", function () {
+			   
+				if( $('input:radio[name=datecaptured]:checked').val()=="By date")
+				  {
+				    
+					  //$('#datepickers').show();
+					   $('#bydate_no_component').hide();
+					   $('#bydate_component').show();
+					   $("#radio_bydate").prop("checked", true)
+					
+					  
+				   }
+				   else
+				    {
+					  //$('#datepickers').hide();
+					  $('#bydate_no_component').show();
+					   $('#bydate_component').hide();
+					
+					}
+			   });
+			   
+			   
+			   loadDatePicker_1();
+			   loadDatePicker_2();*/
+
+}
+
+
+
+function setActivityGoal()
+{
+  var  jsonObjects= { stepsGoal:$('#steps').val(),targetDuration:$('#duration').val()};
+  
+jQuery.ajax({
+      url: "http://localhost/cgi-bin/save_activity_goal.py",
+      type: "POST",
+      contentType: "application/json",
+      data: JSON.stringify(jsonObjects),
+      success: function(result) {
+     //Write your code here
+	    alert(result.message);
+		var str=""+result+""
+		if(result.message=="The goal was set successfully")
+		{
+		   var str="There is a "+$('#duration').val() +" goal of "+$('#steps').val()+" steps";
+		   $('#activity_goal').text(str);   
+		
+		}
+		  
+      }
+});
+	  
+
+
+
+}
+
+function setMealsGoal()
+{
+  
+var  jsonObjects= { Fruits: $('#fruits_portion').text(),Starch: $('#starch_portion').text(), Fat: $('#fat_portion').text(), Dairy: $('#dairy_portion').text(), Protein: $('#protein_portion').text(),Duration:$('#duration').val()};
+
+jQuery.ajax({
+      url: "http://localhost/cgi-bin/save_meals_goal.py",
+      type: "POST",
+      contentType: "application/json",
+      data: JSON.stringify(jsonObjects),
+	  
+      success: function(result) {
+     //Write your code here
+	    alert(result.message);
+      }
+});
+
+
+}
+function retrieveWeight(){
+   var  jsonObjects= { DateCaptured:$('#date_captured_1').val() };
+                      jQuery.ajax({
+      						url: "http://137.158.58.222:80/wellnessapp/jsondata/RW/",
+     						type: "POST",
+      						contentType: "application/json",
+      						data: JSON.stringify(jsonObjects),
+	  
+      						success: function(result) {
+     						//Write your code here
+							     if(result.weight!==undefined)
+								  { 
+								     switch(result.weight)
+									 {
+									   case 0:$('#weight').val('');break;
+									   default:$('#weight').val(result.weight); 
+									 }  
+								  }
+                              }
+						});
+
+
+
+ }
