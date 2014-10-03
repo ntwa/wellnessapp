@@ -598,6 +598,8 @@ class RetrievePoints:
             second_posn=second_posn+1
 
 
+            urls_tuple[key2+"%s"%second_posn]="%s"%beneficiary
+            second_posn=second_posn+1
             
 
             
@@ -613,14 +615,12 @@ class RetrievePoints:
               
      
      
-#myjson={'Fname':'Lucas','Lname':'Katule','Username':'katulentwa@gmail.com'}
-#obj=RetrieveIntermediary(myjson)
-#result=obj.retrieveIntermediaryInDB()
-#print result
 
 #myjson={'Day':'2014-09-13'}
 #obj=RetrievePoints(myjson,'katulentwa@gmail.com',1)
-#result=obj.retrieveIndividualBadge()
+
+#result=obj.retrieveScoreGardensUrls()
+
 #print result
 
 #myjson={'Day':'Today'}
