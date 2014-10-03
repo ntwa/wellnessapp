@@ -1,7 +1,8 @@
 {% load url from future %}
 {% load staticfiles %}
 <!DOCTYPE html>
-<html>
+
+<html xmlns:fb="http://ogp.me/ns/fb#">
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <!--
@@ -28,7 +29,10 @@
         font-size: 11px;
         margin-left:10px
      }
-     
+
+
+
+
  /* for the slider*/
  
  
@@ -121,6 +125,7 @@
 
 var static_url_val={{STATIC_URL}}
 </script>
+
 
 
 
@@ -862,6 +867,18 @@ $(document).on("pagecreate","#weightinterface",function(){
 $(document).on("pagecreate","#gameinterface",function(){
      initializeMenu();
      
+});
+
+var page_like_or_unlike_callback = function(url, html_element) {
+  console.log("page_like_or_unlike_callback");
+  console.log(url);
+  console.log(html_element);
+}
+
+$(document).on("pagecreate",'#fbcomments',function(){
+
+initializeMenu();
+
 });
 
 $(document).on("pagecreate","#healthgoals",function(){
@@ -3282,10 +3299,11 @@ Your browser does not support the HTML5 canvas tag.</canvas>
         </thead>
         <tbody>
               <tr>
-              
+                   
                   <!--<td width="100%" style="background: url('{{ STATIC_URL }}django_facebook/images/fishtankbg3.jpg') repeat;">-->
                   <td width="100%">
-                    
+                         
+
                         <div id="teamscoreaquirium"></div>
                         <div class="device">
                              <a class="arrow-left" href="#" id="arrow-left2"></a>
@@ -3298,7 +3316,9 @@ Your browser does not support the HTML5 canvas tag.</canvas>
                    
                          {% for key,beneficiary in beneficiary_ids.items %}
                              <div class="swiper-slide">  
-                             <a href="#fishtank">Comments and Likes</a>
+                           <a class="commentslink" href="#fbcomments">Comments and Likes</a>
+                           <!--   <div class="fb-like" data-href="https://developers.facebook.com/docs/plugins/" data-layout="standard" data-action="like" data-show-faces="true" data-share="true"></div>-->
+                          
                                 <canvas width="200" height="200" class="aquarium_canvas"></canvas>
                              </div>
                              
@@ -3343,9 +3363,22 @@ Your browser does not support the HTML5 canvas tag.</canvas>
 
 
   <div data-role="main" class="ui-content">
+    <div id="fbcommentbox" style="align: center;">
+  
+ <table class="main_interface_wrapper" align="center">
+  <tr><td style="width:80%;">
+<div id="like">
+&nbsp;
+<!--
+<iframe id="ifrm" class="fblike" src="//www.facebook.com/plugins/like.php?href=http%3A%2F%2Fict4d01.cs.uct.ac.za%2Fwellness%2Ffacebook%2Fexample%2F&amp;width&amp;layout=standard&amp;action=like&amp;show_faces=true&amp;share=true&amp;height=80&amp;appId=138647729661605" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:80%; height:80px;" allowTransparency="true"></iframe>
+</div>-->
+</td></tr>
+       <tr><td><div class="fb-comments" data-href="http://ict4d01.cs.uct.ac.za/wellness/facebook/example/" data-numposts="5" data-colorscheme="light"></div></td></tr>
 
-      <div class="fb-comments" data-href="http://example.com/comments" data-numposts="5" data-colorscheme="light"></div>
 
+       </table>    
+       
+    </div>
 
 
 
