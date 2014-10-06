@@ -174,7 +174,7 @@ var static_url_val={{STATIC_URL}}
   arrow_right_id=arrow_right_id+posn;
   
 
-  
+//  var score_date={{scoredate}};
   
   var swiper_container=".swiper-container[id=\'";
   swiper_container=swiper_container+container_id;
@@ -877,8 +877,64 @@ var page_like_or_unlike_callback = function(url, html_element) {
 
 $(document).on("pagecreate",'#fbcomments',function(){
 
-initializeMenu();
+initializeMenu();/*
+var iframeClick = function () {
+    var isOverIframe = false,
+    windowLostBlur = function () {
+        if (isOverIframe === true) {
+            // DO STUFF
+            isOverIframe = false;
+        }
+    };
+    jQuery(window).focus();
+    jQuery('#likebt').mouseenter(function(){
+        isOverIframe = true;
+        console.log(isOverIframe);
+    });
+    jQuery('#likebt').mouseleave(function(){
+        isOverIframe = false;
+        console.log(isOverIframe);
+     //check if the number of likes has changed   
+    //var current_fblikes_counter=0;
 
+      setTimeout(function(){
+
+      var current_fblikes_counter=0;
+
+
+    
+       fetchLikeCount(fblike_url).always(function(res){
+             //fblikes_counter=res;
+              current_fblikes_counter=res;
+        //alert("XFb="+fblikes_counter+" and CFb="+current_fblikes_counter);
+        if(fblikes_counter>current_fblikes_counter)
+         {
+          alert("Unlike happened");
+
+         }
+         else
+           {
+
+             if(fblikes_counter< current_fblikes_counter)
+              {//notify the team whose pages has been liked
+}
+               //notifyUser("Like",{{user}},{{email}},"fishtank",fblike_url);                 
+         
+             }
+             
+
+           }
+         fblikes_counter=current_fblikes_counter;
+        });        
+       },5000);//end set time out
+
+    });
+    jQuery(window).blur(function () {
+        windowLostBlur();
+    });
+};
+iframeClick();
+*/
 });
 
 $(document).on("pagecreate","#healthgoals",function(){
@@ -2988,11 +3044,11 @@ Your browser does not support the HTML5 canvas tag.</canvas>
 
 <div data-role="page"  id="scoregardensinterface">
   <div data-role="header" style="background:#3b5998" >
-    <h1>Help & Earn Points</h1>
+    <h3>Help & Earn Reputation</h3>
   </div>
 
   <div data-role="main" class="ui-content" >
-         <h2> Score gardens</h2> 
+         <h3 id="gardenheader"> Scored Gardens. Date: {{scoredate}}</h3> 
   <table class="main_interface_wrapper" align="center">
                 <tr>
 
@@ -3060,6 +3116,16 @@ Your browser does not support the HTML5 canvas tag.</canvas>
               
               </tr>
         
+
+            <tr><td>
+        <div id="gardenfblike">
+          <iframe id="gardenfblikebt" class="fblike" src="//www.facebook.com/plugins/like.php?href=http%3A%2F%2Fict4d01.cs.uct.ac.za%2Fwellness%2Ffacebook%2Fexample%2F&amp;width&amp;layout=standard&amp;action=like&amp;show_faces=false&amp;share=false&amp;height=80&amp;appId=138647729661605" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:80%; height:80px;" allowTransparency="true"></iframe>
+</div>
+</td></tr>
+  <tr><td><div id='gardencomment'><div  class="fb-comments" data-href="http://ict4d01.cs.uct.ac.za/wellness/facebook/example/" data-numposts="5" data-colorscheme="light"></div></div></td></tr>
+
+
+
         </tbody>
          
 
@@ -3079,11 +3145,11 @@ Your browser does not support the HTML5 canvas tag.</canvas>
 
 <div data-role="page"  id="fishtank">
   <div data-role="header" style="background:#3b5998" >
-    <h1>Help & Earn Points</h1>
+    <h3>Help & Earn Reputation</h3>
   </div>
 
   <div data-role="main" class="ui-content" >
-         <h2> Aquarium Scores</h2> 
+         <h3 id='aquariumheader'>Scored Aquarium. Date: {{scoredate}}</h3> 
 
          
          <div id="aquiriumfish">
@@ -3316,8 +3382,8 @@ Your browser does not support the HTML5 canvas tag.</canvas>
                    
                          {% for key,beneficiary in beneficiary_ids.items %}
                              <div class="swiper-slide">  
-                           <a class="commentslink" href="#fbcomments">Comments and Likes</a>
-                           <!--   <div class="fb-like" data-href="https://developers.facebook.com/docs/plugins/" data-layout="standard" data-action="like" data-show-faces="true" data-share="true"></div>-->
+                           <!--<a class="commentslink" href="#fbcomments">Comments and Likes</a>
+   -->                        <!--   <div class="fb-like" data-href="https://developers.facebook.com/docs/plugins/" data-layout="standard" data-action="like" data-show-faces="true" data-share="true"></div>-->
                           
                                 <canvas width="200" height="200" class="aquarium_canvas"></canvas>
                              </div>
@@ -3335,6 +3401,15 @@ Your browser does not support the HTML5 canvas tag.</canvas>
               
               </tr>
         
+<tr><td>
+        <div id="like">
+<iframe id="likebt" class="fblike" src="//www.facebook.com/plugins/like.php?href=http%3A%2F%2Fict4d01.cs.uct.ac.za%2Fwellness%2Ffacebook%2Fexample%2F&amp;width&amp;layout=standard&amp;action=like&amp;show_faces=false&amp;share=false&amp;height=80&amp;appId=138647729661605" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:80%; height:80px;" allowTransparency="true"></iframe>
+</div>
+</td></tr>
+
+       <tr><td><div id="comment"><div  class="fb-comments" data-href="http://ict4d01.cs.uct.ac.za/wellness/facebook/example/" data-numposts="5" data-colorscheme="light"></div></div></td></tr>        
+
+
         </tbody>
          
 
@@ -3366,15 +3441,13 @@ Your browser does not support the HTML5 canvas tag.</canvas>
     <div id="fbcommentbox" style="align: center;">
   
  <table class="main_interface_wrapper" align="center">
-  <tr><td style="width:80%;">
+ <!-- <tr><td style="width:80%;">
 <div id="like">
-&nbsp;
-<!--
-<iframe id="ifrm" class="fblike" src="//www.facebook.com/plugins/like.php?href=http%3A%2F%2Fict4d01.cs.uct.ac.za%2Fwellness%2Ffacebook%2Fexample%2F&amp;width&amp;layout=standard&amp;action=like&amp;show_faces=true&amp;share=true&amp;height=80&amp;appId=138647729661605" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:80%; height:80px;" allowTransparency="true"></iframe>
-</div>-->
+<iframe id="likebt" class="fblike" src="//www.facebook.com/plugins/like.php?href=http%3A%2F%2Fict4d01.cs.uct.ac.za%2Fwellness%2Ffacebook%2Fexample%2F&amp;width&amp;layout=standard&amp;action=like&amp;show_faces=false&amp;share=false&amp;height=80&amp;appId=138647729661605" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:80%; height:80px;" allowTransparency="true"></iframe>
+</div>
 </td></tr>
        <tr><td><div class="fb-comments" data-href="http://ict4d01.cs.uct.ac.za/wellness/facebook/example/" data-numposts="5" data-colorscheme="light"></div></td></tr>
-
+-->
 
        </table>    
        
