@@ -348,13 +348,7 @@ $(document).on("pagecreate","#activityinterface",function(){
 	$(".datecaptured_activity_class").prop('checked', false);
 	initializeMenu();
 	   
-  	$('.grouponeactivity').show();
-	$('.grouptwoactivity').hide();
-	$('.groupthreeactivity').hide();
-
-   $('.groupfouractivity').hide();
-   $('.groupfiveactivity').hide();
-   $('.groupsixactivity').hide();
+   
    retrieveActivityGoal();
    
    //alert("registering label click");
@@ -365,11 +359,21 @@ $(".activitylabel").click(function (event) {
     displayActivityGraph( $(this).text());
 });
 */
+/*
  $(".activitylabel").on("vclick", function(event){
       event.stopPropagation(); // stop the .tile click being called
     displayActivityGraph($(this).text());
 
 });    
+*/
+
+
+$(".intervallabel").on("vclick", function(event){
+      event.stopPropagation(); // stop the .tile click being called
+
+    displayActivityForInterval($(this).text());
+
+}); 
 
 
 
@@ -606,7 +610,9 @@ $('#lastweekactivity').hide();
 
 $(document).on("pageshow","#activityinterface",function(){
 //console.log("Hello"); 
-   /*
+
+
+/*
    $(".datecaptured_activity_class").prop('checked', false);
   	$('.grouponeactivity').show();
 	$('.grouptwoactivity').hide();
@@ -1434,6 +1440,336 @@ var  jsonObjects= { Steps:-1};
 
   
  
+
+
+//var todaysdate="";
+//var displayed_date=""
+function navigateDaily(current,arrow_direction)
+{
+var date_label=""
+var current_date=new Date($("#currentdate").val());
+
+if(arrow_direction=='Left')
+ {
+
+current_date.setDate(current_date.getDate()-1);
+
+ }
+else
+  {
+
+    if(arrow_direction=='Right')
+   {
+   current_date.setDate(current_date.getDate()+1);
+   }
+   
+ }
+
+var date=current_date.getDate();
+var month=current_date.getMonth();
+month=month+1;
+
+var year=current_date.getYear();
+year=year+1900;
+var new_date="";
+new_date=new_date+month;
+new_date=new_date+"/";
+new_date=new_date+date;
+new_date=new_date+"/";
+new_date=new_date+year;
+var date=current_date.getDate();
+var month=current_date.getMonth();
+month=month+1;
+
+var year=current_date.getYear();
+year=year+1900;
+var new_date="";
+new_date=new_date+month;
+new_date=new_date+"/";
+new_date=new_date+date;
+new_date=new_date+"/";
+new_date=new_date+year;
+
+
+//get todays date
+var date_1=new Date();
+var date_1_year=date_1.getYear();
+date_1_year=date_1_year+1900;
+var date_1_str=date_1.getMonth()+"/"+date_1.getDate()+"/"+date_1_year;
+
+
+//get date that is meant to be displayed
+var date_2=new Date(new_date);
+var date_2_year=date_2.getYear();
+date_2_year=date_2_year+1900;
+var date_2_str=date_2.getMonth()+"/"+date_2.getDate()+"/"+date_2_year;
+
+
+//check if the day you are displaying is today. If not Today just display the dayte else display today
+
+
+if(date_1_str!==date_2_str)
+{
+date_label=date_label+"<div id='activity_day_label'>";
+date_label=date_label+date;
+date_label=date_label+" ";
+
+
+               switch(month)
+                {
+                case 1:date_label=date_label+"January";break;
+                case 2:date_label=date_label+"February";break;
+                case 3:date_label=date_label+"March";break;
+                case 4:date_label=date_label+"April";break;
+                case 5:date_label=date_label+"May";break;
+                case 6:date_label=date_label+"June";break;
+                case 7:date_label=date_label+"July";break;
+                case 8:date_label=date_label+"August";break;
+                case 9:date_label=date_label+"September";break;
+                case 10:date_label=date_label+"October";break;
+                case 11:date_label=date_label+"November";break;
+                case 12:date_label=date_label+"December";break;
+
+                }
+
+
+date_label=date_label+" ";
+date_label=date_label+year;
+date_label=date_label+"</div><input id='currentdate' type=hidden value=''/>";
+$("#navigation_right").html('');
+
+var nav_label="<a href=\"javascript:navigateActivity('Right')\"><img src='/static/django_facebook/images/right.jpeg'/></a>";
+
+
+$("#navigation_right").append(nav_label);
+
+
+
+}
+else
+{
+date_label=date_label+"<div id='activity_day_label'>Today</div><input id='currentdate' type=hidden value=''/>";
+$("#navigation_right").html('');
+
+var nav_label="&nbsp;";
+$("#navigation_right").append(nav_label);
+
+}
+
+
+$("#activityday").html('');
+
+$("#activityday").append(date_label);
+
+$("#currentdate").val(new_date);
+
+}
+
+
+function navigateWeekly(current,arrow_direction)
+{
+var date_label=""
+var day=0;
+var first_day_of_the_week_date=new Date($("#currentdate").val());
+
+var current_date=new Date($("#currentdate").val());
+day=current_date.getDay();
+first_day_of_the_week_date.setDate(first_day_of_the_week_date.getDate()-day)
+//if day is not Saturday then add the difference to get Saturday's date.
+if(day!==0)
+{
+remaining_days=6-day;//count how many days till the end of the week
+current_date.setDate(current_date.getDate()+remaining_days);//we are now at saturday of this week
+
+
+
+
+}
+else
+{
+
+currentdate.setDate(current_date.getDate()+6);//we are now at saturday of this week
+
+
+}
+
+
+if(arrow_direction=='Left')
+ {
+
+current_date.setDate(current_date.getDate()-7);//move to the previous saturday
+
+ }
+else
+  {
+
+    if(arrow_direction=='Right')
+   {
+   current_date.setDate(current_date.getDate()+7);//move to the next saturday
+   }
+
+ }
+
+//get the date, month, and year of the current date and assign this value in the hidden input type that keep track of the current date
+var date=current_date.getDate();
+
+var month=current_date.getMonth();
+month=month+1;
+
+var year=current_date.getYear();
+year=year+1900;
+
+
+// also extract date for the first day of the week
+
+var first_date=first_day_of_the_week_date.getDate();
+
+var first_month=first_day_of_the_week_date.getMonth();
+first_month=first_month+1;
+
+var first_year=first_day_of_the_week_date.getYear();
+first_year=first_year+1900;
+
+
+
+
+var new_date="";
+new_date=new_date+month;
+new_date=new_date+"/";
+new_date=new_date+date;
+new_date=new_date+"/";
+new_date=new_date+year;
+
+
+//get todays date
+var date_1=new Date();
+//set date_1 to Saturday of this week
+date_1.setDate(date_1.getDate()-day+6);
+
+var date_1_year=date_1.getYear();
+date_1_year=date_1_year+1900;
+var date_1_str=date_1.getMonth()+"/"+date_1.getDate()+"/"+date_1_year;
+
+
+//get date that is meant to be displayed
+var date_2=new Date(new_date);
+var date_2_year=date_2.getYear();
+date_2_year=date_2_year+1900;
+var date_2_str=date_2.getMonth()+"/"+date_2.getDate()+"/"+date_2_year;
+
+
+//check if the day you are displaying is This week. If not This week just display the day else display This week
+alert(date_1_str+" -- "+date_2_str);
+
+if(date_1_str!==date_2_str)
+{
+date_label=date_label+"<div id='activity_day_label'>";
+
+date_label=date_label+first_date;
+date_label=date_label+" ";
+
+
+               switch(first_month)
+                {
+                case 1:date_label=date_label+"January";break;
+                case 2:date_label=date_label+"February";break;
+                case 3:date_label=date_label+"March";break;
+                case 4:date_label=date_label+"April";break;
+                case 5:date_label=date_label+"May";break;
+                case 6:date_label=date_label+"June";break;
+                case 7:date_label=date_label+"July";break;
+                case 8:date_label=date_label+"August";break;
+                case 9:date_label=date_label+"September";break;
+                case 10:date_label=date_label+"October";break;
+                case 11:date_label=date_label+"November";break;
+                case 12:date_label=date_label+"December";break;
+
+                }
+
+
+date_label=date_label+" ";
+date_label=date_label+first_year;
+date_label=date_label+" -- ";
+
+date_label=date_label+date;
+date_label=date_label+" ";
+
+
+               switch(month)
+                {
+                case 1:date_label=date_label+"January";break;
+                case 2:date_label=date_label+"February";break;
+                case 3:date_label=date_label+"March";break;
+                case 4:date_label=date_label+"April";break;
+                case 5:date_label=date_label+"May";break;
+                case 6:date_label=date_label+"June";break;
+                case 7:date_label=date_label+"July";break;
+                case 8:date_label=date_label+"August";break;
+                case 9:date_label=date_label+"September";break;
+                case 10:date_label=date_label+"October";break;
+                case 11:date_label=date_label+"November";break;
+                case 12:date_label=date_label+"December";break;
+
+                }
+
+
+date_label=date_label+" ";
+date_label=date_label+year;
+
+
+
+
+date_label=date_label+"</div><input id='currentdate' type=hidden value=''/>";
+$("#navigation_right").html('');
+
+var nav_label="<a href=\"javascript:navigateActivity('Right')\"><img src='/static/django_facebook/images/right.jpeg'/></a>";
+
+
+$("#navigation_right").append(nav_label);
+
+
+
+}
+else
+{
+date_label=date_label+"<div id='activity_day_label'>Today</div><input id='currentdate' type=hidden value=''/>";
+$("#navigation_right").html('');
+
+var nav_label="&nbsp;";
+$("#navigation_right").append(nav_label);
+
+}
+
+$("#activityday").html('');
+
+$("#activityday").append(date_label);
+
+$("#currentdate").val(new_date);
+
+}
+
+
+
+
+
+
+
+function navigateActivity(arrow_direction){
+
+var interval=$("input[name=activityinterval]:checked").val();
+var current_displayed_activity=$("#activityday").text();
+
+switch(interval){
+ case "Daily":navigateDaily(current_displayed_activity,arrow_direction);break;
+ case "Weekly":navigateWeekly(current_displayed_activity,arrow_direction);break;
+ case "Monthly":navigateMonthly(current_displayed_activity,arrow_direction);break;
+ default: alert("The interval you have selected doesn't exist"); 
+
+
+
+}
+
+}
   function changeMenu(command)
  {
    incrementPoints();
@@ -1647,13 +1983,6 @@ var  jsonObjects= { Steps:-1};
 
 
 
-
-
-
-
-
-
-
 <!--Activitiy Page-->
 <div data-role="page"  id="activityinterface">
   <div data-role="header" style="background:#3b5998" >
@@ -1663,100 +1992,39 @@ var  jsonObjects= { Steps:-1};
   <div data-role="main" class="ui-content" >
       <table class="main_interface_wrapper" align="center" border="0" width="100%"> 
           
-	  <!--<table id="interfacetable">-->
-	   <!--<tr>
-	       <td colspan="2">Steps Walked</td></tr>
-	   <tr>-->
+	  
+           <tr><td>
+           <fieldset data-role="controlgroup" id="activityintervalsradiobuttons">
+
+           <label class="intervallabel" data-tiletype="dailyinterval" for="dailyinterval">Daily</label><input type="radio" name="activityinterval" value="Daily" class="activity_interval_class" id="dailyinterval" checked>
+
+           <label class="intervallabel" data-tiletype="weeklyinterval" for="weeklyinterval">Weekly</label><input type="radio" name="activityinterval" value="Weekly" class="activity_interval_class" id="weeklyinterval">
+
+           <label class="intervallabel" data-tiletype="monthlyinterval" for="monthlyinterval">Monthly</label><input type="radio"  name="activityinterval" value="Monthly" class="activity_interval_class" id="monthlyinterval">
+
+
+
+
+
+           </fieldset>
+
+
+           </td></tr>
+           
 	    <tr><td class="activity_goal">&nbsp;</td></tr> 
 	   <tr>
 		       <td class="selectgraph" colspan=2>
-                       <fieldset data-role="controlgroup" id="activityradiobuttons">
+                                        
+                                                
 			                <table border="0" width="100%">
-						    <tr>
-						        <td  class="grouponeactivity"><label class="activitylabel" data-tiletype="todayactivity" for="todayactivity">Today</label><input type="radio" name="datecapturedactivity" value="Today" class="datecaptured_activity_class" id="todayactivity"></td>
-                                                        <td class="grouponeactivity"><a href="javascript:changeMenu('DisplayActivityGroup2')" class="ui-btn ui-icon-arrow-r ui-btn-icon-notext">Next</a></td>
-
-<!--end of group 1-->
-
- 							<td class="grouptwoactivity"><a href="javascript:changeMenu('DisplayActivityGroup1');" class="ui-btn ui-icon-arrow-l ui-btn-icon-notext">Prev</a></td>
-
-
-							 <td class="grouptwoactivity"><label class="activitylabel" for="thisweekactivity">This week</label><input type="radio" name="datecapturedactivity" value="This week" class="datecaptured_activity_class" id="thisweekactivity" ></td>
-
-
-                                                        <td class="grouptwoactivity"><a href="javascript:changeMenu('DisplayActivityGroup3')" class="ui-btn ui-icon-arrow-r ui-btn-icon-notext">Next</a></td>
-
-<!--end of group 2-->
-							
-						
-
-
-                                                        <td class="groupthreeactivity"><a href="javascript:changeMenu('DisplayActivityGroup2');" class="ui-btn ui-icon-arrow-l ui-btn-icon-notext">Prev</a></td>                                        
-
-
-							<td class="groupthreeactivity"><label class="activitylabel" for="lastweekactivity">Last week</label><input type="radio" name="datecapturedactivity" value="Last week" class="datecaptured_activity_class" id="lastweekactivity" ></td>
-
-							
-                                                       
-
-
-                                                        <td class="groupthreeactivity"><a href="javascript:changeMenu('DisplayActivityGroup4');" class="ui-btn ui-icon-arrow-r ui-btn-icon-notext">Next</a></td>
-
-
-<!--end of group 3-->
-
-
-
-
-
-                                                     <td class="groupfouractivity"><a href="javascript:changeMenu('DisplayActivityGroup3');" class="ui-btn ui-icon-arrow-l ui-btn-icon-notext">Prev</a></td> 
-
-
-
-                                                      <td class="groupfouractivity"><label class="activitylabel" for="thismonthactivity">This month</label><input type="radio" name="datecapturedactivity" value="This month" class="datecaptured_activity_class" id="thismonthactivity" ></td>
-
-
-                                                     <td class="groupfouractivity"><a href="javascript:changeMenu('DisplayActivityGroup5');" class="ui-btn ui-icon-arrow-r ui-btn-icon-notext">Next</a></td>
-
-
-<!--end of group 4-->
-
-
-
-
-                                                     <td class="groupfiveactivity"><a href="javascript:changeMenu('DisplayActivityGroup4');" class="ui-btn ui-icon-arrow-l ui-btn-icon-notext">Prev</a></td> 
-
-
-                                                         <td class="groupfiveactivity"><label class="activitylabel" for="lastmonthactivity">Last month</label><input type="radio" name="datecapturedactivity" value="Last month" class="datecaptured_activity_class" id="lastmonthactivity" ></td>
-
-
-                                                     <td class="groupfiveactivity"><a href="javascript:changeMenu('DisplayActivityGroup6');" class="ui-btn ui-icon-arrow-r ui-btn-icon-notext">Next</a></td>
-
-<!--end of group 5-->
-
-
-
-
-                                                     <td class="groupsixactivity"><a href="javascript:changeMenu('DisplayActivityGroup5');" class="ui-btn ui-icon-arrow-l ui-btn-icon-notext">Prev</a></td> 
-
-
-                                                      <td class="groupsixactivity"><label class="activitylabel" for="threemonthactivity">Last three months</label><input type="radio" name="datecapturedactivity" value="Last three months" class="datecaptured_activity_class" id="threemonthactivity" ></td>
-
-
-<!--end of group 6-->
-
-
-                                                       
-							
-						
-							     
-							   
-
-			  
+					     <tr>
+                                                <td class="groupactivity" style="width: 5%;"><a href="javascript:navigateActivity('Left')"><img src="{% static 'django_facebook/images/left.jpeg' %}" /></a></td>
+						    <td id="activityday" class="groupactivity"><div id="activity_day_label">Today</div><input id="currentdate" type=hidden value="{{todaysdate}}"/></td>
+                                                    <td id="navigation_right" style="width: 5%;"></td>
 			                   </tr>
 				 </table>
 
-                             </fieldset>
+                            
 			 
 		   </td>
 	   
