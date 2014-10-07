@@ -348,7 +348,23 @@ $(document).on("pagecreate","#activityinterface",function(){
 	$(".datecaptured_activity_class").prop('checked', false);
 	initializeMenu();
 	   
+   var current_date=new Date();
+   var date=current_date.getDate();
+   var month=current_date.getMonth();
+   month=month+1;
+
+   var year=current_date.getYear();
+   year=year+1900;
+   var date_val=year;
+   date_val=date_val+"-";
+   date_val=date_val+month;
+   date_val=date_val+"-";
+   date_val=date_val+date;
    
+   
+   displayActivityGraph(date_val,date_val,"Daily","Today");
+  
+ 
    retrieveActivityGoal();
    
    //alert("registering label click");
@@ -627,6 +643,9 @@ $(document).on("pageshow","#activityinterface",function(){
 
 var image_hidden=false;
 $(document).on("pageshow","#mealchartinterface",function(){
+
+
+displayMealGraph("Today");
 /*
 $(".datecaptured_meal_class").prop('checked', false);
       
@@ -692,6 +711,7 @@ $(".datecaptured_scoreboard_class").prop('checked', false);
 });
 
 $(document).on("pageshow","#trackweight",function(){
+displayWeightGraph("This month")
   /*
 	$(".datecaptured_weight_class").prop('checked', false);
       
@@ -951,6 +971,7 @@ $(document).on("pagecreate","#healthgoals",function(){
 $(document).on("pagecreate","#pageone",function(){
 
 initializeMenu();
+$("#badgesimages").hide();
  $('<audio id="bgaudio"><source src="{{sound}}" type="audio/wav"></audio>').appendTo('body');
 			
   });
@@ -1442,11 +1463,11 @@ var  jsonObjects= { Steps:-1};
  
 
 
-//var todaysdate="";
-//var displayed_date=""
+
 function navigateDaily(current,arrow_direction)
 {
 var date_label=""
+
 var current_date=new Date($("#currentdate").val());
 
 if(arrow_direction=='Left')
@@ -1477,6 +1498,7 @@ new_date=new_date+"/";
 new_date=new_date+date;
 new_date=new_date+"/";
 new_date=new_date+year;
+/*
 var date=current_date.getDate();
 var month=current_date.getMonth();
 month=month+1;
@@ -1489,7 +1511,7 @@ new_date=new_date+"/";
 new_date=new_date+date;
 new_date=new_date+"/";
 new_date=new_date+year;
-
+*/
 
 //get todays date
 var date_1=new Date();
@@ -1506,35 +1528,38 @@ var date_2_str=date_2.getMonth()+"/"+date_2.getDate()+"/"+date_2_year;
 
 
 //check if the day you are displaying is today. If not Today just display the dayte else display today
-
+var formated_date_label="";
 
 if(date_1_str!==date_2_str)
 {
-date_label=date_label+"<div id='activity_day_label'>";
-date_label=date_label+date;
-date_label=date_label+" ";
-
+//var formated_date_label="";
+formated_date_label=formated_date_label+date;
+formated_date_label=formated_date_label+" ";
 
                switch(month)
                 {
-                case 1:date_label=date_label+"January";break;
-                case 2:date_label=date_label+"February";break;
-                case 3:date_label=date_label+"March";break;
-                case 4:date_label=date_label+"April";break;
-                case 5:date_label=date_label+"May";break;
-                case 6:date_label=date_label+"June";break;
-                case 7:date_label=date_label+"July";break;
-                case 8:date_label=date_label+"August";break;
-                case 9:date_label=date_label+"September";break;
-                case 10:date_label=date_label+"October";break;
-                case 11:date_label=date_label+"November";break;
-                case 12:date_label=date_label+"December";break;
+                case 1:formated_date_label=formated_date_label+"January";break;
+                case 2:formated_date_label=formated_date_label+"February";break;
+                case 3:formated_date_label=formated_date_label+"March";break;
+                case 4:formated_date_label=formated_date_label+"April";break;
+                case 5:formated_date_label=formated_date_label+"May";break;
+                case 6:formated_date_label=formated_date_label+"June";break;
+                case 7:formated_date_label=formated_date_label+"July";break;
+                case 8:formated_date_label=formated_date_label+"August";break;
+                case 9:formated_date_label=formated_date_label+"September";break;
+                case 10:formated_date_label=formated_date_label+"October";break;
+                case 11:formated_date_label=formated_date_label+"November";break;
+                case 12:formated_date_label=formated_date_label+"December";break;
 
                 }
 
+formated_date_label=formated_date_label+" ";
+formated_date_label=formated_date_label+year;
+date_label=date_label+"<div id='activity_day_label'>";
 
-date_label=date_label+" ";
-date_label=date_label+year;
+
+date_label=date_label+formated_date_label;
+
 date_label=date_label+"</div><input id='currentdate' type=hidden value=''/>";
 $("#navigation_right").html('');
 
@@ -1553,7 +1578,7 @@ $("#navigation_right").html('');
 
 var nav_label="&nbsp;";
 $("#navigation_right").append(nav_label);
-
+formated_date_label="Today";
 }
 
 
@@ -1563,18 +1588,28 @@ $("#activityday").append(date_label);
 
 $("#currentdate").val(new_date);
 
+var date_server_format="";
+date_server_format=date_server_format+year;
+date_server_format=date_server_format+"-";
+date_server_format=date_server_format+month;
+date_server_format=date_server_format+"-";
+date_server_format=date_server_format+date;
+displayActivityGraph(date_server_format,date_server_format,"Daily",formated_date_label);
+
+
 }
 
 
 function navigateWeekly(current,arrow_direction)
 {
 var date_label=""
-var day=0;
-var first_day_of_the_week_date=new Date($("#currentdate").val());
+
+//var first_day_of_the_week_date=new Date($("#currentdate").val());
 
 var current_date=new Date($("#currentdate").val());
 day=current_date.getDay();
-first_day_of_the_week_date.setDate(first_day_of_the_week_date.getDate()-day)
+
+//first_day_of_the_week_date.setDate(first_day_of_the_week_date.getDate()-day);//first day of the week for this week
 //if day is not Saturday then add the difference to get Saturday's date.
 if(day!==0)
 {
@@ -1609,6 +1644,8 @@ else
    }
 
  }
+ 
+
 
 //get the date, month, and year of the current date and assign this value in the hidden input type that keep track of the current date
 var date=current_date.getDate();
@@ -1620,7 +1657,15 @@ var year=current_date.getYear();
 year=year+1900;
 
 
-// also extract date for the first day of the week
+// also extract date for the first day of the week for the current week
+var first_day_of_the_week_date=current_date;
+
+
+
+first_day_of_the_week_date.setDate(first_day_of_the_week_date.getDate()-6);//first day of the week currently displayed
+
+
+
 
 var first_date=first_day_of_the_week_date.getDate();
 
@@ -1643,78 +1688,88 @@ new_date=new_date+year;
 
 //get todays date
 var date_1=new Date();
+
+day=date_1.getDay();
 //set date_1 to Saturday of this week
 date_1.setDate(date_1.getDate()-day+6);
 
 var date_1_year=date_1.getYear();
 date_1_year=date_1_year+1900;
-var date_1_str=date_1.getMonth()+"/"+date_1.getDate()+"/"+date_1_year;
+
+var date_1_month=date_1.getMonth();
+date_1_month=date_1_month+1;
+var date_1_str=date_1_month+"/"+date_1.getDate()+"/"+date_1_year;
 
 
 //get date that is meant to be displayed
 var date_2=new Date(new_date);
 var date_2_year=date_2.getYear();
 date_2_year=date_2_year+1900;
-var date_2_str=date_2.getMonth()+"/"+date_2.getDate()+"/"+date_2_year;
+var date_2_month=date_2.getMonth();
+date_2_month=date_2_month+1;
+var date_2_str=date_2_month+"/"+date_2.getDate()+"/"+date_2_year;
 
-
+var formated_date_label="";
 //check if the day you are displaying is This week. If not This week just display the day else display This week
-alert(date_1_str+" -- "+date_2_str);
+
 
 if(date_1_str!==date_2_str)
 {
+
 date_label=date_label+"<div id='activity_day_label'>";
 
-date_label=date_label+first_date;
-date_label=date_label+" ";
 
+//var formated_date_label="";
+formated_date_label=formated_date_label+first_date;
+formated_date_label=formated_date_label+" ";
 
                switch(first_month)
                 {
-                case 1:date_label=date_label+"January";break;
-                case 2:date_label=date_label+"February";break;
-                case 3:date_label=date_label+"March";break;
-                case 4:date_label=date_label+"April";break;
-                case 5:date_label=date_label+"May";break;
-                case 6:date_label=date_label+"June";break;
-                case 7:date_label=date_label+"July";break;
-                case 8:date_label=date_label+"August";break;
-                case 9:date_label=date_label+"September";break;
-                case 10:date_label=date_label+"October";break;
-                case 11:date_label=date_label+"November";break;
-                case 12:date_label=date_label+"December";break;
+                case 1:formated_date_label=formated_date_label+"January";break;
+                case 2:formated_date_label=formated_date_label+"February";break;
+                case 3:formated_date_label=formated_date_label+"March";break;
+                case 4:formated_date_label=formated_date_label+"April";break;
+                case 5:formated_date_label=formated_date_label+"May";break;
+                case 6:formated_date_label=formated_date_label+"June";break;
+                case 7:formated_date_label=formated_date_label+"July";break;
+                case 8:formated_date_label=formated_date_label+"August";break;
+                case 9:formated_date_label=formated_date_label+"September";break;
+                case 10:formated_date_label=formated_date_label+"October";break;
+                case 11:formated_date_label=formated_date_label+"November";break;
+                case 12:formated_date_label=formated_date_label+"December";break;
 
                 }
 
 
-date_label=date_label+" ";
-date_label=date_label+first_year;
-date_label=date_label+" -- ";
+   formated_date_label=formated_date_label+" ";
+   formated_date_label=formated_date_label+first_year;
+   formated_date_label=formated_date_label+" -- ";
 
-date_label=date_label+date;
-date_label=date_label+" ";
 
+formated_date_label=formated_date_label+date;
+formated_date_label=formated_date_label+" ";
 
                switch(month)
                 {
-                case 1:date_label=date_label+"January";break;
-                case 2:date_label=date_label+"February";break;
-                case 3:date_label=date_label+"March";break;
-                case 4:date_label=date_label+"April";break;
-                case 5:date_label=date_label+"May";break;
-                case 6:date_label=date_label+"June";break;
-                case 7:date_label=date_label+"July";break;
-                case 8:date_label=date_label+"August";break;
-                case 9:date_label=date_label+"September";break;
-                case 10:date_label=date_label+"October";break;
-                case 11:date_label=date_label+"November";break;
-                case 12:date_label=date_label+"December";break;
+                case 1:formated_date_label=formated_date_label+"January";break;
+                case 2:formated_date_label=formated_date_label+"February";break;
+                case 3:formated_date_label=formated_date_label+"March";break;
+                case 4:formated_date_label=formated_date_label+"April";break;
+                case 5:formated_date_label=formated_date_label+"May";break;
+                case 6:formated_date_label=formated_date_label+"June";break;
+                case 7:formated_date_label=formated_date_label+"July";break;
+                case 8:formated_date_label=formated_date_label+"August";break;
+                case 9:formated_date_label=formated_date_label+"September";break;
+                case 10:formated_date_label=formated_date_label+"October";break;
+                case 11:formated_date_label=formated_date_label+"November";break;
+                case 12:formated_date_label=formated_date_label+"December";break;
 
                 }
 
+formated_date_label=formated_date_label+" ";
+formated_date_label=formated_date_label+year;
+date_label=date_label+formated_date_label;
 
-date_label=date_label+" ";
-date_label=date_label+year;
 
 
 
@@ -1732,12 +1787,12 @@ $("#navigation_right").append(nav_label);
 }
 else
 {
-date_label=date_label+"<div id='activity_day_label'>Today</div><input id='currentdate' type=hidden value=''/>";
+date_label=date_label+"<div id='activity_day_label'>This week</div><input id='currentdate' type=hidden value=''/>";
 $("#navigation_right").html('');
 
 var nav_label="&nbsp;";
 $("#navigation_right").append(nav_label);
-
+formated_date_label="This week";
 }
 
 $("#activityday").html('');
@@ -1746,12 +1801,193 @@ $("#activityday").append(date_label);
 
 $("#currentdate").val(new_date);
 
+
+var date_server_format="";
+date_server_format=date_server_format+year;
+date_server_format=date_server_format+"-";
+date_server_format=date_server_format+month;
+date_server_format=date_server_format+"-";
+date_server_format=date_server_format+date;
+
+
+var date_server_format2="";
+date_server_format2=date_server_format2+first_year;
+date_server_format2=date_server_format2+"-";
+date_server_format2=date_server_format2+first_month;
+date_server_format2=date_server_format2+"-";
+date_server_format2=date_server_format2+first_date;
+
+
+
+displayActivityGraph(date_server_format2,date_server_format,"Weekly",formated_date_label);
+
+
+
+
+}
+
+function navigateMonthly(current,arrow_direction)
+{
+  var date_label=""
+
+  var current_date_string=$("#currentdate").val();
+
+//now change the date to first day of the month
+
+
+
+
+var current_date=new Date(current_date_string);
+
+current_date.setDate(1);
+
+
+if(arrow_direction=='Left')
+ {
+
+ // current_date.setDate(current_date.getMonth()-1);
+  current_date.setMonth(current_date.getMonth()-1);
+ }
+else
+  {
+
+  if(arrow_direction=='Right')
+   {
+  // current_date.setDate(current_date.getMonth()+1);
+
+    current_date.setMonth(current_date.getMonth()+1);
+ 
+   }
+
+ }
+
+
+var date=current_date.getDate();
+var month=current_date.getMonth();
+month=month+1;
+
+var year=current_date.getYear();
+year=year+1900;
+var new_date="";
+new_date=new_date+month;
+new_date=new_date+"/";
+new_date=new_date+date;
+new_date=new_date+"/";
+new_date=new_date+year;
+
+
+//now get the month for todays date and the compare it with the month from current_date
+
+
+//get todays date
+var date_1=new Date();
+var date_1_year=date_1.getYear();
+date_1_year=date_1_year+1900;
+//var date_1_str=date_1.getMonth()+"/"+date_1.getDate()+"/"+date_1_year;
+var date_1_str=date_1.getMonth()+""+date_1_year;
+
+//get date that is meant to be displayed
+var date_2=new Date(new_date);
+var date_2_year=date_2.getYear();
+date_2_year=date_2_year+1900;
+//var date_2_str=date_2.getMonth()+"/"+date_2.getDate()+"/"+date_2_year;
+var date_2_str=date_2.getMonth()+""+date_2_year;
+
+var formated_date_label="";
+//check if the date you are displaying is for "This month". If if that is the case then display This month.
+
+if(date_1_str!==date_2_str)
+{
+//date_label=date_label+"<div id='activity_day_label'>";
+var formated_date_label="";
+
+
+               switch(month)
+                {
+                case 1:formated_date_label=formated_date_label+"January";break;
+                case 2:formated_date_label=formated_date_label+"February";break;
+                case 3:formated_date_label=formated_date_label+"March";break;
+                case 4:formated_date_label=formated_date_label+"April";break;
+                case 5:formated_date_label=formated_date_label+"May";break;
+                case 6:formated_date_label=formated_date_label+"June";break;
+                case 7:formated_date_label=formated_date_label+"July";break;
+                case 8:formated_date_label=formated_date_label+"August";break;
+                case 9:formated_date_label=formated_date_label+"September";break;
+                case 10:formated_date_label=formated_date_label+"October";break;
+                case 11:formated_date_label=formated_date_label+"November";break;
+                case 12:formated_date_label=formated_date_label+"December";break;
+
+                }
+
+
+
+
+
+formated_date_label=formated_date_label+" ";
+formated_date_label=formated_date_label+year;
+date_label=date_label+"<div id='activity_day_label'>";
+
+date_label=date_label+formated_date_label;
+
+
+date_label=date_label+"</div><input id='currentdate' type=hidden value=''/>";
+$("#navigation_right").html('');
+
+var nav_label="<a href=\"javascript:navigateActivity('Right')\"><img src='/static/django_facebook/images/right.jpeg'/></a>";
+
+
+$("#navigation_right").append(nav_label);
+
+
+
+}
+else
+{
+date_label=date_label+"<div id='activity_day_label'>This Month</div><input id='currentdate' type=hidden value=''/>";
+$("#navigation_right").html('');
+
+var nav_label="&nbsp;";
+$("#navigation_right").append(nav_label);
+var formated_date_label="This month";
 }
 
 
+$("#activityday").html('');
+
+$("#activityday").append(date_label);
+
+$("#currentdate").val(new_date);
+
+var date_server_format="";
+date_server_format=date_server_format+year;
+date_server_format=date_server_format+"-";
+date_server_format=date_server_format+month;
+date_server_format=date_server_format+"-";
+date_server_format=date_server_format+date;
+
+//get the end of the month date
+var counter=daysInMonth(month,year);
+var end_date=counter;
+
+var date_server_format2="";
+date_server_format2=date_server_format2+year;
+date_server_format2=date_server_format2+"-";
+date_server_format2=date_server_format2+month;
+date_server_format2=date_server_format2+"-";
+date_server_format2=date_server_format2+end_date;
 
 
 
+displayActivityGraph(date_server_format,date_server_format2,"Monthly",formated_date_label);
+
+
+
+
+}
+
+function daysInMonth(month,year) {
+return new Date(year, month, 0).getDate();
+}
 
 
 function navigateActivity(arrow_direction){
@@ -1759,16 +1995,15 @@ function navigateActivity(arrow_direction){
 var interval=$("input[name=activityinterval]:checked").val();
 var current_displayed_activity=$("#activityday").text();
 
-switch(interval){
- case "Daily":navigateDaily(current_displayed_activity,arrow_direction);break;
- case "Weekly":navigateWeekly(current_displayed_activity,arrow_direction);break;
- case "Monthly":navigateMonthly(current_displayed_activity,arrow_direction);break;
- default: alert("The interval you have selected doesn't exist"); 
+  switch(interval){
+  case "Daily":navigateDaily(current_displayed_activity,arrow_direction);break;
+  case "Weekly":navigateWeekly(current_displayed_activity,arrow_direction);break;
+  case "Monthly":navigateMonthly(current_displayed_activity,arrow_direction);break;
+  default: alert("The interval you have selected doesn't exist"); 
 
 
 
-}
-
+ }
 }
   function changeMenu(command)
  {
@@ -1777,28 +2012,20 @@ switch(interval){
 	switch(command)
 	{
 
-        case "DisplayActivityGroup2":enableGroup2ActivityRadio();break;
-        case "DisplayActivityGroup1":enableGroup1ActivityRadio();break;
-        case "DisplayActivityGroup3":enableGroup3ActivityRadio();break;
+       	     
+	     case "DisplayMealGroup2":enableGroup2MealRadio();displayMealGraph("This week");break;
+        case "DisplayMealGroup1":enableGroup1MealRadio();displayMealGraph("Today");break;
+        case "DisplayMealGroup3":enableGroup3MealRadio();displayMealGraph("Last week");break;
 
-	     case "DisplayActivityGroup4":enableGroup4ActivityRadio();break;
-	     case "DisplayActivityGroup5":enableGroup5ActivityRadio();break;
-	     case "DisplayActivityGroup6":enableGroup6ActivityRadio();break;
-	     
-	     
-	     case "DisplayMealGroup2":enableGroup2MealRadio();break;
-        case "DisplayMealGroup1":enableGroup1MealRadio();break;
-        case "DisplayMealGroup3":enableGroup3MealRadio();break;
-
-	     case "DisplayMealGroup4":enableGroup4MealRadio();break;
-	     case "DisplayMealGroup5":enableGroup5MealRadio();break;
-	     case "DisplayMealGroup6":enableGroup6MealRadio();break;
+	     case "DisplayMealGroup4":enableGroup4MealRadio();displayMealGraph("This month");break;
+	     case "DisplayMealGroup5":enableGroup5MealRadio();displayMealGraph("Last month");break;
+	     case "DisplayMealGroup6":enableGroup6MealRadio();displayMealGraph("Last three months");break;
 	     
 	     
 	     
-	     case "DisplayWeightGroup2":enableGroup2WeightRadio();break;
-        case "DisplayWeightGroup1":enableGroup1WeightRadio();break;
-        case "DisplayWeightGroup3":enableGroup3WeightRadio();break;
+	     case "DisplayWeightGroup2":enableGroup2WeightRadio();displayWeightGraph("Last month");break;
+        case "DisplayWeightGroup1":enableGroup1WeightRadio();displayWeightGraph("This month");break;
+        case "DisplayWeightGroup3":enableGroup3WeightRadio();displayWeightGraph("Last three months");break;
         
         case "DisplayScoreBoardGroup2":enableGroup2ScoreBoardRadio();break;
         case "DisplayScoreBoardGroup1":enableGroup1ScoreBoardRadio();break;
@@ -1934,7 +2161,7 @@ switch(interval){
                          
       <table class="main_interface_wrapper" align="center">
  
-       <tr><td style="width: 100%;height: 10%;" colspan="2" > <table><tr><td class="nobordertable" width="100%">Track <b><i>steps walked</i></b> and <b><i>food eaten</i></b> by <b id="bname">{{fname}} {{lname}}</b></td><td class="nobordertable"><canvas width="70" height="50" id="badge"></canvas></td></tr></table></td></tr>
+       <tr><td style="width: 100%;height: 10%;" colspan="2" > <table><tr><td class="nobordertable" width="100%">Track <b><i>steps walked</i></b> and <b><i>food eaten</i></b> by <div id="bname"><b>{{fname}} {{lname}}</b></div></td><td class="nobordertable"><canvas width="70" height="50" id="badge"></canvas></td></tr></table></td></tr>
 
        <tr>
            <td width="40%">
@@ -1952,20 +2179,20 @@ switch(interval){
        </tr>
 	   <tr>
 	         </td>
-		      <td width="40%">
+		    <!--  <td width="40%">
 		        <img src="{% static "django_facebook/images/weight.jpg" %}" width="100%"  alt="WeighingScale" class="menuimage" style="cursor:pointer" >
-		   </td>
+		   </td>-->
 		   
 		   <td width="40%">
 		    <img src="{% static "django_facebook/images/healthgoalsinterface.jpg" %}" width="100%" alt="Goals" class="menuimage" style="cursor:pointer" >
 		   </td>
-       </tr>
+<!--       </tr>
 	  
 	   
-	     <tr>
-           <td width="40%">
+	     <tr>--><!--
+           <td width="40%"><
 		    <img src="{% static "django_facebook/images/healthtipsinterface.jpg" %}" width="100%" alt="HealthTips" class="menuimage" style="cursor:pointer" >
-		   </td>
+		   </td>-->
 		      <td width="40%">
 		        <img src="{% static "django_facebook/images/game.jpg" %}"width="100%" alt="Game" class="menuimage" style="cursor:pointer">
 		       </td>
@@ -2154,15 +2381,15 @@ switch(interval){
 		   
 		  
 		   </td>
-		      <td width="40%">
+		     <!-- <td width="40%">
 		        <img src="{% static "django_facebook/images/beverageinterface.jpg" %}" width="100%" alt="Beverages" class="menuimage" style="cursor:pointer" ></a>
-		   </td>
+		   </td>-->
        </tr>
 	   
-	       <tr>
+	       <tr><!--
            <td width="40%">
 		    <img src="{% static "django_facebook/images/snackinterface.jpg" %}" width="100%">
-		   </td>
+		   </td>-->
 		      <td width="40%">
 		    <img src="{% static "django_facebook/images/foodgraphinterface.jpg" %}" width="100%" alt="FoodGraphs" class="menuimage" style="cursor:pointer">
 		   </td>
@@ -3257,7 +3484,7 @@ Your browser does not support the HTML5 canvas tag.</canvas>
   </div>
 
   <div data-role="main" class="ui-content" >
-         <h2> Score board</h2> 
+         <h3> Reputation in Helping Your Family Member</h3> 
   <table class="main_interface_wrapper" align="center">
                   <tr>
 
@@ -3316,7 +3543,7 @@ Your browser does not support the HTML5 canvas tag.</canvas>
   </div>
 
   <div data-role="main" class="ui-content" >
-         <h3 id="gardenheader"> Scored Gardens. Date: {{scoredate}}</h3> 
+         <h3 id="gardenheader"> Fitness Gardens for date: {{scoredate}}</h3> 
   <table class="main_interface_wrapper" align="center">
                 <tr>
 
@@ -3324,7 +3551,7 @@ Your browser does not support the HTML5 canvas tag.</canvas>
                         Select Date:
                     </td>
                     <td>
-                         <input type="text" id="datepickergarden" readonly="true">
+                         <input type="text" id="datepickergarden" readonly="true" value="Click Here!!">
                            <input type="hidden" id="date_selected_garden" value="None">
 
 
@@ -3417,7 +3644,7 @@ Your browser does not support the HTML5 canvas tag.</canvas>
   </div>
 
   <div data-role="main" class="ui-content" >
-         <h3 id='aquariumheader'>Scored Aquarium. Date: {{scoredate}}</h3> 
+         <h3 id='aquariumheader'>Fitness Aquarium. Date: {{scoredate}}</h3> 
 
          
          <div id="aquiriumfish">
@@ -3614,7 +3841,7 @@ Your browser does not support the HTML5 canvas tag.</canvas>
                         Select Date:
                     </td>
                     <td>
-                         <input type="text" id="datepickerscoretank" readonly="true">
+                         <input type="text" id="datepickerscoretank" readonly="true" value="Click Here!!">
                            <input type="hidden" id="date_selected_scoretank" value="None">
 
 
@@ -3634,7 +3861,7 @@ Your browser does not support the HTML5 canvas tag.</canvas>
         <tbody>
               <tr>
                    
-                  <!--<td width="100%" style="background: url('{{ STATIC_URL }}django_facebook/images/fishtankbg3.jpg') repeat;">-->
+                
                   <td width="100%">
                          
 
