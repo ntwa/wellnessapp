@@ -7,12 +7,8 @@
     staticUrl = '{{ STATIC_URL }}';
     function facebookJSLoaded(){
         FB.init({appId: facebookAppId, status: false, cookie: true, xfbml: true, oauth: true});
-                   //Additional
-            FB.Event.subscribe('edge.create',
-                        function (response) {
-                            alert('LIKED: ' + response);
-                        }
-                 );
+                
+               
     }
     window.fbAsyncInit = facebookJSLoaded;
    F = new facebookClass(facebookAppId);
